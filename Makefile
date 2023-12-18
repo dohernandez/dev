@@ -28,21 +28,18 @@ ifeq ($(EXTEND_DEVGO_PATH),)
 endif
 
 -include $(EXTEND_DEVGO_PATH)/makefiles/main.mk
-
-# Basic receipts.
 -include $(EXTEND_DEVGO_PATH)/makefiles/receipt.mk
--include $(DEVGO_PATH)/makefiles/lint.mk
--include $(DEVGO_PATH)/makefiles/test-unit.mk
 
 # Start extra receipts here.
+-include $(DEVGO_PATH)/makefiles/lint.mk
+-include $(EXTEND_DEVGO_PATH)/makefiles/pg.mk
 # End extra receipts here.
 
 .PHONY: test check
 
+# DO NOT EDIT ANYTHING BELOW THIS LINE.
+
 # Add your custom targets here.
 
-## Run tests
-test: test-unit
-
-## Run lint and test
-check: lint test
+## Run lint
+check: lint
