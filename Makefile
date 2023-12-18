@@ -32,7 +32,8 @@ endif
 
 # Start extra receipts here.
 -include $(DEVGO_PATH)/makefiles/lint.mk
--include $(EXTEND_DEVGO_PATH)/makefiles/pg.mk
+-include $(DEVGO_PATH)/makefiles/test-unit.mk
+-include $(EXTEND_DEVGO_PATH)/makefiles/check.mk
 # End extra receipts here.
 
 .PHONY: test check
@@ -40,6 +41,9 @@ endif
 # DO NOT EDIT ANYTHING BELOW THIS LINE.
 
 # Add your custom targets here.
+
+## Run tests
+test: test-unit
 
 ## Run lint
 check: lint
