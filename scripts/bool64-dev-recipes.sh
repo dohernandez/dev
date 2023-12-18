@@ -1,12 +1,12 @@
 #!/bin/bash
 
-EXTEND_DEVGO_PATH=${EXTEND_DEVGO_PATH}
+DEVGO_PATH=${DEVGO_PATH}
 
 # Specify the directory to search for .mk files
-SEARCH_DIR=$(realpath "${EXTEND_DEVGO_PATH}/makefiles")
+SEARCH_DIR=$(realpath "${DEVGO_PATH}/makefiles")
 
 # Create an associative array (map) in Bash
-RECEIPT_MAP=()
+RECIPE_MAP=()
 
 # Iterate over the .mk files in the search directory
 for file in "$SEARCH_DIR"/*.mk; do
@@ -16,13 +16,13 @@ for file in "$SEARCH_DIR"/*.mk; do
 
     # Create the map entry with the relative path and filename
     key="$filename_noext"
-    value="\$(EXTEND_DEVGO_PATH)/makefiles/$filename"
+    value="\$(DEVGO_PATH)/makefiles/$filename"
 
     # Add the entry to the map
-    RECEIPT_MAP+=("$key=$value")
+    RECIPE_MAP+=("$key=$value")
 done
 
 # Print the map entries
-for entry in "${RECEIPT_MAP[@]}"; do
+for entry in "${RECIPE_MAP[@]}"; do
     echo "$entry"
 done

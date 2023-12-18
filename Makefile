@@ -28,13 +28,13 @@ ifeq ($(EXTEND_DEVGO_PATH),)
 endif
 
 -include $(EXTEND_DEVGO_PATH)/makefiles/main.mk
--include $(EXTEND_DEVGO_PATH)/makefiles/receipt.mk
+-include $(EXTEND_DEVGO_PATH)/makefiles/receipe.mk
 
-# Start extra receipts here.
+# Start extra recipes here.
 -include $(DEVGO_PATH)/makefiles/lint.mk
 -include $(DEVGO_PATH)/makefiles/test-unit.mk
 -include $(EXTEND_DEVGO_PATH)/makefiles/check.mk
-# End extra receipts here.
+# End extra recipes here.
 
 .PHONY: test check
 

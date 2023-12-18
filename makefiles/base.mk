@@ -29,13 +29,13 @@ endif
 
 -include $(EXTEND_DEVGO_PATH)/makefiles/main.mk
 
-# Basic receipts.
--include $(EXTEND_DEVGO_PATH)/makefiles/receipt.mk
+# Basic recipes.
+-include $(EXTEND_DEVGO_PATH)/makefiles/recipe.mk
 -include $(DEVGO_PATH)/makefiles/lint.mk
 -include $(DEVGO_PATH)/makefiles/test-unit.mk
 
-# Start extra receipts here.
-# End extra receipts here.
+# Start extra recipes here.
+# End extra recipes here.
 
 .PHONY: test check
 
