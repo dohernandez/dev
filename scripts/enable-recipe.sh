@@ -2,7 +2,7 @@
 
 this_path=$(dirname "$0")
 
-# Get receipes from bool64-dev-recipes.sh
+# Get recipes from bool64-dev-recipes.sh
 RECIPE_MAP_BOOL64=$(DEVGO_PATH=${DEVGO_PATH} bash $this_path/bool64-dev-recipes.sh)
 
 # Get recipes from dev-recipes.sh

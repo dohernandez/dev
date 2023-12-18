@@ -28,7 +28,7 @@ ifeq ($(EXTEND_DEVGO_PATH),)
 endif
 
 -include $(EXTEND_DEVGO_PATH)/makefiles/main.mk
--include $(EXTEND_DEVGO_PATH)/makefiles/receipe.mk
+-include $(EXTEND_DEVGO_PATH)/makefiles/recipe.mk
 
 # Start extra recipes here.
 -include $(DEVGO_PATH)/makefiles/lint.mk
