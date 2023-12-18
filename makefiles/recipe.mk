@@ -1,6 +1,6 @@
 GO ?= go
 
-FILES := $(wildcard $(PWD)/$(DEVGO_PATH)/makefiles/*.mk $(PWD)/makefiles/*.mk)
+FILES := $(wildcard $(DEVGO_PATH)/makefiles/*.mk $(EXTEND_DEVGO_PATH)/makefiles/*.mk)
 
 ## List all available recipes
 list-recipes:

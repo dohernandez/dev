@@ -23,7 +23,7 @@ endif
 
 export MODULE_NAME := $(shell test -f go.mod && GO111MODULE=on $(GO) list $(modVendor) -m)
 
-EXTEND_DEVGO_PATH ?= $(PWD)/vendor/github.com/dohernandez/dev
+EXTEND_DEVGO_PATH ?= $(PWD)
 EXTEND_DEVGO_SCRIPTS ?= $(EXTEND_DEVGO_PATH)/scripts
 
 -include $(DEVGO_PATH)/makefiles/main.mk
