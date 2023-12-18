@@ -28,21 +28,22 @@ ifeq ($(EXTEND_DEVGO_PATH),)
 endif
 
 -include $(EXTEND_DEVGO_PATH)/makefiles/main.mk
-
-# Basic recipes.
--include $(EXTEND_DEVGO_PATH)/makefiles/recipe.mk
--include $(DEVGO_PATH)/makefiles/lint.mk
--include $(DEVGO_PATH)/makefiles/test-unit.mk
+-include $(EXTEND_DEVGO_PATH)/makefiles/receipe.mk
 
 # Start extra recipes here.
+-include $(DEVGO_PATH)/makefiles/lint.mk
+-include $(DEVGO_PATH)/makefiles/test-unit.mk
+-include $(EXTEND_DEVGO_PATH)/makefiles/check.mk
 # End extra recipes here.
 
 .PHONY: test check
+
+# DO NOT EDIT ANYTHING BELOW THIS LINE.
 
 # Add your custom targets here.
 
 ## Run tests
 test: test-unit
 
-## Run lint and test
-check: lint test
+## Run lint
+check: lint
