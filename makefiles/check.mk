@@ -2,3 +2,5 @@
 
 ## Run lint and test
 check: lint test-unit
+
+.PHONY: check

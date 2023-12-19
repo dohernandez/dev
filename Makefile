@@ -14,8 +14,8 @@ ifneq "$(wildcard ./vendor )" ""
   ifeq (,$(findstring -mod,$(GOFLAGS)))
       export GOFLAGS := ${GOFLAGS} ${modVendor}
   endif
-  ifneq "$(wildcard ./vendor/github.com/dohernadez/dev)" ""
-  	EXTEND_DEVGO_PATH := ./vendor/github.com/dohernadez/dev
+  ifneq "$(wildcard ./vendor/github.com/dohernandez/dev)" ""
+  	EXTEND_DEVGO_PATH := ./vendor/github.com/dohernandez/dev
   endif
 endif
 
@@ -36,7 +36,7 @@ endif
 -include $(EXTEND_DEVGO_PATH)/makefiles/check.mk
 # End extra recipes here.
 
-.PHONY: test check
+.PHONY: test
 
 # DO NOT EDIT ANYTHING BELOW THIS LINE.
 
@@ -44,6 +44,3 @@ endif
 
 ## Run tests
 test: test-unit
-
-## Run lint
-check: lint
