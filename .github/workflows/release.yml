@@ -1,0 +1,35 @@
+name: create release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.19.x
+
+      - name: Install GoReleaser
+        run: |
+          curl -sL https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | bash -s -- -b $HOME/bin v0.180.0
+
+      - name: Run GoReleaser
+        run: |
+          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
+            $HOME/bin/goreleaser release --rm-dist
+          fi
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/*
+          token: ${{ secrets.PAT }}
