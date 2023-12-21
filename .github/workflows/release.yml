@@ -19,6 +19,9 @@ jobs:
         with:
           go-version: 1.19.x
 
+      - name: Print GitHub Event
+        run: cat $GITHUB_EVENT_PATH
+
       - name: Get Merged PR Branch
         id: get-branch
         run: |
