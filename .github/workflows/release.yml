@@ -58,8 +58,8 @@ jobs:
         id: get_merge_commit_message
         run: |
           MERGE_COMMIT_MESSAGE=$(git log --merges --format=%B -n 1)
-          # Replace line breaks with spaces
-          MERGE_COMMIT_MESSAGE=${MERGE_COMMIT_MESSAGE//$'\n'/' '}
+          # Replace line breaks with double line breaks
+          MERGE_COMMIT_MESSAGE=${MERGE_COMMIT_MESSAGE//$'\n'/$'\n\n'}
           echo "Merge Commit Message: $MERGE_COMMIT_MESSAGE"
           echo "MERGE_COMMIT_MESSAGE=$MERGE_COMMIT_MESSAGE" >> $GITHUB_ENV
 
