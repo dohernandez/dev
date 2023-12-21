@@ -18,6 +18,31 @@ jobs:
         with:
           go-version: 1.19.x
 
+      - name: Get Merged PR Branch
+        id: get-branch
+        run: |
+          # Extract the branch name from the merged pull request
+          PR_BRANCH=$(jq -r '.pull_request.head.ref' "$GITHUB_EVENT_PATH")
+          echo "Merged PR Branch: $PR_BRANCH"
+          echo "$PR_BRANCH" >> $GITHUB_OUTPUT
+
+      - name: Determine level
+        id: determine-level
+        run: |
+          # Map the branch name to a level
+          case "${{ steps.get-branch.outputs.pr_branch }}" in
+            patch* | issue* | hotfix* | dependabot/* | whitesource/*)
+              LEVEL="patch";;
+            minor* | feature* | feat*)
+              LEVEL="minor";;
+            major* | release*)
+              LEVEL="major";;
+            *)
+              LEVEL="unknown";;
+          esac
+          echo "Determined level: $LEVEL"
+          echo "$LEVEL" >> $GITHUB_OUTPUT
+
       - name: Get latest tag
         id: latest_tag
         uses: actions-ecosystem/action-get-latest-tag@v1
@@ -27,7 +52,7 @@ jobs:
         uses: actions-ecosystem/action-bump-semver@v1
         with:
           current_version: ${{ steps.latest_tag.outputs.tag }}
-          level: 'minor'
+          level: ${{ steps.determine-prefix.outputs.level }}
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
