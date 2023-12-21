@@ -35,4 +35,5 @@ jobs:
         with:
           body: |
             This is the release created automatically but always minor.
+          tag_name: ${{ steps.bump_version.outputs.new_version }}
           token: ${{ secrets.PAT }}
