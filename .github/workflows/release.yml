@@ -22,7 +22,7 @@ jobs:
         id: get-branch
         run: |
           # Extract the branch name from the merged pull request
-          PR_BRANCH=$(jq -r '.pull_request.head.ref' "$GITHUB_EVENT_PATH")
+          PR_BRANCH=$(jq -r '.pull_request.head.ref // .github.head_ref' "$GITHUB_EVENT_PATH")
           echo "Merged PR Branch: $PR_BRANCH"
           echo "$PR_BRANCH" >> $GITHUB_OUTPUT
 
