@@ -31,7 +31,6 @@ jobs:
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
         with:
           body: |
             This is the release created automatically but always minor.
