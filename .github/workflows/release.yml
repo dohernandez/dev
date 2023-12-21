@@ -24,7 +24,7 @@ jobs:
       - name: Get Merged PR Branch
         id: get-branch
         run: |
-          PR_BRANCH=$(echo "${{ github.ref }}" | sed 's/refs\/heads\///')
+          PR_BRANCH=$(jq -r '.pull_request.head.ref' "$GITHUB_EVENT_PATH")
           echo "Merged PR Branch: $PR_BRANCH"
           echo "PR_BRANCH=$PR_BRANCH" >> $GITHUB_ENV
 
