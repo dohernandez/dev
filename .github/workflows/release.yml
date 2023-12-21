@@ -1,15 +1,13 @@
 name: create release
 
 on:
-  pull_request:
+  pull_request_target:
     types:
       - closed
-  push:
-    branches:
-      - main
 
 jobs:
   create-release:
+    if: github.event.pull_request.base.ref == 'main' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
