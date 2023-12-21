@@ -1,14 +1,9 @@
 name: create release
 
-#on:
-#  pull_request:
-#    types:
-#      - closed
-#    branches:
-#      - main
-
 on:
-  push:
+  pull_request:
+    types:
+      - closed
     branches:
       - main
 
@@ -25,61 +20,45 @@ jobs:
         with:
           go-version: 1.19.x
 
-#      - name: Get Merged PR Branch
-#        uses: actions-ecosystem/action-get-merged-pull-request@v1
-#        id: get-merged-pull-request
-#        with:
-#          github_token: ${{ secrets.PAT }}
-#
-#      - name: Dump get-merged-pull-request context
-#        env:
-#          GITHUB_CONTEXT: ${{ toJson(steps.get-merged-pull-request.outputs) }}
-#        run: |
-#          echo "$GITHUB_CONTEXT"
-
-      - name: Get Merged Branch
-        id: get-merged-branch
+      - name: Get Merged PR Branch
+        id: get-branch
         run: |
-          echo "Merged Branch: ${GITHUB_REF}" >> $GITHUB_ENV
+          PR_BRANCH=$(jq -r '.pull_request.head.ref' "$GITHUB_EVENT_PATH")
+          echo "Merged PR Branch: $PR_BRANCH"
+          echo "PR_BRANCH=$PR_BRANCH" >> $GITHUB_ENV
 
-      - name: Create Release
+      - name: Determine level
+        id: determine-level
         run: |
-          # Use the merged branch information as needed
-          echo "Merged Branch: ${{ env.MERGED_BRANCH }}"
+          case "${{ env.PR_BRANCH }}" in
+            patch* | issue* | hotfix* | dependabot/* | whitesource/*)
+              LEVEL="patch";;
+            minor* | feature* | feat*)
+              LEVEL="minor";;
+            major* | release*)
+              LEVEL="major";;
+            *)
+              LEVEL="unknown";;
+          esac
+          echo "Determined level: $LEVEL"
+          echo "LEVEL=$LEVEL" >> $GITHUB_ENV
 
-#      - name: Get Merged PR Branch
-#        id: get-branch
-#        run: |
-#          PR_BRANCH=$(jq -r '.pull_request.head.ref' "$GITHUB_EVENT_PATH")
-#          echo "Merged PR Branch: $PR_BRANCH"
-#          echo "PR_BRANCH=$PR_BRANCH" >> $GITHUB_ENV
-#
-#      - name: Determine level
-#        id: determine-level
-#        run: |
-#          case "${{ env.PR_BRANCH }}" in
-#            patch* | issue* | hotfix* | dependabot/* | whitesource/*)
-#              LEVEL="patch";;
-#            minor* | feature* | feat*)
-#              LEVEL="minor";;
-#            major* | release*)
-#              LEVEL="major";;
-#            *)
-#              LEVEL="unknown";;
-#          esac
-#          echo "Determined level: $LEVEL"
-#          echo "LEVEL=$LEVEL" >> $GITHUB_ENV
-#
-#      - name: Get latest tag
-#        id: latest_tag
-#        uses: actions-ecosystem/action-get-latest-tag@v1
-#
-#      - name: Bump release version
-#        id: bump_version
-#        uses: actions-ecosystem/action-bump-semver@v1
-#        with:
-#          current_version: ${{ steps.latest_tag.outputs.tag }}
-#          level: ${{ env.LEVEL }}
+      - name: Get latest tag
+        id: latest_tag
+        uses: actions-ecosystem/action-get-latest-tag@v1
+
+      - name: Bump release version
+        id: bump_version
+        uses: actions-ecosystem/action-bump-semver@v1
+        with:
+          current_version: ${{ steps.latest_tag.outputs.tag }}
+          level: ${{ env.LEVEL }}
+
+      - name: Dump bump_version context
+        env:
+          GITHUB_CONTEXT: ${{ steps.bump_version.outputs.new_version }}
+        run: |
+          echo "$GITHUB_CONTEXT"
 #
 #      - name: Create GitHub Release
 #        uses: softprops/action-gh-release@v1
