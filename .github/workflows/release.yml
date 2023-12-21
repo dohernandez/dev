@@ -1,9 +1,9 @@
 name: create release
 
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    types:
+      - closed
 
 jobs:
   create-release:
@@ -21,9 +21,9 @@ jobs:
       - name: Get Merged PR Branch
         id: get-branch
         run: |
-          PR_BRANCH=$(jq -r '.pull_request.head.ref // .github.head_ref' "$GITHUB_EVENT_PATH")
+          PR_BRANCH=$(echo "${{ github.ref }}" | sed 's/refs\/heads\///')
           echo "Merged PR Branch: $PR_BRANCH"
-          echo "$PR_BRANCH" >> $GITHUB_ENV
+          echo "PR_BRANCH=$PR_BRANCH" >> $GITHUB_ENV
 
       - name: Determine level
         id: determine-level
@@ -39,7 +39,7 @@ jobs:
               LEVEL="unknown";;
           esac
           echo "Determined level: $LEVEL"
-          echo "$LEVEL" >> $GITHUB_ENV
+          echo "LEVEL=$LEVEL" >> $GITHUB_ENV
 
       - name: Get latest tag
         id: latest_tag
