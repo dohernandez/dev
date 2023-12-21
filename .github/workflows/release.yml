@@ -25,17 +25,27 @@ jobs:
         with:
           go-version: 1.19.x
 
-      - name: Get Merged PR Branch
-        uses: actions-ecosystem/action-get-merged-pull-request@v1
-        id: get-merged-pull-request
-        with:
-          github_token: ${{ secrets.PAT }}
+#      - name: Get Merged PR Branch
+#        uses: actions-ecosystem/action-get-merged-pull-request@v1
+#        id: get-merged-pull-request
+#        with:
+#          github_token: ${{ secrets.PAT }}
+#
+#      - name: Dump get-merged-pull-request context
+#        env:
+#          GITHUB_CONTEXT: ${{ toJson(steps.get-merged-pull-request.outputs) }}
+#        run: |
+#          echo "$GITHUB_CONTEXT"
 
-      - name: Dump get-merged-pull-request context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(steps.get-merged-pull-request.outputs) }}
+      - name: Get Merged Branch
+        id: get-merged-branch
         run: |
-          echo "$GITHUB_CONTEXT"
+          echo "Merged Branch: ${GITHUB_REF}" >> $GITHUB_ENV
+
+      - name: Create Release
+        run: |
+          # Use the merged branch information as needed
+          echo "Merged Branch: ${{ env.MERGED_BRANCH }}"
 
 #      - name: Get Merged PR Branch
 #        id: get-branch
