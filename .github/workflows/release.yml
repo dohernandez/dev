@@ -53,20 +53,11 @@ jobs:
         with:
           current_version: ${{ steps.latest_tag.outputs.tag }}
           level: ${{ env.LEVEL }}
-
-      - name: Dump bump_version context
-        env:
-          GITHUB_PREV_VERSION: ${{ steps.latest_tag.outputs.tag }}
-          GITHUB_NEW_VERSION: ${{ steps.bump_version.outputs.new_version }}
-        run: |
-          echo -e "prev: $GITHUB_PREV_VERSION"
-          echo -e "level: $LEVEL"
-          echo -e "next: $GITHUB_NEW_VERSION"
 #
-#      - name: Create GitHub Release
-#        uses: softprops/action-gh-release@v1
-#        with:
-#          body: |
-#            This is the release created automatically but always minor.
-#          tag_name: ${{ steps.bump_version.outputs.new_version }}
-#          token: ${{ secrets.PAT }}
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          body: |
+            This is the release created automatically but always minor.
+          tag_name: ${{ steps.bump_version.outputs.new_version }}
+          token: ${{ secrets.PAT }}
