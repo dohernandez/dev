@@ -50,15 +50,15 @@ jobs:
 
       - name: Bump release version
         id: bump_version
-        run: |
-          NEW_VERSION=$(semver bump ${{ steps.latest_tag.outputs.tag }} ${{ env.LEVEL }})
-          echo "New version: $NEW_VERSION"
-          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+        uses: actions-ecosystem/action-bump-semver@v1
+        with:
+          current_version: ${{ steps.latest_tag.outputs.tag }}
+          level: ${{ env.LEVEL }}
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           body: |
             This is the release created automatically but always minor.
-          tag_name: ${{ env.NEW_VERSION }}
+          tag_name: ${{ steps.bump_version.outputs.new_version }}
           token: ${{ secrets.PAT }}
