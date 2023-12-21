@@ -7,7 +7,7 @@ on:
 
 jobs:
   create-release:
-#    if: github.event.pull_request.base.ref == 'main' && github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
@@ -18,9 +18,6 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.19.x
-
-      - name: Print GitHub Event
-        run: cat $GITHUB_EVENT_PATH
 
       - name: Get Merged PR Branch
         id: get-branch
