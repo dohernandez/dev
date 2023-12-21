@@ -21,16 +21,14 @@ jobs:
       - name: Get Merged PR Branch
         id: get-branch
         run: |
-          # Extract the branch name from the merged pull request
           PR_BRANCH=$(jq -r '.pull_request.head.ref // .github.head_ref' "$GITHUB_EVENT_PATH")
           echo "Merged PR Branch: $PR_BRANCH"
-          echo "$PR_BRANCH" >> $GITHUB_OUTPUT
+          echo "$PR_BRANCH" >> $GITHUB_ENV
 
       - name: Determine level
         id: determine-level
         run: |
-          # Map the branch name to a level
-          case "${{ steps.get-branch.outputs.pr_branch }}" in
+          case "${{ env.PR_BRANCH }}" in
             patch* | issue* | hotfix* | dependabot/* | whitesource/*)
               LEVEL="patch";;
             minor* | feature* | feat*)
@@ -41,7 +39,7 @@ jobs:
               LEVEL="unknown";;
           esac
           echo "Determined level: $LEVEL"
-          echo "$LEVEL" >> $GITHUB_OUTPUT
+          echo "$LEVEL" >> $GITHUB_ENV
 
       - name: Get latest tag
         id: latest_tag
@@ -49,15 +47,15 @@ jobs:
 
       - name: Bump release version
         id: bump_version
-        uses: actions-ecosystem/action-bump-semver@v1
-        with:
-          current_version: ${{ steps.latest_tag.outputs.tag }}
-          level: ${{ steps.determine-prefix.outputs.level }}
+        run: |
+          NEW_VERSION=$(semver bump ${{ steps.latest_tag.outputs.tag }} ${{ env.LEVEL }})
+          echo "New version: $NEW_VERSION"
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           body: |
             This is the release created automatically but always minor.
-          tag_name: ${{ steps.bump_version.outputs.new_version }}
+          tag_name: ${{ env.NEW_VERSION }}
           token: ${{ secrets.PAT }}
