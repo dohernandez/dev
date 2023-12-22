@@ -18,6 +18,12 @@ enable-recipe:
 	bash $(EXTEND_DEVGO_SCRIPTS)/enable-recipe.sh
 
 
+## List the recipes enabled into Makefile
+list-recipes:
+	@echo "List of recipes enabled:"
+	@bash $(EXTEND_DEVGO_SCRIPTS)/list-recipes.sh
+
+
 
 
 
