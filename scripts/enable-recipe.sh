@@ -7,6 +7,7 @@ IFS=' ' read -r -a PLUGINS <<< "$PLUGINS"
 
 # Collect recipes
 RECIPE_MAP=()
+RECIPE_PLUGIN_MAP=()
 
 if [[ -z "$PLUGIN" || "$PLUGIN" == "dev" ]]; then
   while IFS= read -r -d '' file; do
@@ -20,6 +21,7 @@ if [[ -z "$PLUGIN" || "$PLUGIN" == "dev" ]]; then
 
       # Add the entry to the map
       RECIPE_MAP+=("$key=$value")
+      RECIPE_PLUGIN_MAP+=("$key=dev")
   done < <(find "$EXTEND_DEVGO_PATH/makefiles" -name "*.mk" -print0)
 else
     # Loop over each plugin
@@ -43,11 +45,16 @@ else
 
             # Add the entry to the map
             RECIPE_MAP+=("$key=$value")
+            RECIPE_PLUGIN_MAP+=("$key=$plugin_key")
         done < <(find "$PLUGIN_MAKEFILES_PATH" -name "*.mk" -print0)
     done
 fi
 
 found=false
+
+# For checking if the recipe require another recipe
+recipe_relative_path=""
+recipe_path=""
 
 for entry in "${RECIPE_MAP[@]}"; do
     key=$(echo $entry | cut -d= -f1)
@@ -56,6 +63,20 @@ for entry in "${RECIPE_MAP[@]}"; do
     if [ "$key" = "$NAME" ]; then
         found=true
         recipe_relative_path=$value
+
+        plugin_key=$(echo ${RECIPE_PLUGIN_MAP[$i]} | cut -d= -f2)
+
+        if [[ "$plugin_key" == "dev" ]]; then
+            # Replace occurrences of placeholders with actual values
+            recipe_path=$(echo "$recipe_relative_path" | sed "s#\$(EXTEND_DEVGO_PATH)#${EXTEND_DEVGO_PATH}#g")
+        else
+            # Replace occurrences of placeholders with actual values
+            variable_name="PLUGIN_${plugin_key}_MAKEFILES_PATH"
+            placeholder="\$(PLUGIN_${plugin_key}_MAKEFILES_PATH)"
+            replacement="${!variable_name}"
+
+            recipe_path=$(echo "$recipe_relative_path" | sed "s#${placeholder}#${replacement}#g")
+        fi
         break
     fi
 done
@@ -69,18 +90,6 @@ if [ "$found" = "true" ]; then
     fi
 
     #Check if the recipe require another recipe
-    if [[ -z "$PLUGIN" || "$PLUGIN" == "dev" ]]; then
-        # Replace occurrences of placeholders with actual values
-        recipe_path=$(echo "$recipe_relative_path" | sed "s#\$(EXTEND_DEVGO_PATH)#${EXTEND_DEVGO_PATH}#g")
-    else
-        # Replace occurrences of placeholders with actual values
-        variable_name="PLUGIN_${plugin_key}_MAKEFILES_PATH"
-        placeholder="\$(PLUGIN_${plugin_key}_MAKEFILES_PATH)"
-        replacement="${!variable_name}"
-
-        recipe_path=$(echo "$recipe_relative_path" | sed "s#${placeholder}#${replacement}#g")
-    fi
-
     while IFS= read -r line; do
         plugin=$(echo "$line" | awk '{n=split($0,a,"/"); a[n]=""; for(i=1;i<n;i++) printf("%s%s",a[i],i<n-1?"/":"")}' | sed 's/^#- require - //')
         recipe=$(echo "$line" | awk -F'/' '{print $NF}')
