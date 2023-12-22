@@ -98,4 +98,5 @@ if [ "$found" = "true" ]; then
     echo "Recipe $PLUGIN $NAME enabled successfully."
 else
     echo "Recipe $PLUGIN $NAME not found."
+    exit 1
 fi

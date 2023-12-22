@@ -24,7 +24,11 @@ list-recipes:
 	@bash $(EXTEND_DEVGO_SCRIPTS)/list-recipes.sh
 
 
-
+## Disable a recipe from Makefile
+disable-recipe:
+	@echo "Disabling recipe: $(NAME)"
+	@NAME=$(NAME) \
+	bash $(EXTEND_DEVGO_SCRIPTS)/disable-recipe.sh
 
 
 
