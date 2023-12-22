@@ -19,7 +19,7 @@ PLUGIN_MANIFEST_FILE ?= makefile.yml
 #-# Check if makefile.yml exists
 ifneq ($(wildcard $(PLUGIN_MANIFEST_FILE)),)
 	#-# Get plugins
-	EXPORTS := $(shell $(EXTEND_DEVGO_SCRIPTS)/load_plugins.sh)
+	EXPORTS := $(shell bash $(EXTEND_DEVGO_SCRIPTS)/load_plugins.sh)
 endif
 
 #-# Set plugins

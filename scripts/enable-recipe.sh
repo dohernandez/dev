@@ -85,7 +85,7 @@ if [ "$found" = "true" ]; then
         plugin=$(echo "$line" | awk '{n=split($0,a,"/"); a[n]=""; for(i=1;i<n;i++) printf("%s%s",a[i],i<n-1?"/":"")}' | sed 's/^#- require - //')
         recipe=$(echo "$line" | awk -F'/' '{print $NF}')
 
-        result=$(PLUGIN=$plugin NAME=$recipe bash $EXTEND_DEVGO_PATH/scripts/enable-recipe.sh)
+        result=$(PLUGINS=$PLUGINS PLUGIN=$plugin NAME=$recipe bash $EXTEND_DEVGO_PATH/scripts/enable-recipe.sh)
 
         if [[ "$result" =~ ^Recipe\ .*\ enabled\ successfully\.$ ]] || [[ "$result" =~ ^Recipe\ .*\ already\ enabled\.$ ]]; then
             continue
