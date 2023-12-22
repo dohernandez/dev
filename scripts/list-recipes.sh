@@ -1,5 +1,7 @@
 #!/bin/bash
 
+IFS=' ' read -r -a PLUGINS <<< "$PLUGINS"
+
 this="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 source "$this/recipe.sh"
 

@@ -3,6 +3,8 @@
 [ -z "$NAME" ] && echo "NAME is required" && exit 1
 [ -z "$PLUGIN" ] && PLUGIN=""
 
+IFS=' ' read -r -a PLUGINS <<< "$PLUGINS"
+
 # Collect recipes
 RECIPE_MAP=()
 

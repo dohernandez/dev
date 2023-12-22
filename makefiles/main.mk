@@ -27,9 +27,13 @@ $(foreach _export,$(EXPORTS), \
 	$(eval export $(_export)) \
 )
 
+PLUGINS := $(subst :, ,$(PLUGINS))
+
 #-# Include plugins main makefile
 MAKEFILE_INCLUDES := $(foreach plugin_key,$(PLUGINS), \
-    $(subst =, ,$(PLUGIN_$(plugin_key)_MAKEFILES_PATH)/$(PLUGIN_$(plugin_key)_MAIN)) \
+	$(if $(PLUGIN_$(plugin_key)_MAIN), \
+    	$(subst =, ,$(PLUGIN_$(plugin_key)_MAKEFILES_PATH)/$(PLUGIN_$(plugin_key)_MAIN)), \
+    ) \
 )
 
 -include $(MAKEFILE_INCLUDES)

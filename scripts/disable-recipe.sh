@@ -2,6 +2,8 @@
 
 [ -z "$NAME" ] && echo "NAME is required" && exit 1
 
+IFS=' ' read -r -a PLUGINS <<< "$PLUGINS"
+
 this="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 source "$this/recipe.sh"
 
