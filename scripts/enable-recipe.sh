@@ -8,7 +8,7 @@ IFS=' ' read -r -a PLUGINS <<< "$PLUGINS"
 # Collect recipes
 RECIPE_MAP=()
 
-if [ -z "$PLUGIN" ]; then
+if [[ -z "$PLUGIN" || "$PLUGIN" == "dev" ]]; then
   while IFS= read -r -d '' file; do
       # Extract the filename without extension
       filename=$(basename -- "$file")
@@ -69,7 +69,7 @@ if [ "$found" = "true" ]; then
     fi
 
     #Check if the recipe require another recipe
-    if [ -z "$PLUGIN" ]; then
+    if [[ -z "$PLUGIN" || "$PLUGIN" == "dev" ]]; then
         # Replace occurrences of placeholders with actual values
         recipe_path=$(echo "$recipe_relative_path" | sed "s#\$(EXTEND_DEVGO_PATH)#${EXTEND_DEVGO_PATH}#g")
     else
