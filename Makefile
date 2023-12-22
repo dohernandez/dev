@@ -42,5 +42,3 @@ endif
 
 # Add your custom targets here.
 
-## Run tests
-test: test-unit
