@@ -4,10 +4,10 @@ FILES := $(foreach file, $(EXTEND_DEVGO_PATH)/makefiles/*.mk $(PLUGIN_MAKEFILES_
 	$(wildcard $(file)) \
 )
 
-## List all available recipes
-list-recipes:
-	@echo "Available recipe to enable:"
-	@bash $(EXTEND_DEVGO_SCRIPTS)/list-recipes.sh
+## Search all available recipes
+search-recipes:
+	@echo "Search for available recipe to enable"
+	@bash $(EXTEND_DEVGO_SCRIPTS)/search-recipes.sh
 
 
 ## Enable a recipe into Makefile
