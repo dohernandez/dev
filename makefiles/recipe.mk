@@ -1,27 +1,30 @@
 GO ?= go
 
-FILES := $(wildcard $(DEVGO_PATH)/makefiles/*.mk $(EXTEND_DEVGO_PATH)/makefiles/*.mk)
-
-## List all available recipes
-list-recipes:
-	@echo "Available recipe to enable:"
-	@PWD=$(PWD) \
-	EXTEND_DEVGO_PATH=$(EXTEND_DEVGO_PATH) \
-	DEVGO_PATH=$(DEVGO_PATH) \
-	FILES="$(FILES)" \
-	bash $(EXTEND_DEVGO_SCRIPTS)/list-recipes.sh
+## Search all available recipes
+search-recipes:
+	@echo "Search for available recipe to enable"
+	@bash $(EXTEND_DEVGO_SCRIPTS)/search-recipes.sh
 
 
 ## Enable a recipe into Makefile
 enable-recipe:
-	@echo "Enabling recipe: $(NAME)"
+	@echo "Enabling recipe: $(PLUGIN) $(NAME)"
 	@NAME=$(NAME) \
-	DEVGO_PATH=$(DEVGO_PATH) \
-	EXTEND_DEVGO_PATH=$(EXTEND_DEVGO_PATH) \
+	PLUGIN=$(PLUGIN) \
 	bash $(EXTEND_DEVGO_SCRIPTS)/enable-recipe.sh
 
 
+## List the recipes enabled into Makefile
+list-recipes:
+	@echo "List of recipes enabled:"
+	@bash $(EXTEND_DEVGO_SCRIPTS)/list-recipes.sh
 
+
+## Disable a recipe from Makefile
+disable-recipe:
+	@echo "Disabling recipe: $(NAME)"
+	@NAME=$(NAME) \
+	bash $(EXTEND_DEVGO_SCRIPTS)/disable-recipe.sh
 
 
 

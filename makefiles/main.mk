@@ -1,29 +1,39 @@
 GO ?= go
+PWD := $(shell pwd)
+GOPATH := $(realpath $(shell $(GO) env GOPATH))
 
-PWD = $(shell pwd)
-
-# Detecting GOPATH and removing trailing "/" if any
-GOPATH = $(realpath $(shell $(GO) env GOPATH))
-
-ifneq "$(wildcard ./vendor )" ""
-  modVendor = -mod=vendor
-
-  ifneq "$(wildcard ./vendor/github.com/bool64/dev)" ""
-    	DEVGO_PATH := ./vendor/github.com/bool64/dev
-    endif
+ifneq ($(wildcard ./vendor),)
+    modVendor := -mod=vendor
 endif
 
-ifeq ($(DEVGO_PATH),)
-	DEVGO_PATH := $(shell GO111MODULE=on $(GO) list ${modVendor} -f '{{.Dir}}' -m github.com/bool64/dev)
-	ifeq ($(DEVGO_PATH),)
-    	$(info Module github.com/bool64/dev not found, downloading.)
-    	DEVGO_PATH := $(shell export GO111MODULE=on && $(GO) get github.com/bool64/dev && $(GO) list -f '{{.Dir}}' -m github.com/bool64/dev)
-	endif
-endif
-
-export MODULE_NAME := $(shell test -f go.mod && GO111MODULE=on $(GO) list $(modVendor) -m)
+MODULE_NAME := $(shell test -f go.mod && GO111MODULE=on $(GO) list $(modVendor) -m)
 
 EXTEND_DEVGO_PATH ?= $(PWD)
 EXTEND_DEVGO_SCRIPTS ?= $(EXTEND_DEVGO_PATH)/scripts
 
--include $(DEVGO_PATH)/makefiles/main.mk
+export EXTEND_DEVGO_PATH := $(EXTEND_DEVGO_PATH)
+export EXTEND_DEVGO_SCRIPTS := $(EXTEND_DEVGO_SCRIPTS)
+
+PLUGIN_MANIFEST_FILE ?= makefile.yml
+
+#-# Check if makefile.yml exists
+ifneq ($(wildcard $(PLUGIN_MANIFEST_FILE)),)
+	#-# Get plugins
+	EXPORTS := $(shell $(EXTEND_DEVGO_SCRIPTS)/load_plugins.sh)
+endif
+
+#-# Set plugins
+$(foreach _export,$(EXPORTS), \
+	$(eval export $(_export)) \
+)
+
+PLUGINS := $(subst :, ,$(PLUGINS))
+
+#-# Include plugins main makefile
+MAKEFILE_INCLUDES := $(foreach plugin_key,$(PLUGINS), \
+	$(if $(PLUGIN_$(plugin_key)_MAIN), \
+    	$(subst =, ,$(PLUGIN_$(plugin_key)_MAKEFILES_PATH)/$(PLUGIN_$(plugin_key)_MAIN)), \
+    ) \
+)
+
+-include $(MAKEFILE_INCLUDES)
