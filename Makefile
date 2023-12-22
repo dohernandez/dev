@@ -32,6 +32,8 @@ endif
 
 # Start extra recipes here.
 -include $(PLUGIN_BOOL64DEV_MAKEFILES_PATH)/lint.mk
+-include $(PLUGIN_BOOL64DEV_MAKEFILES_PATH)/test-unit.mk
+-include $(EXTEND_DEVGO_PATH)/makefiles/check.mk
 # End extra recipes here.
 
 .PHONY: test

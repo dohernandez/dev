@@ -6,10 +6,6 @@
 # Collect recipes
 RECIPE_MAP=()
 
-echo "PLUGIN=$PLUGIN"
-echo "NAME=$NAME"
-echo "PLUGINS=$PLUGINS[@]"
-
 if [ -z "$PLUGIN" ]; then
   while IFS= read -r -d '' file; do
       # Extract the filename without extension
@@ -28,29 +24,20 @@ else
     for plugin_key in "${PLUGINS[@]}"; do
         PLUGIN_NAME=$(eval "echo \${PLUGIN_${plugin_key}_NAME}")
 
-        echo "PLUGIN_NAME=$PLUGIN_NAME"
-
         if [ "$PLUGIN_NAME" != "$PLUGIN" ]; then
             continue
         fi
 
-        echo "This is the plugin"
-
-        PLUGIN_MAKEFILES_PATH=$(eval "echo \$(PLUGIN_${plugin_key}_MAKEFILES_PATH)")
-
-        echo "PLUGIN_MAKEFILES_PATH=$PLUGIN_MAKEFILES_PATH"
+        PLUGIN_MAKEFILES_PATH=$(eval "echo \${PLUGIN_${plugin_key}_MAKEFILES_PATH}")
 
         while IFS= read -r -d '' file; do
             # Extract the filename without extension
             filename=$(basename -- "$file")
             filename_noext="${filename%.*}"
 
-            echo "filename=$filename"
-            echo "filename_noext=$filename_noext"
-
             # Create the map entry with the relative path and filename
             key="$filename_noext"
-            value="\${PLUGIN_${plugin_key}_MAKEFILES_PATH}/$filename"
+            value="\$(PLUGIN_${plugin_key}_MAKEFILES_PATH)/$filename"
 
             # Add the entry to the map
             RECIPE_MAP+=("$key=$value")
@@ -58,34 +45,57 @@ else
     done
 fi
 
-echo "RECIPE_MAP=${RECIPE_MAP[@]}"
-
 found=false
 
 for entry in "${RECIPE_MAP[@]}"; do
     key=$(echo $entry | cut -d= -f1)
     value=$(echo $entry | cut -d= -f2)
 
-    echo "key=$key"
-    echo "value=$value"
-
     if [ "$key" = "$NAME" ]; then
         found=true
-        recipe_path=$value
+        recipe_relative_path=$value
         break
     fi
 done
 
 if [ "$found" = "true" ]; then
-    awk '/# End extra recipes here./{print "-include '"$recipe_path"'"; print; next} 1' Makefile > Makefile.tmp && mv Makefile.tmp Makefile
-    echo "Recipe $recipe_name enabled successfully."
-else
     # Check if the recipe is already included
-    if grep -q $recipe_path Makefile; then
-        echo "Recipe $recipe_name already enabled."
+    if grep -q $recipe_relative_path Makefile; then
+        echo "Recipe $PLUGIN $NAME already enabled."
 
-        return 0
+        exit 0
     fi
 
-    echo "Recipe $recipe_name not found or already enable."
+    #Check if the recipe require another recipe
+    if [ -z "$PLUGIN" ]; then
+        # Replace occurrences of placeholders with actual values
+        recipe_path=$(echo "$recipe_relative_path" | sed "s#\$(EXTEND_DEVGO_PATH)#${EXTEND_DEVGO_PATH}#g")
+    else
+        # Replace occurrences of placeholders with actual values
+        variable_name="PLUGIN_${plugin_key}_MAKEFILES_PATH"
+        placeholder="\$(PLUGIN_${plugin_key}_MAKEFILES_PATH)"
+        replacement="${!variable_name}"
+
+        recipe_path=$(echo "$recipe_relative_path" | sed "s#${placeholder}#${replacement}#g")
+    fi
+
+    while IFS= read -r line; do
+        plugin=$(echo "$line" | awk '{n=split($0,a,"/"); a[n]=""; for(i=1;i<n;i++) printf("%s%s",a[i],i<n-1?"/":"")}' | sed 's/^#- require - //')
+        recipe=$(echo "$line" | awk -F'/' '{print $NF}')
+
+        result=$(PLUGIN=$plugin NAME=$recipe bash $EXTEND_DEVGO_PATH/scripts/enable-recipe.sh)
+
+        if [[ "$result" =~ ^Recipe\ .*\ enabled\ successfully\.$ ]] || [[ "$result" =~ ^Recipe\ .*\ already\ enabled\.$ ]]; then
+            continue
+        else
+            echo "$result"
+            exit 0
+        fi
+
+    done < <(awk '/^#- require - /{print $0}' $recipe_path)
+
+    awk '/# End extra recipes here./{print "-include '"$recipe_relative_path"'"; print; next} 1' Makefile > Makefile.tmp && mv Makefile.tmp Makefile
+    echo "Recipe $PLUGIN $NAME enabled successfully."
+else
+    echo "Recipe $PLUGIN $NAME not found."
 fi
