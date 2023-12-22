@@ -33,11 +33,9 @@ endif
 # Start extra recipes here.
 # End extra recipes here.
 
-.PHONY: test
-
 # DO NOT EDIT ANYTHING BELOW THIS LINE.
 
 # Add your custom targets here.
 
-## Run tests
-test: test-unit
+.PHONY:
+
