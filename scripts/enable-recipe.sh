@@ -1,21 +1,73 @@
 #!/bin/bash
 
-this_path=$(dirname "$0")
+[ -z "$NAME" ] && echo "NAME is required" && exit 1
+[ -z "$PLUGIN" ] && PLUGIN=""
 
-# Get recipes from bool64-dev-recipes.sh
-RECIPE_MAP_BOOL64=$(DEVGO_PATH=${DEVGO_PATH} bash $this_path/bool64-dev-recipes.sh)
+# Collect recipes
+RECIPE_MAP=()
 
-# Get recipes from dev-recipes.sh
-RECIPE_MAP_DEV=$(EXTEND_DEVGO_PATH=${EXTEND_DEVGO_PATH} bash $this_path/dev-recipes.sh)
+echo "PLUGIN=$PLUGIN"
+echo "NAME=$NAME"
+echo "PLUGINS=$PLUGINS[@]"
 
-# Combine the maps
-RECIPE_MAP="$RECIPE_MAP_BOOL64 $RECIPE_MAP_DEV"
+if [ -z "$PLUGIN" ]; then
+  while IFS= read -r -d '' file; do
+      # Extract the filename without extension
+      filename=$(basename -- "$file")
+      filename_noext="${filename%.*}"
+
+      # Create the map entry with the relative path and filename
+      key="$filename_noext"
+      value="\$(EXTEND_DEVGO_PATH)/makefiles/$filename"
+
+      # Add the entry to the map
+      RECIPE_MAP+=("$key=$value")
+  done < <(find "$EXTEND_DEVGO_PATH/makefiles" -name "*.mk" -print0)
+else
+    # Loop over each plugin
+    for plugin_key in "${PLUGINS[@]}"; do
+        PLUGIN_NAME=$(eval "echo \${PLUGIN_${plugin_key}_NAME}")
+
+        echo "PLUGIN_NAME=$PLUGIN_NAME"
+
+        if [ "$PLUGIN_NAME" != "$PLUGIN" ]; then
+            continue
+        fi
+
+        echo "This is the plugin"
+
+        PLUGIN_MAKEFILES_PATH=$(eval "echo \$(PLUGIN_${plugin_key}_MAKEFILES_PATH)")
+
+        echo "PLUGIN_MAKEFILES_PATH=$PLUGIN_MAKEFILES_PATH"
+
+        while IFS= read -r -d '' file; do
+            # Extract the filename without extension
+            filename=$(basename -- "$file")
+            filename_noext="${filename%.*}"
+
+            echo "filename=$filename"
+            echo "filename_noext=$filename_noext"
+
+            # Create the map entry with the relative path and filename
+            key="$filename_noext"
+            value="\${PLUGIN_${plugin_key}_MAKEFILES_PATH}/$filename"
+
+            # Add the entry to the map
+            RECIPE_MAP+=("$key=$value")
+        done < <(find "$PLUGIN_MAKEFILES_PATH" -name "*.mk" -print0)
+    done
+fi
+
+echo "RECIPE_MAP=${RECIPE_MAP[@]}"
 
 found=false
 
-for entry in $RECIPE_MAP; do
+for entry in "${RECIPE_MAP[@]}"; do
     key=$(echo $entry | cut -d= -f1)
     value=$(echo $entry | cut -d= -f2)
+
+    echo "key=$key"
+    echo "value=$value"
 
     if [ "$key" = "$NAME" ]; then
         found=true
@@ -26,7 +78,14 @@ done
 
 if [ "$found" = "true" ]; then
     awk '/# End extra recipes here./{print "-include '"$recipe_path"'"; print; next} 1' Makefile > Makefile.tmp && mv Makefile.tmp Makefile
-    echo "Recipe $NAME enabled successfully."
+    echo "Recipe $recipe_name enabled successfully."
 else
-    echo "Recipe $NAME not found or already enable."
+    # Check if the recipe is already included
+    if grep -q $recipe_path Makefile; then
+        echo "Recipe $recipe_name already enabled."
+
+        return 0
+    fi
+
+    echo "Recipe $recipe_name not found or already enable."
 fi

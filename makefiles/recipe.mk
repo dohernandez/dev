@@ -12,10 +12,9 @@ list-recipes:
 
 ## Enable a recipe into Makefile
 enable-recipe:
-	@echo "Enabling recipe: $(NAME)"
+	@echo "Enabling recipe: $(PLUGIN) $(NAME)"
 	@NAME=$(NAME) \
-	DEVGO_PATH=$(DEVGO_PATH) \
-	EXTEND_DEVGO_PATH=$(EXTEND_DEVGO_PATH) \
+	PLUGIN=$(PLUGIN) \
 	bash $(EXTEND_DEVGO_SCRIPTS)/enable-recipe.sh
 
 

@@ -31,6 +31,7 @@ endif
 -include $(EXTEND_DEVGO_PATH)/makefiles/recipe.mk
 
 # Start extra recipes here.
+-include $(PLUGIN_BOOL64DEV_MAKEFILES_PATH)/lint.mk
 # End extra recipes here.
 
 .PHONY: test

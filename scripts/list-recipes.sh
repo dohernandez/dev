@@ -5,7 +5,10 @@ excludes=""
 
 # Recursive function to parse Makefile and included files
 parse_makefile() {
+    local makefile="$1"
+
     while IFS= read -r line; do
+        # Replace occurrences of placeholders with actual values
         line=$(echo "$line" | sed "s#\$(EXTEND_DEVGO_PATH)#${EXTEND_DEVGO_PATH}#g")
 
         # Loop over each plugin
@@ -32,10 +35,10 @@ parse_makefile() {
             parse_makefile $file
         fi
 
-    done < <(awk '/-include[[:space:]]/{print $2}' $1)
+    done < <(awk '/-include[[:space:]]/{print $2}' $makefile)
 }
 
-printfRecipes() {
+printf_recipes() {
     local files=("$@")
 
     # Iterate over .mk files and print those not in excludes.txt
@@ -81,10 +84,9 @@ while IFS= read -r -d '' file; do
 done < <(find "$EXTEND_DEVGO_PATH/makefiles" -name "*.mk" -print0)
 
 printf "dev:\n"
-printfRecipes "${EXTEND_DEVGO_FILES[@]}"
+printf_recipes "${EXTEND_DEVGO_FILES[@]}"
 
-# Collect files from PLUGIN_MAKEFILES_PATH
-
+# Loop over each plugin
 for plugin_key in "${PLUGINS[@]}"; do
     # Collect files from PLUGIN_MAKEFILES_PATH
     PLUGIN_MAKEFILES_FILES=()
@@ -100,6 +102,6 @@ for plugin_key in "${PLUGINS[@]}"; do
     printf "\n"
     printf "${plugin_name}:\n"
 
-    printfRecipes "${PLUGIN_MAKEFILES_FILES[@]}"
+    printf_recipes "${PLUGIN_MAKEFILES_FILES[@]}"
 done
 
