@@ -67,7 +67,10 @@ printf_recipes() {
                 desc=$(echo "$desc_line" | sed 's/^#-## //' | tr -s ' ')
             fi
 
-            printf "  \033[32m%-20s\033[0m %s\n" \
+#            printf "  \033[32m%-20s\033[0m %s\n" \
+#                    						`basename $file .mk` "$desc";
+
+            printf "  \033[33m%-20s\033[0m %s\n" \
                     						`basename $file .mk` "$desc";
 
         fi
