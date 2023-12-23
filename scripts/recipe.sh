@@ -67,8 +67,25 @@ printf_recipes() {
                 desc=$(echo "$desc_line" | sed 's/^#-## //' | tr -s ' ')
             fi
 
-            printf "  \033[32m%-20s\033[0m %s\n" \
+#            printf "  \033[32m%-20s\033[0m %s\n" \
+#                    						`basename $file .mk` "$desc";
+
+            printf "  \033[33m%-20s\033[0m   %s\n" \
                     						`basename $file .mk` "$desc";
+
+            awk -F':' '/^##/ {desc=$0} /^[a-zA-Z0-9][^$#\/\t=]*:([^=]|$)/ {print desc "\n" $1}' $file | \
+            while read -r line; do
+                if [[ $line == "##"* ]]; then
+                    # This line is a description
+                    desc=${line#"## "}
+                else
+                    # This line is a target
+                    if [[ -n $desc ]]; then
+                        printf "    \033[32m%-20s\033[0m %s\n" "$line" "$desc"
+                        unset desc
+                    fi
+                fi
+            done
 
         fi
     done
