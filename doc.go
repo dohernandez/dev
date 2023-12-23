@@ -7,4 +7,5 @@ package dev
 import (
 	_ "github.com/dohernandez/dev/makefiles" // Include dev to project.
 	_ "github.com/dohernandez/dev/scripts"
+	_ "github.com/dohernandez/dev/templates/github"
 )
