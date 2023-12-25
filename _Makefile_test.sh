@@ -1,15 +1,21 @@
 #!/bin/bash
 
-TESTDATA_PATH="testdata"
-TEST_OUTPUT="test.out"
-MAKEFILE_FILE=_Makefile
+PWD=$(pwd)
+
+TESTDATA_PATH="$PWD/testdata"
+TEST_OUTPUT="$PWD/test.out"
+MAKEFILE_FILE="$PWD/testdata/Makefile"
+PLUGIN_MANIFEST_FILE="$PWD/testdata/makefile.yml"
+
+tmake="make -f Makefile.test -e MAKEFILE_FILE=Makefile.test -e PLUGIN_MANIFEST_FILE=makefile.yaml.test"
 
 # region Test make plugin bool64/dev
 printf "Test make plugin bool64/dev -> "
 # Creating a Makefile.test file for test
 cat "$MAKEFILE_FILE"> Makefile.test
+cat "$PLUGIN_MANIFEST_FILE" > makefile.yaml.test
 # Running command to test
-make -f Makefile.test -e MAKEFILE_FILE=Makefile.test > "$TEST_OUTPUT"
+$tmake > "$TEST_OUTPUT"
 if [ $? -ne 0 ]; then
     echo "make failed"
     exit 1
@@ -28,8 +34,9 @@ echo "OK"
 printf "Test make search-recipes with plugin bool64/dev -> "
 # Creating a Makefile.test file for test
 cat "$MAKEFILE_FILE"> Makefile.test
+cat "$PLUGIN_MANIFEST_FILE" > makefile.yaml.test
 # Running command to test
-make -f Makefile.test -e MAKEFILE_FILE=Makefile.test search-recipes > "$TEST_OUTPUT"
+$tmake search-recipes > "$TEST_OUTPUT"
 if [ $? -ne 0 ]; then
     echo "make failed"
     exit 1
@@ -48,8 +55,9 @@ echo "OK"
 printf "Test make list-recipes with plugin bool64/dev -> "
 # Creating a Makefile.test file for test
 cat "$MAKEFILE_FILE"> Makefile.test
+cat "$PLUGIN_MANIFEST_FILE" > makefile.yaml.test
 # Running command to test
-make -f Makefile.test -e MAKEFILE_FILE=Makefile.test list-recipes > "$TEST_OUTPUT"
+$tmake list-recipes > "$TEST_OUTPUT"
 if [ $? -ne 0 ]; then
     echo "make failed"
     exit 1
@@ -68,16 +76,17 @@ echo "OK"
 printf "Test make enable-recipe PLUGIN=bool64/dev NAME=lint with plugin bool64/dev -> "
 # Creating a Makefile.test file for test
 cat "$MAKEFILE_FILE"> Makefile.test
+cat "$PLUGIN_MANIFEST_FILE" > makefile.yaml.test
 # Run make to capture the default output
-make -f Makefile.test -e MAKEFILE_FILE=Makefile.test > "$TEST_OUTPUT"
+$tmake > "$TEST_OUTPUT"
 # Running command to test
-make -f Makefile.test -e MAKEFILE_FILE=Makefile.test enable-recipe PLUGIN=bool64/dev NAME=lint >> "$TEST_OUTPUT"
+$tmake enable-recipe PLUGIN=bool64/dev NAME=lint >> "$TEST_OUTPUT"
 if [ $? -ne 0 ]; then
     echo "make failed"
     exit 1
 fi
 # Run make to capture the output with the recipe enabled
-make -f Makefile.test -e MAKEFILE_FILE=Makefile.test >> "$TEST_OUTPUT"
+$tmake >> "$TEST_OUTPUT"
 # Checking the output
 diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-enable-recipe-bool64-dev-lint.output"
 if [ $? -ne 0 ]; then
@@ -92,18 +101,19 @@ echo "OK"
 printf "Test make disable-recipe PLUGIN=bool64/dev NAME=lint with plugin bool64/dev -> "
 # Creating a Makefile.test file for test
 cat "$MAKEFILE_FILE"> Makefile.test
+cat "$PLUGIN_MANIFEST_FILE" > makefile.yaml.test
 # First enable the recipe
-make -f Makefile.test -e MAKEFILE_FILE=Makefile.test enable-recipe PLUGIN=bool64/dev NAME=lint > /dev/null
+$tmake enable-recipe PLUGIN=bool64/dev NAME=lint > /dev/null
 # Run make to capture the output with the recipe enabled
-make -f Makefile.test -e MAKEFILE_FILE=Makefile.test > "$TEST_OUTPUT"
+$tmake > "$TEST_OUTPUT"
 # Running command to test
-make -f Makefile.test -e MAKEFILE_FILE=Makefile.test disable-recipe PLUGIN=bool64/dev NAME=lint >> "$TEST_OUTPUT"
+$tmake disable-recipe PLUGIN=bool64/dev NAME=lint >> "$TEST_OUTPUT"
 if [ $? -ne 0 ]; then
     echo "make failed"
     exit 1
 fi
 # Run make to capture the output with the recipe disabled
-make -f Makefile.test -e MAKEFILE_FILE=Makefile.test >> "$TEST_OUTPUT"
+$tmake >> "$TEST_OUTPUT"
 # Checking the output
 diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-disable-recipe-bool64-dev-lint.output"
 if [ $? -ne 0 ]; then
@@ -113,21 +123,23 @@ fi
 echo "OK"
 # endregion Test make disable-recipe PLUGIN=bool64/dev NAME=lint with plugin bool64/dev
 
+
 # region Test make enable-recipe PLUGIN=dev NAME=check with plugin bool64/dev
 ## This test is to check if the feature require into a mk. @see makefiles/check.mk
 printf "Test make enable-recipe PLUGIN=dev NAME=check with plugin bool64/dev -> "
 # Creating a Makefile.test file for test
 cat "$MAKEFILE_FILE"> Makefile.test
+cat "$PLUGIN_MANIFEST_FILE" > makefile.yaml.test
 # Run make to capture the default output
-make -f Makefile.test -e MAKEFILE_FILE=Makefile.test > "$TEST_OUTPUT"
+$tmake > "$TEST_OUTPUT"
 # Running command to test
-make -f Makefile.test -e MAKEFILE_FILE=Makefile.test enable-recipe PLUGIN=dev NAME=check >> "$TEST_OUTPUT"
+$tmake enable-recipe PLUGIN=dev NAME=check >> "$TEST_OUTPUT"
 if [ $? -ne 0 ]; then
     echo "make failed"
     exit 1
 fi
 # Run make to capture the output with the recipe enabled
-make -f Makefile.test -e MAKEFILE_FILE=Makefile.test >> "$TEST_OUTPUT"
+$tmake >> "$TEST_OUTPUT"
 # Checking the output
 diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-enable-recipe-bool64-dev-check.output"
 if [ $? -ne 0 ]; then

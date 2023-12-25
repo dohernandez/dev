@@ -3,12 +3,12 @@ Usage
   [32menable-recipe:      [0m  Enable a recipe into Makefile
   [32mlist-recipes:       [0m  List the recipes enabled into Makefile
   [32mdisable-recipe:     [0m  Disable a recipe from Makefile
-Enabling recipe: bool64/dev lint
-Recipe bool64/dev lint enabled successfully.
+  [32mlint:               [0m  Check with golangci-lint
+  [32mfix-lint:           [0m  Apply goimports and gofmt
+Disabling recipe: lint
+Recipe lint disabled successfully.
 Usage
   [32msearch-recipes:     [0m  Search all available recipes
   [32menable-recipe:      [0m  Enable a recipe into Makefile
   [32mlist-recipes:       [0m  List the recipes enabled into Makefile
   [32mdisable-recipe:     [0m  Disable a recipe from Makefile
-  [32mlint:               [0m  Check with golangci-lint
-  [32mfix-lint:           [0m  Apply goimports and gofmt
