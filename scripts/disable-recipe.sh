@@ -29,3 +29,4 @@ if [ "$found" = false ]; then
 fi
 
 sed '/# Start extra recipes here./,/# End extra recipes here./{/'"$NAME"'/d;}' "$MAKEFILE_FILE" > "$MAKEFILE_FILE".tmp && mv "$MAKEFILE_FILE".tmp "$MAKEFILE_FILE"
+echo "Recipe $NAME disabled successfully."
