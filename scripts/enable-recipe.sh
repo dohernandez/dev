@@ -26,13 +26,13 @@ if [[ -z "$PLUGIN" || "$PLUGIN" == "dev" ]]; then
 else
     # Loop over each plugin
     for plugin_key in "${PLUGINS[@]}"; do
-        PLUGIN_NAME=$(eval "echo \${PLUGIN_${plugin_key}_NAME}")
+        plugin_name=$(eval "echo \${PLUGIN_${plugin_key}_NAME}")
 
-        if [ "$PLUGIN_NAME" != "$PLUGIN" ]; then
+        if [ "$plugin_name" != "$PLUGIN" ]; then
             continue
         fi
 
-        PLUGIN_MAKEFILES_PATH=$(eval "echo \${PLUGIN_${plugin_key}_MAKEFILES_PATH}")
+        plugin_makefiles_path=$(eval "echo \${PLUGIN_${plugin_key}_MAKEFILES_PATH}")
 
         while IFS= read -r -d '' file; do
             # Extract the filename without extension
@@ -46,7 +46,7 @@ else
             # Add the entry to the map
             RECIPE_MAP+=("$key=$value")
             RECIPE_PLUGIN_MAP+=("$key=$plugin_key")
-        done < <(find "$PLUGIN_MAKEFILES_PATH" -name "*.mk" -print0)
+        done < <(find "$plugin_makefiles_path" -name "*.mk" -print0)
     done
 fi
 
@@ -89,7 +89,7 @@ if [ "$found" = "true" ]; then
         exit 0
     fi
 
-    #Check if the recipe require another recipe
+    # Check if the recipe require another recipe
     while IFS= read -r line; do
         plugin=$(echo "$line" | awk '{n=split($0,a,"/"); a[n]=""; for(i=1;i<n;i++) printf("%s%s",a[i],i<n-1?"/":"")}' | sed 's/^#- require - //')
         recipe=$(echo "$line" | awk -F'/' '{print $NF}')
@@ -102,8 +102,43 @@ if [ "$found" = "true" ]; then
             echo "$result"
             exit 0
         fi
-
     done < <(awk '/^#- require - /{print $0}' $recipe_path)
+
+    found=false
+
+    # Check if the recipe source another recipe (checks for recipe file exist)
+    while IFS= read -r line; do
+        plugin=$(echo "$line" | awk '{n=split($0,a,"/"); a[n]=""; for(i=1;i<n;i++) printf("%s%s",a[i],i<n-1?"/":"")}' | sed 's/^#- source - //')
+        recipe=$(echo "$line" | awk -F'/' '{print $NF}')
+
+        if [[ -z "$plugin" || "$plugin" == "dev" ]]; then
+            recipe_path="$EXTEND_DEVGO_PATH/makefiles/$recipe.mk"
+        else
+            # find plugin
+            for plugin_key in "${PLUGINS[@]}"; do
+                plugin_name=$(eval "echo \${PLUGIN_${plugin_key}_NAME}")
+
+                if [ "$plugin_name" == "$plugin" ]; then
+                    found=true
+
+                    break
+                fi
+            done
+
+            if [ "$found" = "false" ]; then
+                echo "Source recipe $plugin/$recipe not found."
+                exit 1
+            fi
+
+            variable_name="PLUGIN_${plugin_key}_MAKEFILES_PATH"
+            recipe_path="${!variable_name}/$recipe.mk"
+        fi
+
+        if [ ! -f $recipe_path ]; then
+            echo "Recipe $PLUGIN $NAME not found."
+            exit 1
+        fi
+    done < <(awk '/^#- source - /{print $0}' $recipe_path)
 
     awk '/# End extra recipes here./{print "-include '"$recipe_relative_path"'"; print; next} 1' Makefile > Makefile.tmp && mv Makefile.tmp Makefile
     echo "Recipe $PLUGIN $NAME enabled successfully."
