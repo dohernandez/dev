@@ -1,5 +1,4 @@
 Usage
-  [32mtest:               [0m  Run tests
   [32msearch-recipes:     [0m  Search all available recipes
   [32menable-recipe:      [0m  Enable a recipe into Makefile
   [32mlist-recipes:       [0m  List the recipes enabled into Makefile

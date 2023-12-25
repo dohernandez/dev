@@ -32,9 +32,4 @@ endif
 
 # Add your custom targets here.
 
-.PHONY: test
-
-## Run tests
-test:
-	@echo "Running unit tests"
-	@bash _Makefile_test.sh
+.PHONY:

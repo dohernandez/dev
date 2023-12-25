@@ -6,7 +6,7 @@ this="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 source "$this/recipe.sh"
 
 # Start parsing from the main Makefile
-excludes=$(parse_makefile Makefile)
+excludes=$(parse_makefile "$MAKEFILE_FILE")
 
 # Loop over each plugin
 for plugin_key in "${PLUGINS[@]}"; do

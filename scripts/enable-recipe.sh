@@ -83,7 +83,7 @@ done
 
 if [ "$found" = "true" ]; then
     # Check if the recipe is already included
-    if grep -q $recipe_relative_path Makefile; then
+    if grep -q $recipe_relative_path "$MAKEFILE_FILE"; then
         echo "Recipe $PLUGIN $NAME already enabled."
 
         exit 0
@@ -140,7 +140,7 @@ if [ "$found" = "true" ]; then
         fi
     done < <(awk '/^#- source - /{print $0}' $recipe_path)
 
-    awk '/# End extra recipes here./{print "-include '"$recipe_relative_path"'"; print; next} 1' Makefile > Makefile.tmp && mv Makefile.tmp Makefile
+    awk '/# End extra recipes here./{print "-include '"$recipe_relative_path"'"; print; next} 1' "$MAKEFILE_FILE" > "$MAKEFILE_FILE".tmp && mv "$MAKEFILE_FILE".tmp "$MAKEFILE_FILE"
     echo "Recipe $PLUGIN $NAME enabled successfully."
 else
     echo "Recipe $PLUGIN $NAME not found."
