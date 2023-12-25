@@ -14,6 +14,7 @@ EXTEND_DEVGO_SCRIPTS ?= $(EXTEND_DEVGO_PATH)/scripts
 export EXTEND_DEVGO_PATH := $(EXTEND_DEVGO_PATH)
 export EXTEND_DEVGO_SCRIPTS := $(EXTEND_DEVGO_SCRIPTS)
 
+# TODO: makefile.yml should be relative to allow use by default the defined in this repo
 PLUGIN_MANIFEST_FILE ?= makefile.yml
 
 #-# Check if makefile.yml exists
