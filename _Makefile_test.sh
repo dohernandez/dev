@@ -20,6 +20,11 @@ if [ $? -ne 0 ]; then
     echo "make failed"
     exit 1
 fi
+echo "start cat output"
+cat "$TEST_OUTPUT" | grep -v "make\[1\]: Entering directory '/home/runner/work/dev/dev'" \
+  | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'"
+
+echo "end cat output"
 # Checking the output
 diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-bool64-dev.output"
 if [ $? -ne 0 ]; then
