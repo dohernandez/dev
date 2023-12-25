@@ -8,7 +8,7 @@ this="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 source "$this/recipe.sh"
 
 # Start parsing from the main Makefile
-enables=$(parse_makefile Makefile)
+enables=$(parse_makefile "$MAKEFILE_FILE")
 
 # Convert the space-separated string to an array
 IFS=' ' read -r -a recipes <<< "$enables"
@@ -28,4 +28,5 @@ if [ "$found" = false ]; then
     exit 1
 fi
 
-sed '/# Start extra recipes here./,/# End extra recipes here./{/'"$NAME"'/d;}' Makefile > Makefile.tmp && mv Makefile.tmp Makefile
+sed '/# Start extra recipes here./,/# End extra recipes here./{/'"$NAME"'/d;}' "$MAKEFILE_FILE" > "$MAKEFILE_FILE".tmp && mv "$MAKEFILE_FILE".tmp "$MAKEFILE_FILE"
+echo "Recipe $NAME disabled successfully."

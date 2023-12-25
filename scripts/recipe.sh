@@ -44,14 +44,8 @@ parse_makefile() {
 }
 
 printf_recipes() {
-    local aexcludes="$1"
+    local excludes="$1"
     local afiles="$2"
-
-    local excludes=()
-    local files=()
-
-    # Convert space-separated string to an array
-    IFS=' ' read -ra excludes <<< "$aexcludes"
 
     # Convert the space-separated string to an array
     IFS=' ' read -r -a files <<< "$afiles"
@@ -60,51 +54,39 @@ printf_recipes() {
     for file in "${files[@]}"; do
         if [ `basename "${file}" .mk` != "base" ] && \
            [ `basename "${file}" .mk` != "main" ] && \
-           [ `basename "${file}" .mk` != "help" ]; then
-            # Flag to indicate if the string is not in the array
-            non_exclude=true
+           [ `basename "${file}" .mk` != "help" ] && \
+            ! echo $excludes | grep -q $file; then
+            desc=""
 
-            # Iterate over array elements
-            for exclude in "${excludes[@]}"; do
-                if [[ "$exclude" == "$file" ]]; then
-                    # String is in the array
-                    non_exclude=false
-                    break
+            # Read the first line
+            desc_line=$(head -n 1 "$file")
+
+            # Check if the line starts with '###'
+            if [[ $desc_line == "#-## "* ]]; then
+                # Remove leading '###' and trim extra spaces
+                desc=$(echo "$desc_line" | sed 's/^#-## //' | tr -s ' ')
+            fi
+
+#            printf "  \033[32m%-20s\033[0m %s\n" \
+#                    						`basename $file .mk` "$desc";
+
+            printf "  \033[33m%-20s\033[0m   %s\n" \
+                    						`basename $file .mk` "$desc";
+
+            awk -F':' '/^##/ {desc=$0} /^[a-zA-Z0-9][^$#\/\t=]*:([^=]|$)/ {print desc "\n" $1}' $file | \
+            while read -r line; do
+                if [[ $line == "##"* ]]; then
+                    # This line is a description
+                    desc=${line#"## "}
+                else
+                    # This line is a target
+                    if [[ -n $desc ]]; then
+                        printf "    \033[32m%-20s\033[0m %s\n" "$line" "$desc"
+                        unset desc
+                    fi
                 fi
             done
 
-            if [[ "$non_exclude" == true ]]; then
-                desc=""
-
-                # Read the first line
-                desc_line=$(head -n 1 "$file")
-
-                # Check if the line starts with '###'
-                if [[ $desc_line == "#-## "* ]]; then
-                    # Remove leading '###' and trim extra spaces
-                    desc=$(echo "$desc_line" | sed 's/^#-## //' | tr -s ' ')
-                fi
-
-    #            printf "  \033[32m%-20s\033[0m %s\n" \
-    #                    						`basename $file .mk` "$desc";
-
-                printf "  \033[33m%-20s\033[0m   %s\n" \
-                                    `basename $file .mk` "$desc";
-
-                awk -F':' '/^##/ {desc=$0} /^[a-zA-Z0-9][^$#\/\t=]*:([^=]|$)/ {print desc "\n" $1}' $file | \
-                while read -r line; do
-                    if [[ $line == "##"* ]]; then
-                        # This line is a description
-                        desc=${line#"## "}
-                    else
-                        # This line is a target
-                        if [[ -n $desc ]]; then
-                            printf "    \033[32m%-20s\033[0m %s\n" "$line" "$desc"
-                            unset desc
-                        fi
-                    fi
-                done
-            fi
         fi
     done
 }
