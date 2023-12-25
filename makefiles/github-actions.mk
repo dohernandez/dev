@@ -13,5 +13,6 @@ github-actions:
 		&& mkdir -p $(PWD)/.github/actions && (chmod +w $(PWD)/.github/actions/* || echo "could not chmod +w existing actions") \
 		&& rsync -aq --exclude='*.go' $(EXTEND_DEVGO_PATH)/templates/github/actions/ $(PWD)/.github/actions/ \
 		&& chmod +w $(PWD)/.github/actions/* && git add $(PWD)/.github/actions
+	@echo "Some of the actions require secrets `PAT` to be set in the repository settings."
 
 .PHONY: github-actions
