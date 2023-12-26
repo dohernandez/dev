@@ -1,5 +1,10 @@
 #GOLANGCI_LINT_VERSION := "v1.55.2" # Optional configuration to pinpoint golangci-lint version.
 
+# store env variables in a file to be used by the test script
+ifeq ($(MAKECMDGOALS),test)
+ $(shell env > env_test.out)
+endif
+
 # The head of Makefile determines location of dev-go to include standard targets.
 GO ?= go
 export GO111MODULE = on

@@ -28,11 +28,11 @@ export PLUGIN_MANIFEST_FILE := $(PLUGIN_MANIFEST_FILE)
 #-# Check if makefile.yml exists
 ifneq ($(wildcard $(PLUGIN_MANIFEST_FILE)),)
 	#-# Get plugins
-	EXPORTS := $(shell bash $(EXTEND_DEVGO_SCRIPTS)/load_plugins.sh)
+	PLUGIN_EXPORTS := $(shell PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) bash $(EXTEND_DEVGO_SCRIPTS)/load_plugins.sh)
 endif
 
 #-# Set plugins
-$(foreach _export,$(EXPORTS), \
+$(foreach _export,$(PLUGIN_EXPORTS), \
 	$(eval export $(_export)) \
 )
 
