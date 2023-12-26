@@ -49,9 +49,6 @@ fi
 cat "$TEST_OUTPUT" | grep -v "make\[1\]: Entering directory '/home/runner/work/dev/dev'" \
   | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
   && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
-echo "start cat"
-cat "$TEST_OUTPUT"
-echo "end cat"
 # Checking the output
 diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-search-recipes-bool64-dev.output"
 if [ $? -ne 0 ]; then

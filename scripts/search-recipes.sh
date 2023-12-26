@@ -21,7 +21,7 @@ EXTEND_DEVGO_FILES=()
 
 while IFS= read -r -d '' file; do
   EXTEND_DEVGO_FILES+=("$file")
-done < <(find "$EXTEND_DEVGO_PATH/makefiles" -name "*.mk" -print0)
+done < <(find "$EXTEND_DEVGO_PATH/makefiles" -name "*.mk" -print0 | sort -z)
 
 printf "dev:\n"
 printf_recipes "$excludes" "${EXTEND_DEVGO_FILES[*]}"
@@ -35,7 +35,7 @@ for plugin_key in "${PLUGINS[@]}"; do
 
     while IFS= read -r -d '' file; do
       PLUGIN_MAKEFILES_FILES+=("$file")
-    done < <(find "$PLUGIN_MAKEFILES_PATH" -name "*.mk" -print0)
+    done < <(find "$PLUGIN_MAKEFILES_PATH" -name "*.mk" -print0 | sort -z)
 
     plugin_name=$(eval "echo \${PLUGIN_${plugin_key}_NAME}")
 
