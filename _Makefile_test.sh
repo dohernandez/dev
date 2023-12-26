@@ -84,15 +84,15 @@ echo "OK"
 # endregion Test make list-recipes with plugin bool64/dev
 
 
-# region Test make enable-recipe PLUGIN=bool64/dev NAME=lint with plugin bool64/dev
-printf "Test make enable-recipe PLUGIN=bool64/dev NAME=lint with plugin bool64/dev -> "
+# region Test make enable-recipe PACKAGE=bool64/dev NAME=lint with plugin bool64/dev
+printf "Test make enable-recipe PACKAGE=bool64/dev NAME=lint with plugin bool64/dev -> "
 # Creating a Makefile.test file for test
 cat "$MAKEFILE_FILE"> Makefile.test
 cat "$PLUGIN_MANIFEST_FILE" > makefile.yaml.test
 # Run make to capture the default output
 $tmake > "$TEST_OUTPUT"
 # Running command to test
-$tmake enable-recipe PLUGIN=bool64/dev NAME=lint >> "$TEST_OUTPUT"
+$tmake enable-recipe PACKAGE=bool64/dev NAME=lint >> "$TEST_OUTPUT"
 if [ $? -ne 0 ]; then
     echo "make failed"
     exit 1
@@ -110,7 +110,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 echo "OK"
-# endregion Test make enable-recipe PLUGIN=bool64/dev NAME=lint with plugin bool64/dev
+# endregion Test make enable-recipe PACKAGE=bool64/dev NAME=lint with plugin bool64/dev
 
 
 # region Test make disable-recipe NAME=lint with plugin bool64/dev
@@ -119,7 +119,7 @@ printf "Test make disable-recipe NAME=lint with plugin bool64/dev -> "
 cat "$MAKEFILE_FILE"> Makefile.test
 cat "$PLUGIN_MANIFEST_FILE" > makefile.yaml.test
 # First enable the recipe
-$tmake enable-recipe PLUGIN=bool64/dev NAME=lint > /dev/null
+$tmake enable-recipe PACKAGE=bool64/dev NAME=lint > /dev/null
 # Run make to capture the output with the recipe enabled
 $tmake > "$TEST_OUTPUT"
 # Running command to test
@@ -144,16 +144,16 @@ echo "OK"
 # endregion Test make disable-recipe NAME=lint with plugin bool64/dev
 
 
-# region Test make enable-recipe PLUGIN=dev NAME=check with plugin bool64/dev
+# region Test make enable-recipe PACKAGE=dev NAME=check with plugin bool64/dev
 ## This test is to check if the feature require into a mk. @see makefiles/check.mk
-printf "Test make enable-recipe PLUGIN=dev NAME=check with plugin bool64/dev -> "
+printf "Test make enable-recipe PACKAGE=dev NAME=check with plugin bool64/dev -> "
 # Creating a Makefile.test file for test
 cat "$MAKEFILE_FILE"> Makefile.test
 cat "$PLUGIN_MANIFEST_FILE" > makefile.yaml.test
 # Run make to capture the default output
 $tmake > "$TEST_OUTPUT"
 # Running command to test
-$tmake enable-recipe PLUGIN=dev NAME=check >> "$TEST_OUTPUT"
+$tmake enable-recipe PACKAGE=dev NAME=check >> "$TEST_OUTPUT"
 if [ $? -ne 0 ]; then
     echo "make failed"
     exit 1
@@ -171,7 +171,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 echo "OK"
-# endregion Test make enable-recipe PLUGIN=dev NAME=check with plugin bool64/dev
+# endregion Test make enable-recipe PACKAGE=dev NAME=check with plugin bool64/dev
 
 
 # region Test make search-recipe after recipe enabled with plugin bool64/dev
@@ -182,7 +182,7 @@ cat "$PLUGIN_MANIFEST_FILE" > makefile.yaml.test
 # Run make to capture the default output
 $tmake search-recipes > "$TEST_OUTPUT"
 # Running command to test
-$tmake enable-recipe PLUGIN=dev NAME=check >> "$TEST_OUTPUT"
+$tmake enable-recipe PACKAGE=dev NAME=check >> "$TEST_OUTPUT"
 if [ $? -ne 0 ]; then
     echo "make failed"
     exit 1
@@ -207,15 +207,15 @@ echo "OK"
 # endregion Test make search-recipe after recipe enabled with plugin bool64/dev
 
 
-# region Test make enable-recipe twice PLUGIN=dev NAME=check with plugin bool64/dev
-printf "Test make enable-recipe twice PLUGIN=dev NAME=check with plugin bool64/dev -> "
+# region Test make enable-recipe twice PACKAGE=dev NAME=check with plugin bool64/dev
+printf "Test make enable-recipe twice PACKAGE=dev NAME=check with plugin bool64/dev -> "
 # Creating a Makefile.test file for test
 cat "$MAKEFILE_FILE"> Makefile.test
 cat "$PLUGIN_MANIFEST_FILE" > makefile.yaml.test
 # Run make to capture the default output
 $tmake > "$TEST_OUTPUT"
 # Running command to enable first time the recipe
-$tmake enable-recipe PLUGIN=dev NAME=check >> "$TEST_OUTPUT"
+$tmake enable-recipe PACKAGE=dev NAME=check >> "$TEST_OUTPUT"
 if [ $? -ne 0 ]; then
     echo "make failed"
     exit 1
@@ -223,7 +223,7 @@ fi
 # Run make to capture the output with the recipe enabled
 $tmake >> "$TEST_OUTPUT"
 # Running command to test
-$tmake enable-recipe PLUGIN=dev NAME=check >> "$TEST_OUTPUT"
+$tmake enable-recipe PACKAGE=dev NAME=check >> "$TEST_OUTPUT"
 if [ $? -ne 0 ]; then
     echo "make failed"
     exit 1
@@ -241,18 +241,18 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 echo "OK"
-# endregion Test make enable-recipe twice PLUGIN=dev NAME=check with plugin bool64/dev
+# endregion Test make enable-recipe twice PACKAGE=dev NAME=check with plugin bool64/dev
 
 
-# region Test make enable-recipe not found PLUGIN=dev NAME=check with plugin bool64/dev
-printf "Test make enable-recipe not found PLUGIN=dev NAME=check with plugin bool64/dev -> "
+# region Test make enable-recipe not found PACKAGE=dev NAME=check with plugin bool64/dev
+printf "Test make enable-recipe not found PACKAGE=dev NAME=check with plugin bool64/dev -> "
 # Creating a Makefile.test file for test
 cat "$MAKEFILE_FILE"> Makefile.test
 cat "$PLUGIN_MANIFEST_FILE" > makefile.yaml.test
 # Run make to capture the default output
 $tmake > "$TEST_OUTPUT"
 # Running command to test
-$tmake enable-recipe PLUGIN=dev NAME=not-found >> "$TEST_OUTPUT" 2>&1
+$tmake enable-recipe PACKAGE=dev NAME=not-found >> "$TEST_OUTPUT" 2>&1
 if [ $? -eq 0 ]; then
     echo "make should fail"
     exit 1
@@ -271,7 +271,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 echo "OK"
-# endregion Test make enable-recipe not found PLUGIN=dev NAME=check with plugin bool64/dev
+# endregion Test make enable-recipe not found PACKAGE=dev NAME=check with plugin bool64/dev
 
 
 # region Test make disable-recipe NAME=lint (not found) NAME=check with plugin bool64/dev
@@ -304,8 +304,8 @@ echo "OK"
 # endregion Test make disable-recipe NAME=lint (not found) NAME=check with plugin bool64/dev
 
 
-# region Test make list-recipes after recipe enabled PLUGIN=dev NAME=check with plugin bool64/dev
-printf "Test make list-recipes after recipe enabled PLUGIN=dev NAME=check with plugin bool64/dev -> "
+# region Test make list-recipes after recipe enabled PACKAGE=dev NAME=check with plugin bool64/dev
+printf "Test make list-recipes after recipe enabled PACKAGE=dev NAME=check with plugin bool64/dev -> "
 # Creating a Makefile.test file for test
 cat "$MAKEFILE_FILE"> Makefile.test
 cat "$PLUGIN_MANIFEST_FILE" > makefile.yaml.test
@@ -314,7 +314,7 @@ $tmake > "$TEST_OUTPUT"
 # Run make to capture the output list recipes before enable the recipe
 $tmake list-recipes >> "$TEST_OUTPUT"
 # Running command to enable first time the recipe
-$tmake enable-recipe PLUGIN=dev NAME=check >> "$TEST_OUTPUT"
+$tmake enable-recipe PACKAGE=dev NAME=check >> "$TEST_OUTPUT"
 if [ $? -ne 0 ]; then
     echo "make failed"
     exit 1
