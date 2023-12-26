@@ -24,7 +24,7 @@ for recipe in "${recipes[@]}"; do
 done
 
 if [ "$found" = false ]; then
-    echo "Recipe not found"
+    echo "Recipe $NAME not found"
     exit 1
 fi
 

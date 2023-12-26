@@ -1,0 +1,13 @@
+Usage
+  [32msearch-recipes:     [0m  Search all available recipes
+  [32menable-recipe:      [0m  Enable a recipe into Makefile
+  [32mlist-recipes:       [0m  List the recipes enabled into Makefile
+  [32mdisable-recipe:     [0m  Disable a recipe from Makefile
+Enabling recipe: dev not-found
+Recipe dev not-found not found.
+make[1]: *** [enable-recipe] Error 1
+Usage
+  [32msearch-recipes:     [0m  Search all available recipes
+  [32menable-recipe:      [0m  Enable a recipe into Makefile
+  [32mlist-recipes:       [0m  List the recipes enabled into Makefile
+  [32mdisable-recipe:     [0m  Disable a recipe from Makefile
