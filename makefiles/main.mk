@@ -9,9 +9,11 @@ endif
 MODULE_NAME := $(shell test -f go.mod && GO111MODULE=on $(GO) list $(modVendor) -m)
 
 EXTEND_DEVGO_PATH ?= $(PWD)
+EXTEND_DEVGO_MAKEFILES ?= $(EXTEND_DEVGO_PATH)/makefiles
 EXTEND_DEVGO_SCRIPTS ?= $(EXTEND_DEVGO_PATH)/scripts
 
 export EXTEND_DEVGO_PATH := $(EXTEND_DEVGO_PATH)
+export EXTEND_DEVGO_MAKEFILES := $(EXTEND_DEVGO_MAKEFILES)
 export EXTEND_DEVGO_SCRIPTS := $(EXTEND_DEVGO_SCRIPTS)
 
 MAKEFILE_FILE ?= Makefile
@@ -41,4 +43,16 @@ MAKEFILE_INCLUDES := $(foreach plugin_key,$(PLUGINS), \
     ) \
 )
 
+#-# Fix the bug in bool64/dev for env var DEVGO_PATH and DEVGO_SCRIPTS and go mod is in different path
+$(foreach plugin_key,$(PLUGINS), \
+	$(if $(filter BOOL64DEV,$(plugin_key)), \
+    	$(eval export DEVGO_PATH=$(PLUGIN_$(plugin_key)_VENDOR_PATH)) \
+    	$(eval export DEVGO_SCRIPTS=$(DEVGO_PATH)/scripts) \
+    ) \
+)
+
 -include $(MAKEFILE_INCLUDES)
+
+#-# Patching bug in bool64/dev for help target
+#-# awk: cmd. line:2: warning: regexp escape sequence `\_' is not a known regexp operator
+-include $(EXTEND_DEVGO_MAKEFILES)/help.mk

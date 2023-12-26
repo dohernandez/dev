@@ -20,6 +20,10 @@ if [ $? -ne 0 ]; then
     echo "make failed"
     exit 1
 fi
+# Removing the lines that are not part of the output but are appended by github actions
+cat "$TEST_OUTPUT" | grep -v "make\[1\]: Entering directory '/home/runner/work/dev/dev'" \
+  | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
+  && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
 # Checking the output
 diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-bool64-dev.output"
 if [ $? -ne 0 ]; then
@@ -41,6 +45,10 @@ if [ $? -ne 0 ]; then
     echo "make failed"
     exit 1
 fi
+# Removing the lines that are not part of the output but are appended by github actions
+cat "$TEST_OUTPUT" | grep -v "make\[1\]: Entering directory '/home/runner/work/dev/dev'" \
+  | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
+  && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
 # Checking the output
 diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-search-recipes-bool64-dev.output"
 if [ $? -ne 0 ]; then
@@ -62,6 +70,10 @@ if [ $? -ne 0 ]; then
     echo "make failed"
     exit 1
 fi
+# Removing the lines that are not part of the output but are appended by github actions
+cat "$TEST_OUTPUT" | grep -v "make\[1\]: Entering directory '/home/runner/work/dev/dev'" \
+  | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
+  && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
 # Checking the output
 diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-list-recipes-bool64-dev.output"
 if [ $? -ne 0 ]; then
@@ -87,6 +99,10 @@ if [ $? -ne 0 ]; then
 fi
 # Run make to capture the output with the recipe enabled
 $tmake >> "$TEST_OUTPUT"
+# Removing the lines that are not part of the output but are appended by github actions
+cat "$TEST_OUTPUT" | grep -v "make\[1\]: Entering directory '/home/runner/work/dev/dev'" \
+  | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
+  && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
 # Checking the output
 diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-enable-recipe-bool64-dev-lint.output"
 if [ $? -ne 0 ]; then
@@ -114,6 +130,10 @@ if [ $? -ne 0 ]; then
 fi
 # Run make to capture the output with the recipe disabled
 $tmake >> "$TEST_OUTPUT"
+# Removing the lines that are not part of the output but are appended by github actions
+cat "$TEST_OUTPUT" | grep -v "make\[1\]: Entering directory '/home/runner/work/dev/dev'" \
+  | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
+  && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
 # Checking the output
 diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-disable-recipe-bool64-dev-lint.output"
 if [ $? -ne 0 ]; then
@@ -140,6 +160,10 @@ if [ $? -ne 0 ]; then
 fi
 # Run make to capture the output with the recipe enabled
 $tmake >> "$TEST_OUTPUT"
+# Removing the lines that are not part of the output but are appended by github actions
+cat "$TEST_OUTPUT" | grep -v "make\[1\]: Entering directory '/home/runner/work/dev/dev'" \
+  | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
+  && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
 # Checking the output
 diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-enable-recipe-bool64-dev-check.output"
 if [ $? -ne 0 ]; then
