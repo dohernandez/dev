@@ -24,7 +24,13 @@ list-recipes:
 disable-recipe:
 	@echo "Disabling recipe: $(NAME)"
 	@NAME=$(NAME) \
-	bash $(EXTEND_DEVGO_SCRIPTS)/disable-recipe.sh
+	@bash $(EXTEND_DEVGO_SCRIPTS)/disable-recipe.sh
+
+
+## Install a plugin, use make install-plugin
+install-plugin:
+	@echo "Installing plugin:"
+	@bash $(EXTEND_DEVGO_SCRIPTS)/install_plugin.sh
 
 
 
