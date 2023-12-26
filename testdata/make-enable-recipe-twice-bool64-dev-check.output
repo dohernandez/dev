@@ -1,0 +1,31 @@
+Usage
+  [32msearch-recipes:     [0m  Search all available recipes
+  [32menable-recipe:      [0m  Enable a recipe into Makefile
+  [32mlist-recipes:       [0m  List the recipes enabled into Makefile
+  [32mdisable-recipe:     [0m  Disable a recipe from Makefile
+Enabling recipe: dev check
+Recipe dev check enabled successfully.
+Usage
+  [32msearch-recipes:     [0m  Search all available recipes
+  [32menable-recipe:      [0m  Enable a recipe into Makefile
+  [32mlist-recipes:       [0m  List the recipes enabled into Makefile
+  [32mdisable-recipe:     [0m  Disable a recipe from Makefile
+  [32mlint:               [0m  Check with golangci-lint
+  [32mfix-lint:           [0m  Apply goimports and gofmt
+  [32mtest-unit:          [0m  Run unit tests
+  [32mtest-unit-multi:    [0m  Run unit tests multiple times, use `UNIT_TEST_COUNT=10 make test-unit-multi` to control count
+  [32mtest:               [0m  Run tests
+  [32mcheck:              [0m  Run lint and test
+Enabling recipe: dev check
+Recipe dev check already enabled.
+Usage
+  [32msearch-recipes:     [0m  Search all available recipes
+  [32menable-recipe:      [0m  Enable a recipe into Makefile
+  [32mlist-recipes:       [0m  List the recipes enabled into Makefile
+  [32mdisable-recipe:     [0m  Disable a recipe from Makefile
+  [32mlint:               [0m  Check with golangci-lint
+  [32mfix-lint:           [0m  Apply goimports and gofmt
+  [32mtest-unit:          [0m  Run unit tests
+  [32mtest-unit-multi:    [0m  Run unit tests multiple times, use `UNIT_TEST_COUNT=10 make test-unit-multi` to control count
+  [32mtest:               [0m  Run tests
+  [32mcheck:              [0m  Run lint and test
