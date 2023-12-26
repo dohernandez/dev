@@ -261,7 +261,8 @@ fi
 $tmake >> "$TEST_OUTPUT"
 # Removing the lines that are not part of the output but are appended by github actions
 cat "$TEST_OUTPUT" | grep -v "make\[1\]: Entering directory '/home/runner/work/dev/dev'" \
-  | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
+  | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'" \
+  | sed -r 's/make\[1\]: \*\*\* \[[^]]*\: ([^]]*)\] Error 1/make[1]: *** [\1] Error 1/' > "$TEST_OUTPUT.tmp" \
   && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
 # Checking the output
 diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-enable-recipe-not-found-bool64-dev-check.output"
@@ -290,7 +291,8 @@ fi
 $tmake >> "$TEST_OUTPUT"
 # Removing the lines that are not part of the output but are appended by github actions
 cat "$TEST_OUTPUT" | grep -v "make\[1\]: Entering directory '/home/runner/work/dev/dev'" \
-  | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
+  | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'" \
+  | sed -r 's/make\[1\]: \*\*\* \[[^]]*\: ([^]]*)\] Error 1/make[1]: *** [\1] Error 1/' > "$TEST_OUTPUT.tmp" \
   && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
 # Checking the output
 diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-disable-recipe-lint-not-found-bool64-dev-check.output"
