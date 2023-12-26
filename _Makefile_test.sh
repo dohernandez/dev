@@ -20,11 +20,12 @@ if [ $? -ne 0 ]; then
     echo "make failed"
     exit 1
 fi
-echo "start cat output"
-cat "$TEST_OUTPUT" | grep -v "make\[1\]: Entering directory '/home/runner/work/dev/dev'" \
-  | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'"
 
-echo "end cat output"
+# Removing the lines that are not part of the output but are appended by github actions
+cat "$TEST_OUTPUT" | grep -v "make\[1\]: Entering directory '/home/runner/work/dev/dev'" \
+  | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
+  && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
+
 # Checking the output
 diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-bool64-dev.output"
 if [ $? -ne 0 ]; then
