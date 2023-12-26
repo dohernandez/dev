@@ -6,7 +6,7 @@ Usage
   [32minstall-plugin:     [0m  Install a plugin, use make install-plugin
 Disabling recipe: lint
 Recipe lint not found
-make: *** [disable-recipe] Error 1
+make[1]: *** [disable-recipe] Error 1
 Usage
   [32msearch-recipes:     [0m  Search all available recipes
   [32menable-recipe:      [0m  Enable a recipe into Makefile, use make enable-recipe PACKAGE=package_name NAME=recipe_name

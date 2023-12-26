@@ -1,5 +1,7 @@
 #!/bin/bash
 
+for p in $(env | grep '^PLUGIN' | cut -d= -f1); do unset $p; done
+
 PWD=$(pwd)
 
 TESTDATA_PATH="$PWD/testdata"
@@ -10,7 +12,7 @@ PLUGIN_MANIFEST_FILE="$PWD/testdata/makefile.yml"
 # tmake is the base command to run make
 # Every timme the command runs, it runs in a new shell with the local env
 # avoiding to use the env from the upstream runner
-tmake="env -i ENV_PATH=./env_test.out ./testdata/env-run.sh make -f Makefile.test -e MAKEFILE_FILE=Makefile.test -e PLUGIN_MANIFEST_FILE=makefile.yaml.test"
+tmake="make -f Makefile.test -e MAKEFILE_FILE=Makefile.test -e PLUGIN_MANIFEST_FILE=makefile.yaml.test"
 
 # region Test make plugin bool64/dev
 printf "Test make plugin bool64/dev -> "
@@ -24,8 +26,8 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 # Removing the lines that are not part of the output but are appended by github actions
-cat "$TEST_OUTPUT" | grep -v "make: Entering directory '/home/runner/work/dev/dev'" \
-  | grep -v "make: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
+cat "$TEST_OUTPUT" | grep -v "make\[1\]: Entering directory '/home/runner/work/dev/dev'" \
+  | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
   && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
 # Checking the output
 diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-bool64-dev.output"
@@ -49,8 +51,8 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 # Removing the lines that are not part of the output but are appended by github actions
-cat "$TEST_OUTPUT" | grep -v "make: Entering directory '/home/runner/work/dev/dev'" \
-  | grep -v "make: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
+cat "$TEST_OUTPUT" | grep -v "make\[1\]: Entering directory '/home/runner/work/dev/dev'" \
+  | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
   && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
 # Checking the output
 diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-search-recipes-bool64-dev.output"
@@ -74,8 +76,8 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 # Removing the lines that are not part of the output but are appended by github actions
-cat "$TEST_OUTPUT" | grep -v "make: Entering directory '/home/runner/work/dev/dev'" \
-  | grep -v "make: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
+cat "$TEST_OUTPUT" | grep -v "make\[1\]: Entering directory '/home/runner/work/dev/dev'" \
+  | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
   && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
 # Checking the output
 diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-list-recipes-bool64-dev.output"
@@ -103,8 +105,8 @@ fi
 # Run make to capture the output with the recipe enabled
 $tmake >> "$TEST_OUTPUT"
 # Removing the lines that are not part of the output but are appended by github actions
-cat "$TEST_OUTPUT" | grep -v "make: Entering directory '/home/runner/work/dev/dev'" \
-  | grep -v "make: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
+cat "$TEST_OUTPUT" | grep -v "make\[1\]: Entering directory '/home/runner/work/dev/dev'" \
+  | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
   && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
 # Checking the output
 diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-enable-recipe-bool64-dev-lint.output"
@@ -134,8 +136,8 @@ fi
 # Run make to capture the output with the recipe disabled
 $tmake >> "$TEST_OUTPUT"
 # Removing the lines that are not part of the output but are appended by github actions
-cat "$TEST_OUTPUT" | grep -v "make: Entering directory '/home/runner/work/dev/dev'" \
-  | grep -v "make: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
+cat "$TEST_OUTPUT" | grep -v "make\[1\]: Entering directory '/home/runner/work/dev/dev'" \
+  | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
   && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
 # Checking the output
 diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-disable-recipe-bool64-dev-lint.output"
@@ -164,8 +166,8 @@ fi
 # Run make to capture the output with the recipe enabled
 $tmake >> "$TEST_OUTPUT"
 # Removing the lines that are not part of the output but are appended by github actions
-cat "$TEST_OUTPUT" | grep -v "make: Entering directory '/home/runner/work/dev/dev'" \
-  | grep -v "make: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
+cat "$TEST_OUTPUT" | grep -v "make\[1\]: Entering directory '/home/runner/work/dev/dev'" \
+  | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
   && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
 # Checking the output
 diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-enable-recipe-bool64-dev-check.output"
@@ -197,8 +199,8 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 # Removing the lines that are not part of the output but are appended by github actions
-cat "$TEST_OUTPUT" | grep -v "make: Entering directory '/home/runner/work/dev/dev'" \
-  | grep -v "make: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
+cat "$TEST_OUTPUT" | grep -v "make\[1\]: Entering directory '/home/runner/work/dev/dev'" \
+  | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
   && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
 # Checking the output
 diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-search-recipe-after-recipe-enabled-bool64-dev.output"
@@ -234,8 +236,8 @@ fi
 # Run make to capture the output with the recipe enabled twice
 $tmake >> "$TEST_OUTPUT"
 # Removing the lines that are not part of the output but are appended by github actions
-cat "$TEST_OUTPUT" | grep -v "make: Entering directory '/home/runner/work/dev/dev'" \
-  | grep -v "make: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
+cat "$TEST_OUTPUT" | grep -v "make\[1\]: Entering directory '/home/runner/work/dev/dev'" \
+  | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
   && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
 # Checking the output
 diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-enable-recipe-twice-bool64-dev-check.output"
@@ -263,9 +265,9 @@ fi
 # Run make to capture the output after run the command
 $tmake >> "$TEST_OUTPUT"
 # Removing the lines that are not part of the output but are appended by github actions
-cat "$TEST_OUTPUT" | grep -v "make: Entering directory '/home/runner/work/dev/dev'" \
-  | grep -v "make: Leaving directory '/home/runner/work/dev/dev'" \
-  | sed -r 's/make: \*\*\* \[[^]]*\: ([^]]*)\] Error 1/make[1]: *** [\1] Error 1/' > "$TEST_OUTPUT.tmp" \
+cat "$TEST_OUTPUT" | grep -v "make\[1\]: Entering directory '/home/runner/work/dev/dev'" \
+  | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'" \
+  | sed -r 's/make\[1\]: \*\*\* \[[^]]*\: ([^]]*)\] Error 1/make[1]: *** [\1] Error 1/' > "$TEST_OUTPUT.tmp" \
   && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
 # Checking the output
 diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-enable-recipe-not-found-bool64-dev-check.output"
@@ -293,9 +295,9 @@ fi
 # Run make to capture the output after run the command
 $tmake >> "$TEST_OUTPUT"
 # Removing the lines that are not part of the output but are appended by github actions
-cat "$TEST_OUTPUT" | grep -v "make: Entering directory '/home/runner/work/dev/dev'" \
-  | grep -v "make: Leaving directory '/home/runner/work/dev/dev'" \
-  | sed -r 's/make: \*\*\* \[[^]]*\: ([^]]*)\] Error 1/make[1]: *** [\1] Error 1/' > "$TEST_OUTPUT.tmp" \
+cat "$TEST_OUTPUT" | grep -v "make\[1\]: Entering directory '/home/runner/work/dev/dev'" \
+  | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'" \
+  | sed -r 's/make\[1\]: \*\*\* \[[^]]*\: ([^]]*)\] Error 1/make[1]: *** [\1] Error 1/' > "$TEST_OUTPUT.tmp" \
   && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
 # Checking the output
 diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-disable-recipe-lint-not-found-bool64-dev-check.output"
@@ -331,8 +333,8 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 # Removing the lines that are not part of the output but are appended by github actions
-cat "$TEST_OUTPUT" | grep -v "make: Entering directory '/home/runner/work/dev/dev'" \
-  | grep -v "make: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
+cat "$TEST_OUTPUT" | grep -v "make\[1\]: Entering directory '/home/runner/work/dev/dev'" \
+  | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
   && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
 # Checking the output
 diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-list-recipes-after-recipe-enabled-bool64-dev-check.output"
@@ -359,8 +361,8 @@ fi
 # Run make to capture the output search recipes after install the plugin
 $tmake search-recipes >> "$TEST_OUTPUT"
 # Removing the lines that are not part of the output but are appended by github actions
-cat "$TEST_OUTPUT" | grep -v "make: Entering directory '/home/runner/work/dev/dev'" \
-  | grep -v "make: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
+cat "$TEST_OUTPUT" | grep -v "make\[1\]: Entering directory '/home/runner/work/dev/dev'" \
+  | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
   && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
 # Checking the output
 diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-install-local-plugin-bool64-dev-check.output"

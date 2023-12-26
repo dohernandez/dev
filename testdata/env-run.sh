@@ -5,7 +5,8 @@
 
 set -o allexport
 # shellcheck disable=SC1091
-. ${ENV_PATH}
+#. ${ENV_PATH}
+source ${ENV_PATH}
 set +o allexport
 
 "$@"
