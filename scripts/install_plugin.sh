@@ -58,3 +58,46 @@ plugin_string+="}]"
 yq e -i ".plugins += $plugin_string" "$PLUGIN_MANIFEST_FILE"
 
 echo "Plugin $package added to $PLUGIN_MANIFEST_FILE"
+
+# Adding plugin package to the noprune.go file
+if [ "$package" != "local" ]; then
+    # Functions to extract imports from the file
+
+    new_imports=(
+        "_ \"$package\""
+    )
+
+    # Join new imports with line breaks and prepend a tabulator
+    new_imports_joined=$(IFS=$'\n'; echo "${new_imports[*]/#/$'\t'}")
+
+    imports=$new_imports_joined
+
+    # prev_imports when file exists
+    if [[ -f $NOPRUNE_FILE ]]; then
+        # Extract existing imports inside parentheses
+        prev_imports=$(awk '/^import \(/,/\)/ { if (/^[_[:space:]]*"/) print $0 }' "$NOPRUNE_FILE")
+
+        # Check if there were imports inside parentheses in the original file
+        if [[ -z $prev_imports ]]; then
+            # Existing import without parentheses
+            prev_imports=$(awk '/^import / {gsub(/^[[:space:]]*import /, "\t"); print $0} /^import \(/,/\)/ {gsub(/^[[:space:]]*/, ""); print $0}' "$NOPRUNE_FILE")
+        fi
+    fi
+
+    if [[ -n $prev_imports ]]; then
+        imports=$prev_imports$'\n'$imports
+    fi
+
+    cat <<EOL > "$NOPRUNE_FILE"
+//go:build never
+// +build never
+
+package noprune
+
+import (
+$imports
+)
+EOL
+
+    echo "Plugin $package added to $NOPRUNE_FILE"
+fi

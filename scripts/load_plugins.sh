@@ -5,9 +5,14 @@
 
 [ -z "$PLUGIN_MANIFEST_FILE" ] && PLUGIN_MANIFEST_FILE="makefile.yml"
 [ -z "$VENDOR_PATH" ] && VENDOR_PATH="./vendor"
+[ -z "$GOMOD_FILE" ] && GOMOD_FILE="go.mod"
 
 if [ -d "$VENDOR_PATH" ]; then
     modVendor="-mod=vendor"
+fi
+
+if [ -f "$GOMOD_FILE" ]; then
+    modfile="-modfile=$GOMOD_FILE"
 fi
 
 PLUGINS=()
@@ -54,10 +59,10 @@ if [ -f "$PLUGIN_MANIFEST_FILE" ]; then
             fi
 
             if [ -z "$plugin_vendor_path" ]; then
-                plugin_vendor_path=$(GO111MODULE=on go list ${modVendor} -f '{{.Dir}}' -m "$plugin_package")
+                plugin_vendor_path=$(GO111MODULE=on go list ${modVendor} ${modfile} -f '{{.Dir}}' -m "$plugin_package")
 
                 if [ -z "$plugin_vendor_path" ]; then
-                    plugin_vendor_path=$(export GO111MODULE=on && go get "$plugin_package" && go list -f '{{.Dir}}' -m "$plugin_package")
+                    plugin_vendor_path=$(export GO111MODULE=on && go get ${modfile} "$plugin_package" && go list ${modfile} -f '{{.Dir}}' -m "$plugin_package")
                 fi
             fi
 

@@ -19,6 +19,12 @@ export EXTEND_DEVGO_SCRIPTS := $(EXTEND_DEVGO_SCRIPTS)
 MAKEFILE_FILE ?= Makefile
 export MAKEFILE_FILE := $(MAKEFILE_FILE)
 
+NOPRUNE_FILE ?= $(EXTEND_DEVGO_PATH)/noprune.go
+export NOPRUNE_FILE := $(NOPRUNE_FILE)
+
+GOMOD_FILE ?= $(EXTEND_DEVGO_PATH)/go.mod
+export GOMOD_FILE := $(GOMOD_FILE)
+
 # TODO: makefile.yml should be relative to allow use by default the defined in this repo
 EXTEND_MANIFEST_FILE ?= $(EXTEND_DEVGO_MAKEFILES)/makefile.yml
 export EXTEND_MANIFEST_FILE := $(EXTEND_MANIFEST_FILE)
