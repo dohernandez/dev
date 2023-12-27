@@ -39,8 +39,8 @@ echo "OK"
 # endregion Test make plugin bool64/dev
 
 
-# region Test make search-recipes with plugin bool64/dev
-printf "Test make search-recipes with plugin bool64/dev -> "
+# region Test make search-recipes
+printf "Test make search-recipes -> "
 # Creating a Makefile.test file for test
 cat "$MAKEFILE_FILE"> Makefile.test
 cat "$PLUGIN_MANIFEST_FILE" > makefile.yaml.test
@@ -61,11 +61,11 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 echo "OK"
-# endregion Test make search-recipes with plugin bool64/dev
+# endregion Test make search-recipes
 
 
-# region Test make list-recipes with plugin bool64/dev
-printf "Test make list-recipes with plugin bool64/dev -> "
+# region Test make list-recipes
+printf "Test make list-recipes -> "
 # Creating a Makefile.test file for test
 cat "$MAKEFILE_FILE"> Makefile.test
 cat "$PLUGIN_MANIFEST_FILE" > makefile.yaml.test
@@ -86,11 +86,11 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 echo "OK"
-# endregion Test make list-recipes with plugin bool64/dev
+# endregion Test make list-recipes
 
 
-# region Test make enable-recipe PACKAGE=bool64/dev NAME=lint with plugin bool64/dev
-printf "Test make enable-recipe PACKAGE=bool64/dev NAME=lint with plugin bool64/dev -> "
+# region Test make enable-recipe PACKAGE=bool64/dev NAME=lint
+printf "Test make enable-recipe PACKAGE=bool64/dev NAME=lint -> "
 # Creating a Makefile.test file for test
 cat "$MAKEFILE_FILE"> Makefile.test
 cat "$PLUGIN_MANIFEST_FILE" > makefile.yaml.test
@@ -115,11 +115,11 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 echo "OK"
-# endregion Test make enable-recipe PACKAGE=bool64/dev NAME=lint with plugin bool64/dev
+# endregion Test make enable-recipe PACKAGE=bool64/dev NAME=lint
 
 
-# region Test make disable-recipe NAME=lint with plugin bool64/dev
-printf "Test make disable-recipe NAME=lint with plugin bool64/dev -> "
+# region Test make disable-recipe NAME=lint
+printf "Test make disable-recipe NAME=lint -> "
 # Creating a Makefile.test file for test
 cat "$MAKEFILE_FILE"> Makefile.test
 cat "$PLUGIN_MANIFEST_FILE" > makefile.yaml.test
@@ -146,12 +146,12 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 echo "OK"
-# endregion Test make disable-recipe NAME=lint with plugin bool64/dev
+# endregion Test make disable-recipe NAME=lint
 
 
-# region Test make enable-recipe PACKAGE=dev NAME=check with plugin bool64/dev
+# region Test make enable-recipe PACKAGE=dev NAME=check
 ## This test is to check if the feature require into a mk. @see makefiles/check.mk
-printf "Test make enable-recipe PACKAGE=dev NAME=check with plugin bool64/dev -> "
+printf "Test make enable-recipe PACKAGE=dev NAME=check -> "
 # Creating a Makefile.test file for test
 cat "$MAKEFILE_FILE"> Makefile.test
 cat "$PLUGIN_MANIFEST_FILE" > makefile.yaml.test
@@ -176,11 +176,11 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 echo "OK"
-# endregion Test make enable-recipe PACKAGE=dev NAME=check with plugin bool64/dev
+# endregion Test make enable-recipe PACKAGE=dev NAME=check
 
 
-# region Test make search-recipe after recipe enabled with plugin bool64/dev
-printf "Test make search-recipe after recipe enabled with plugin bool64/dev -> "
+# region Test make search-recipe after recipe enabled
+printf "Test make search-recipe after recipe enabled -> "
 # Creating a Makefile.test file for test
 cat "$MAKEFILE_FILE"> Makefile.test
 cat "$PLUGIN_MANIFEST_FILE" > makefile.yaml.test
@@ -209,11 +209,11 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 echo "OK"
-# endregion Test make search-recipe after recipe enabled with plugin bool64/dev
+# endregion Test make search-recipe after recipe enabled
 
 
-# region Test make enable-recipe twice PACKAGE=dev NAME=check with plugin bool64/dev
-printf "Test make enable-recipe twice PACKAGE=dev NAME=check with plugin bool64/dev -> "
+# region Test make enable-recipe twice PACKAGE=dev NAME=check
+printf "Test make enable-recipe twice PACKAGE=dev NAME=check -> "
 # Creating a Makefile.test file for test
 cat "$MAKEFILE_FILE"> Makefile.test
 cat "$PLUGIN_MANIFEST_FILE" > makefile.yaml.test
@@ -246,11 +246,11 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 echo "OK"
-# endregion Test make enable-recipe twice PACKAGE=dev NAME=check with plugin bool64/dev
+# endregion Test make enable-recipe twice PACKAGE=dev NAME=check
 
 
-# region Test make enable-recipe not found PACKAGE=dev NAME=check with plugin bool64/dev
-printf "Test make enable-recipe not found PACKAGE=dev NAME=check with plugin bool64/dev -> "
+# region Test make enable-recipe not found PACKAGE=dev NAME=check
+printf "Test make enable-recipe not found PACKAGE=dev NAME=check -> "
 # Creating a Makefile.test file for test
 cat "$MAKEFILE_FILE"> Makefile.test
 cat "$PLUGIN_MANIFEST_FILE" > makefile.yaml.test
@@ -276,11 +276,11 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 echo "OK"
-# endregion Test make enable-recipe not found PACKAGE=dev NAME=check with plugin bool64/dev
+# endregion Test make enable-recipe not found PACKAGE=dev NAME=check
 
 
-# region Test make disable-recipe NAME=lint (not found) NAME=check with plugin bool64/dev
-printf "Test make disable-recipe NAME=lint (not found) NAME=check with plugin bool64/dev -> "
+# region Test make disable-recipe NAME=lint (not found) NAME=check
+printf "Test make disable-recipe NAME=lint (not found) NAME=check -> "
 # Creating a Makefile.test file for test
 cat "$MAKEFILE_FILE"> Makefile.test
 cat "$PLUGIN_MANIFEST_FILE" > makefile.yaml.test
@@ -306,11 +306,11 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 echo "OK"
-# endregion Test make disable-recipe NAME=lint (not found) NAME=check with plugin bool64/dev
+# endregion Test make disable-recipe NAME=lint (not found) NAME=check
 
 
-# region Test make list-recipes after recipe enabled PACKAGE=dev NAME=check with plugin bool64/dev
-printf "Test make list-recipes after recipe enabled PACKAGE=dev NAME=check with plugin bool64/dev -> "
+# region Test make list-recipes after recipe enabled PACKAGE=dev NAME=check
+printf "Test make list-recipes after recipe enabled PACKAGE=dev NAME=check -> "
 # Creating a Makefile.test file for test
 cat "$MAKEFILE_FILE"> Makefile.test
 cat "$PLUGIN_MANIFEST_FILE" > makefile.yaml.test
@@ -343,10 +343,10 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 echo "OK"
-# endregion Test make list-recipes after recipe enabled PACKAGE=dev NAME=check with plugin bool64/dev
+# endregion Test make list-recipes after recipe enabled PACKAGE=dev NAME=check
 
-# region Test make install local plugin with plugin bool64/dev
-printf "Test make install local plugin with plugin bool64/dev -> "
+# region Test make install local plugin
+printf "Test make install local plugin -> "
 # Creating a Makefile.test file for test
 cat "$MAKEFILE_FILE"> Makefile.test
 cat "$PLUGIN_MANIFEST_FILE" > makefile.yaml.test
@@ -371,4 +371,32 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 echo "OK"
-# endregion Test make install local plugin with plugin bool64/dev
+# endregion Test make install local plugin
+
+# region Test make install local without yml plugin
+printf "Test make install local without yml plugin -> "
+# Creating a Makefile.test file for test
+cat "$MAKEFILE_FILE"> Makefile.test
+rm makefile.yaml.test
+# Run make to capture the output search recipes before install the plugin
+$tmake search-recipes > "$TEST_OUTPUT"
+# Running command to test
+(echo "local"; echo "testdata/makefiles"; echo "") | $tmake install-plugin >> "$TEST_OUTPUT"
+if [ $? -ne 0 ]; then
+    echo "make failed"
+    exit 1
+fi
+# Run make to capture the output search recipes after install the plugin
+$tmake search-recipes >> "$TEST_OUTPUT"
+# Removing the lines that are not part of the output but are appended by github actions
+cat "$TEST_OUTPUT" | grep -v "make\[1\]: Entering directory '/home/runner/work/dev/dev'" \
+  | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
+  && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
+# Checking the output
+diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-install-local-plugin-bool64-dev-check.output"
+if [ $? -ne 0 ]; then
+    echo "make output is not the same"
+    exit 1
+fi
+echo "OK"
+# endregion Test make install local without yml plugin

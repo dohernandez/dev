@@ -24,6 +24,11 @@ else
     name=$package
 fi
 
+# Check if the plugin manifest file exists, otherwise create it
+if [ ! -f "$PLUGIN_MANIFEST_FILE" ]; then
+  touch "$PLUGIN_MANIFEST_FILE"
+fi
+
 # Check if a plugin with the same name already exists
 plugin_exists=$(yq e '.plugins[] | select(.name == "'"${name}"'")' "$PLUGIN_MANIFEST_FILE")
 if [ -n "$plugin_exists" ]; then

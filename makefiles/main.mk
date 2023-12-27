@@ -17,12 +17,23 @@ export EXTEND_DEVGO_MAKEFILES := $(EXTEND_DEVGO_MAKEFILES)
 export EXTEND_DEVGO_SCRIPTS := $(EXTEND_DEVGO_SCRIPTS)
 
 MAKEFILE_FILE ?= Makefile
-
 export MAKEFILE_FILE := $(MAKEFILE_FILE)
 
 # TODO: makefile.yml should be relative to allow use by default the defined in this repo
-PLUGIN_MANIFEST_FILE ?= makefile.yml
+EXTEND_MANIFEST_FILE ?= $(EXTEND_DEVGO_MAKEFILES)/makefile.yml
+export EXTEND_MANIFEST_FILE := $(EXTEND_MANIFEST_FILE)
 
+#-# Get plugins
+EXTEND_PLUGIN_EXPORTS := $(shell PLUGIN_MANIFEST_FILE=$(EXTEND_MANIFEST_FILE) bash $(EXTEND_DEVGO_SCRIPTS)/load_plugins.sh)
+
+#-# Set plugins
+$(foreach _export,$(EXTEND_PLUGIN_EXPORTS), \
+	$(eval export $(_export)) \
+)
+
+EXTEND_PLUGINS := $(subst :, ,$(PLUGINS))
+
+PLUGIN_MANIFEST_FILE ?= makefile.yml
 export PLUGIN_MANIFEST_FILE := $(PLUGIN_MANIFEST_FILE)
 
 #-# Check if makefile.yml exists
@@ -37,6 +48,8 @@ $(foreach _export,$(PLUGIN_EXPORTS), \
 )
 
 PLUGINS := $(subst :, ,$(PLUGINS))
+
+PLUGINS := $(sort $(EXTEND_PLUGINS) $(filter-out $(EXTEND_PLUGINS),$(PLUGINS)))
 
 #-# Include plugins main makefile
 MAKEFILE_INCLUDES := $(foreach plugin_key,$(PLUGINS), \
