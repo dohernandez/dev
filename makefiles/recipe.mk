@@ -27,6 +27,12 @@ disable-recipe:
 	bash $(EXTEND_DEVGO_SCRIPTS)/disable-recipe.sh
 
 
+## Install a plugin, use make install-plugin
+install-plugin:
+	@echo "Installing plugin:"
+	@bash $(EXTEND_DEVGO_SCRIPTS)/install_plugin.sh
+
+
 
 
 

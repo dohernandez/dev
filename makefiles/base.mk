@@ -4,18 +4,10 @@
 GO ?= go
 export GO111MODULE = on
 
-ifneq "$(GOFLAGS)" ""
-  $(info GOFLAGS: ${GOFLAGS})
-endif
-
 ifneq "$(wildcard ./vendor )" ""
-  $(info Using vendor)
   modVendor =  -mod=vendor
   ifeq (,$(findstring -mod,$(GOFLAGS)))
       export GOFLAGS := ${GOFLAGS} ${modVendor}
-  endif
-  ifneq "$(wildcard ./vendor/github.com/dohernandez/dev)" ""
-  	EXTEND_DEVGO_PATH := ./vendor/github.com/dohernandez/dev
   endif
 endif
 

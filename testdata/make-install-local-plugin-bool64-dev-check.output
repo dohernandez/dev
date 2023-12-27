@@ -1,0 +1,78 @@
+Search for available recipe to enable
+dev:
+  [33mcheck               [0m   Utilities for checking code
+    [32mtest                [0m Run tests
+    [32mcheck               [0m Run lint and test
+  [33mgithub-actions      [0m   Create/replace GitHub Actions from template
+    [32mgithub-actions      [0m Create/Replace GitHub Actions from template
+
+bool64/dev:
+  [33mbench               [0m   
+    [32mbench               [0m Run benchmark and show result stats, iterations count controlled by BENCH_COUNT, default 5.
+    [32mbench-stat-cli      [0m Run benchmark and show result stats, iterations count controlled by BENCH_COUNT, default 5.
+    [32mbench-run           [0m Run benchmark, iterations count controlled by BENCH_COUNT, default 5.
+    [32mbench-stat-diff     [0m Show benchmark comparison with base branch.
+    [32mbench-stat          [0m Show result of benchmark.
+  [33mbuild               [0m   
+    [32mbuild-linux         [0m Build Linux binary
+    [32mbuild               [0m Build binary
+    [32mrun                 [0m Build and run binary
+  [33mgithub-actions      [0m   
+    [32mgithub-actions      [0m Replace GitHub Actions from template
+  [33mlint                [0m   
+    [32mlint                [0m Check with golangci-lint
+    [32mfix-lint            [0m Apply goimports and gofmt
+  [33mrelease-assets      [0m   
+    [32mrelease-assets      [0m Build and compress binaries for release assets.
+  [33mreset-ci            [0m   
+    [32mreset-ci            [0m Reset CI files from bool64/dev templates, make sure to review changes before committing.
+  [33mtest-integration    [0m   
+    [32mtest-integration    [0m Run integration tests
+    [32mstart-deps          [0m Start dependencies for integration tests or local dev via docker-compose up
+    [32mstop-deps           [0m Stop dependencies for integration tests or local dev via docker-compose down
+  [33mtest-unit           [0m   
+    [32mtest-unit           [0m Run unit tests
+    [32mtest-unit-multi     [0m Run unit tests multiple times, use `UNIT_TEST_COUNT=10 make test-unit-multi` to control count
+Installing plugin:
+Using package: local
+Using makefiles folder: testdata/makefiles
+Plugin local added to makefile.yaml.test
+Search for available recipe to enable
+dev:
+  [33mcheck               [0m   Utilities for checking code
+    [32mtest                [0m Run tests
+    [32mcheck               [0m Run lint and test
+  [33mgithub-actions      [0m   Create/replace GitHub Actions from template
+    [32mgithub-actions      [0m Create/Replace GitHub Actions from template
+
+bool64/dev:
+  [33mbench               [0m   
+    [32mbench               [0m Run benchmark and show result stats, iterations count controlled by BENCH_COUNT, default 5.
+    [32mbench-stat-cli      [0m Run benchmark and show result stats, iterations count controlled by BENCH_COUNT, default 5.
+    [32mbench-run           [0m Run benchmark, iterations count controlled by BENCH_COUNT, default 5.
+    [32mbench-stat-diff     [0m Show benchmark comparison with base branch.
+    [32mbench-stat          [0m Show result of benchmark.
+  [33mbuild               [0m   
+    [32mbuild-linux         [0m Build Linux binary
+    [32mbuild               [0m Build binary
+    [32mrun                 [0m Build and run binary
+  [33mgithub-actions      [0m   
+    [32mgithub-actions      [0m Replace GitHub Actions from template
+  [33mlint                [0m   
+    [32mlint                [0m Check with golangci-lint
+    [32mfix-lint            [0m Apply goimports and gofmt
+  [33mrelease-assets      [0m   
+    [32mrelease-assets      [0m Build and compress binaries for release assets.
+  [33mreset-ci            [0m   
+    [32mreset-ci            [0m Reset CI files from bool64/dev templates, make sure to review changes before committing.
+  [33mtest-integration    [0m   
+    [32mtest-integration    [0m Run integration tests
+    [32mstart-deps          [0m Start dependencies for integration tests or local dev via docker-compose up
+    [32mstop-deps           [0m Stop dependencies for integration tests or local dev via docker-compose down
+  [33mtest-unit           [0m   
+    [32mtest-unit           [0m Run unit tests
+    [32mtest-unit-multi     [0m Run unit tests multiple times, use `UNIT_TEST_COUNT=10 make test-unit-multi` to control count
+
+local:
+  [33mtest                [0m   Utilities for testing code
+    [32mtest                [0m Run tests

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+for p in $(env | grep '^PLUGIN' | cut -d= -f1); do unset $p; done
+
 PWD=$(pwd)
 
 TESTDATA_PATH="$PWD/testdata"
@@ -7,6 +9,9 @@ TEST_OUTPUT="$PWD/test.out"
 MAKEFILE_FILE="$PWD/testdata/Makefile"
 PLUGIN_MANIFEST_FILE="$PWD/testdata/makefile.yml"
 
+# tmake is the base command to run make
+# Every timme the command runs, it runs in a new shell with the local env
+# avoiding to use the env from the upstream runner
 tmake="make -f Makefile.test -e MAKEFILE_FILE=Makefile.test -e PLUGIN_MANIFEST_FILE=makefile.yaml.test"
 
 # region Test make plugin bool64/dev
@@ -338,3 +343,32 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 echo "OK"
+# endregion Test make list-recipes after recipe enabled PACKAGE=dev NAME=check with plugin bool64/dev
+
+# region Test make install local plugin with plugin bool64/dev
+printf "Test make install local plugin with plugin bool64/dev -> "
+# Creating a Makefile.test file for test
+cat "$MAKEFILE_FILE"> Makefile.test
+cat "$PLUGIN_MANIFEST_FILE" > makefile.yaml.test
+# Run make to capture the output search recipes before install the plugin
+$tmake search-recipes > "$TEST_OUTPUT"
+# Running command to test
+(echo "local"; echo "testdata/makefiles"; echo "") | $tmake install-plugin >> "$TEST_OUTPUT"
+if [ $? -ne 0 ]; then
+    echo "make failed"
+    exit 1
+fi
+# Run make to capture the output search recipes after install the plugin
+$tmake search-recipes >> "$TEST_OUTPUT"
+# Removing the lines that are not part of the output but are appended by github actions
+cat "$TEST_OUTPUT" | grep -v "make\[1\]: Entering directory '/home/runner/work/dev/dev'" \
+  | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'" > "$TEST_OUTPUT.tmp" \
+  && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
+# Checking the output
+diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-install-local-plugin-bool64-dev-check.output"
+if [ $? -ne 0 ]; then
+    echo "make output is not the same"
+    exit 1
+fi
+echo "OK"
+# endregion Test make install local plugin with plugin bool64/dev
