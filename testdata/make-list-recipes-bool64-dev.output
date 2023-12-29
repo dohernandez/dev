@@ -1,1 +1,3 @@
 List of recipes enabled:
+  [33mversion             [0m   Print the version number of make dev tools.
+    [32mversion             [0m Print the version number of dev tools.

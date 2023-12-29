@@ -4,7 +4,10 @@ Usage
   [32mlist-recipes:       [0m  List the recipes enabled into Makefile
   [32mdisable-recipe:     [0m  Disable a recipe from Makefile, use make disable-recipe NAME=recipe_name
   [32minstall-plugin:     [0m  Install a plugin, use make install-plugin
+  [32mversion:            [0m  Print the version number of dev tools.
 List of recipes enabled:
+  [33mversion             [0m   Print the version number of make dev tools.
+    [32mversion             [0m Print the version number of dev tools.
 Enabling recipe: dev check
 Recipe dev check enabled successfully.
 Usage
@@ -13,6 +16,7 @@ Usage
   [32mlist-recipes:       [0m  List the recipes enabled into Makefile
   [32mdisable-recipe:     [0m  Disable a recipe from Makefile, use make disable-recipe NAME=recipe_name
   [32minstall-plugin:     [0m  Install a plugin, use make install-plugin
+  [32mversion:            [0m  Print the version number of dev tools.
   [32mlint:               [0m  Check with golangci-lint
   [32mfix-lint:           [0m  Apply goimports and gofmt
   [32mtest-unit:          [0m  Run unit tests
@@ -20,6 +24,8 @@ Usage
   [32mtest:               [0m  Run tests
   [32mcheck:              [0m  Run lint and test
 List of recipes enabled:
+  [33mversion             [0m   Print the version number of make dev tools.
+    [32mversion             [0m Print the version number of dev tools.
   [33mlint                [0m   
     [32mlint                [0m Check with golangci-lint
     [32mfix-lint            [0m Apply goimports and gofmt

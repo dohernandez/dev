@@ -4,6 +4,7 @@ Usage
   [32mlist-recipes:       [0m  List the recipes enabled into Makefile
   [32mdisable-recipe:     [0m  Disable a recipe from Makefile, use make disable-recipe NAME=recipe_name
   [32minstall-plugin:     [0m  Install a plugin, use make install-plugin
+  [32mversion:            [0m  Print the version number of dev tools.
 Enabling recipe: dev not-found
 Recipe dev not-found not found.
 make[1]: *** [enable-recipe] Error 1
@@ -13,3 +14,4 @@ Usage
   [32mlist-recipes:       [0m  List the recipes enabled into Makefile
   [32mdisable-recipe:     [0m  Disable a recipe from Makefile, use make disable-recipe NAME=recipe_name
   [32minstall-plugin:     [0m  Install a plugin, use make install-plugin
+  [32mversion:            [0m  Print the version number of dev tools.
