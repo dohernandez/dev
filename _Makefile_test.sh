@@ -37,8 +37,8 @@ strip_output() {
       && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
 }
 
-# region Test make plugin bool64/dev
-printf "Test make plugin bool64/dev -> "
+# region Test make
+printf "Test make -> "
 # Create a files for test
 create_files_test
 # Running command to test
@@ -56,7 +56,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 echo "OK"
-# endregion Test make plugin bool64/dev
+# endregion Test make
 
 
 # region Test make search-recipes

@@ -1,4 +1,5 @@
 #-## Print the version number of make dev tools.
+
 .PHONY: version
 
 GO ?= go

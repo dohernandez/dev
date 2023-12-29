@@ -77,3 +77,6 @@ $(foreach plugin_key,$(PLUGINS), \
 #-# Patching bug in bool64/dev for help target
 #-# awk: cmd. line:2: warning: regexp escape sequence `\_' is not a known regexp operator
 -include $(EXTEND_DEVGO_MAKEFILES)/help.mk
+
+-include $(EXTEND_DEVGO_PATH)/makefiles/recipe.mk
+-include $(EXTEND_DEVGO_PATH)/makefiles/version.mk
