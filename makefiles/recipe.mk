@@ -1,3 +1,7 @@
+#-## Managing plugins and recipes.
+
+.PHONY: version
+
 GO ?= go
 
 ## Search all available recipes
@@ -31,8 +35,6 @@ disable-recipe:
 install-plugin:
 	@echo "Installing plugin:"
 	@bash $(EXTEND_DEVGO_SCRIPTS)/install_plugin.sh
-
-
 
 
 

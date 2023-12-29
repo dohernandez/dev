@@ -20,8 +20,6 @@ ifeq ($(EXTEND_DEVGO_PATH),)
 endif
 
 -include $(EXTEND_DEVGO_PATH)/makefiles/main.mk
--include $(EXTEND_DEVGO_PATH)/makefiles/recipe.mk
--include $(EXTEND_DEVGO_PATH)/makefiles/version.mk
 
 # Start extra recipes here.
 # End extra recipes here.
