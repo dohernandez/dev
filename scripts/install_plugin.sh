@@ -100,4 +100,5 @@ $imports
 EOL
 
     echo "Plugin $package added to $NOPRUNE_FILE"
+    echo "Run \`go mod vendor\` to add the package to the vendor folder."
 fi

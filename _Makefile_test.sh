@@ -18,7 +18,7 @@ tmake="make -f Makefile.test
       -e MAKEFILE_FILE=Makefile.test
       -e PLUGIN_MANIFEST_FILE=makefile.yaml.test
       -e NOPRUNE_FILE=noprune.go.test
-      -e GOMOD_FILE=go.mod.test
+      -e GOMOD_FILE=$GOMOD_FILE
       "
 
 # create_files_test create a files for test
@@ -27,7 +27,6 @@ create_files_test() {
     cat "$MAKEFILE_FILE"> Makefile.test
     cat "$PLUGIN_MANIFEST_FILE" > makefile.yaml.test
     cat "$NOPRUNE_FILE" > noprune.go.test
-    cat "$GOMOD_FILE" > go.mod.test
 }
 
 strip_output() {
@@ -392,16 +391,12 @@ echo "OK"
 printf "Test make install package plugin -> "
 # Create a files for test
 create_files_test
-# Run make to capture the output search recipes before install the plugin
-$tmake search-recipes > "$TEST_OUTPUT"
 # Running command to test
-(echo "github.com/dohernandez/storage"; echo "") | $tmake install-plugin >> "$TEST_OUTPUT"
+(echo "github.com/dohernandez/storage"; echo "") | $tmake install-plugin > "$TEST_OUTPUT"
 if [ $? -ne 0 ]; then
     echo "make failed"
     exit 1
 fi
-# Run make to capture the output search recipes after install the plugin
-$tmake search-recipes >> "$TEST_OUTPUT"
 # Removing the lines that are not part of the output but are appended by github actions
 strip_output
 # Checking the output

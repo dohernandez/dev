@@ -19,10 +19,10 @@ export EXTEND_DEVGO_SCRIPTS := $(EXTEND_DEVGO_SCRIPTS)
 MAKEFILE_FILE ?= Makefile
 export MAKEFILE_FILE := $(MAKEFILE_FILE)
 
-NOPRUNE_FILE ?= $(EXTEND_DEVGO_PATH)/noprune.go
+NOPRUNE_FILE ?= noprune.go
 export NOPRUNE_FILE := $(NOPRUNE_FILE)
 
-GOMOD_FILE ?= $(EXTEND_DEVGO_PATH)/go.mod
+GOMOD_FILE ?= go.mod
 export GOMOD_FILE := $(GOMOD_FILE)
 
 # TODO: makefile.yml should be relative to allow use by default the defined in this repo
@@ -30,7 +30,7 @@ EXTEND_MANIFEST_FILE ?= $(EXTEND_DEVGO_MAKEFILES)/makefile.yml
 export EXTEND_MANIFEST_FILE := $(EXTEND_MANIFEST_FILE)
 
 #-# Get plugins
-EXTEND_PLUGIN_EXPORTS := $(shell PLUGIN_MANIFEST_FILE=$(EXTEND_MANIFEST_FILE) bash $(EXTEND_DEVGO_SCRIPTS)/load_plugins.sh)
+EXTEND_PLUGIN_EXPORTS := $(shell GOMOD_FILE=$(GOMOD_FILE) PLUGIN_MANIFEST_FILE=$(EXTEND_MANIFEST_FILE) bash $(EXTEND_DEVGO_SCRIPTS)/load_plugins.sh)
 
 #-# Set plugins
 $(foreach _export,$(EXTEND_PLUGIN_EXPORTS), \
@@ -45,7 +45,7 @@ export PLUGIN_MANIFEST_FILE := $(PLUGIN_MANIFEST_FILE)
 #-# Check if makefile.yml exists
 ifneq ($(wildcard $(PLUGIN_MANIFEST_FILE)),)
 	#-# Get plugins
-	PLUGIN_EXPORTS := $(shell PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) bash $(EXTEND_DEVGO_SCRIPTS)/load_plugins.sh)
+	PLUGIN_EXPORTS := $(shell GOMOD_FILE=$(GOMOD_FILE) PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) bash $(EXTEND_DEVGO_SCRIPTS)/load_plugins.sh)
 endif
 
 #-# Set plugins
