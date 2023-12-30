@@ -1,0 +1,27 @@
+Usage
+  [32msearch-recipes:     [0m  Search all available recipes
+  [32menable-recipe:      [0m  Enable a recipe into Makefile, use make enable-recipe PACKAGE=package_name NAME=recipe_name
+  [32mlist-recipes:       [0m  List the recipes enabled into Makefile
+  [32mdisable-recipe:     [0m  Disable a recipe from Makefile, use make disable-recipe NAME=recipe_name
+  [32minstall-plugin:     [0m  Install a plugin, use make install-plugin
+  [32mversion:            [0m  Print the version number of dev tools.
+Enabling recipe: dev github-actions
+Recipe dev github-actions enabled successfully.
+Usage
+  [32msearch-recipes:     [0m  Search all available recipes
+  [32menable-recipe:      [0m  Enable a recipe into Makefile, use make enable-recipe PACKAGE=package_name NAME=recipe_name
+  [32mlist-recipes:       [0m  List the recipes enabled into Makefile
+  [32mdisable-recipe:     [0m  Disable a recipe from Makefile, use make disable-recipe NAME=recipe_name
+  [32minstall-plugin:     [0m  Install a plugin, use make install-plugin
+  [32mversion:            [0m  Print the version number of dev tools.
+  [32mrelease-assets:     [0m  Build and compress binaries for release assets.
+  [32mgithub-actions:     [0m  Create/Replace GitHub Actions from template
+  [32mgithub-actions-release-assets:[0m  Create/Replace GitHub Actions from template for release-assets
+List of recipes enabled:
+  [33mversion             [0m   Print the version number of make dev tools.
+    [32mversion             [0m Print the version number of dev tools.
+  [33mrelease-assets      [0m   
+    [32mrelease-assets      [0m Build and compress binaries for release assets.
+  [33mgithub-actions      [0m   Create/replace GitHub Actions from template
+    [32mgithub-actions      [0m Create/Replace GitHub Actions from template
+    [32mgithub-actions-release-assets[0m Create/Replace GitHub Actions from template for release-assets

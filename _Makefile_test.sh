@@ -248,8 +248,8 @@ echo "OK"
 # endregion Test make enable-recipe twice PACKAGE=dev NAME=check
 
 
-# region Test make enable-recipe not found PACKAGE=dev NAME=check
-printf "Test make enable-recipe not found PACKAGE=dev NAME=check -> "
+# region Test make enable-recipe not found PACKAGE=dev NAME=not-found
+printf "Test make enable-recipe not found PACKAGE=dev NAME=not-found -> "
 # Create a files for test
 create_files_test
 # Run make to capture the default output
@@ -265,13 +265,13 @@ $tmake >> "$TEST_OUTPUT"
 # Removing the lines that are not part of the output but are appended by github actions
 strip_output
 # Checking the output
-diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-enable-recipe-not-found-bool64-dev-check.output"
+diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-enable-recipe-bool64-dev-not-found.output"
 if [ $? -ne 0 ]; then
     echo "make output is not the same"
     exit 1
 fi
 echo "OK"
-# endregion Test make enable-recipe not found PACKAGE=dev NAME=check
+# endregion Test make enable-recipe not found PACKAGE=dev NAME=not-found
 
 
 # region Test make disable-recipe NAME=lint (not found) NAME=check
@@ -423,3 +423,166 @@ if [ $? -ne 0 ]; then
 fi
 echo "OK"
 # endregion Test make install package plugin
+
+# region Test make enable-recipe PACKAGE=dev NAME=github-actions
+printf "Test make enable-recipe PACKAGE=dev NAME=github-actions -> "
+# Create a files for test
+create_files_test
+# Run make to capture the default output
+$tmake > "$TEST_OUTPUT"
+# Running command to test
+$tmake enable-recipe PACKAGE=dev NAME=github-actions >> "$TEST_OUTPUT" 2>&1
+if [ $? -ne 0 ]; then
+    echo "make failed"
+    exit 1
+fi
+# Run make to capture the output with the recipe enabled
+$tmake >> "$TEST_OUTPUT"
+# Running command to test
+$tmake list-recipes >> "$TEST_OUTPUT"
+if [ $? -ne 0 ]; then
+    echo "make failed"
+    exit 1
+fi
+# Removing the lines that are not part of the output but are appended by github actions
+strip_output
+# Checking the output
+diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-enable-recipe-bool64-dev-github-actions.output"
+if [ $? -ne 0 ]; then
+    echo "make output is not the same"
+    exit 1
+fi
+echo "OK"
+# endregion Test make enable-recipe PACKAGE=dev NAME=github-actions
+
+
+# region Test make github-actions
+printf "Test make github-actions -> "
+rm -rf "$TESTDATA_PATH/.github"
+# Create a files for test
+create_files_test
+# Run enable recipe github-actions
+$tmake enable-recipe PACKAGE=dev NAME=github-actions > /dev/null
+# Run make to capture the output with the recipe enabled
+$tmake > "$TEST_OUTPUT"
+# Run make to capture the output with the recipe enabled
+$tmake -e GITHUB_PATH=testdata/.github -e GITHUB_PATH_IGNORE=true github-actions >> "$TEST_OUTPUT"
+if [ $? -ne 0 ]; then
+    echo "make failed"
+    exit 1
+fi
+# Removing the lines that are not part of the output but are appended by github actions
+strip_output
+# Checking the output
+diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-github-actions-bool64-dev.output"
+if [ $? -ne 0 ]; then
+    echo "make output is not the same"
+    exit 1
+fi
+diff "$TESTDATA_PATH/.github/workflows/check.yml" "$PWD/templates/github/workflows/check.yml"
+if [ $? -ne 0 ]; then
+    echo "check.yml file is not the same"
+    exit 1
+fi
+diff "$TESTDATA_PATH/.github/workflows/cloc.yml" "$PWD/templates/github/workflows/cloc.yml"
+if [ $? -ne 0 ]; then
+    echo "cloc.yml file is not the same"
+    exit 1
+fi
+diff "$TESTDATA_PATH/.github/workflows/golangci-lint.yml" "$PWD/templates/github/workflows/golangci-lint.yml"
+if [ $? -ne 0 ]; then
+    echo "golangci-lint.yml file is not the same"
+    exit 1
+fi
+diff "$TESTDATA_PATH/.github/workflows/release.yml" "$PWD/templates/github/workflows/release.yml"
+if [ $? -ne 0 ]; then
+    echo "release.yml file is not the same"
+    exit 1
+fi
+diff "$TESTDATA_PATH/.github/workflows/test-unit.yml" "$PWD/templates/github/workflows/test-unit.yml"
+if [ $? -ne 0 ]; then
+    echo "test-unit.yml file is not the same"
+    exit 1
+fi
+if [ -e "$TESTDATA_PATH/.github/workflows/release-assets.yml" ]; then
+    echo "The file $file_name exists in the folder $folder_path."
+fi
+diff "$TESTDATA_PATH/.github/actions/check-branch/action.yml" "$PWD/templates/github/actions/check-branch/action.yml"
+if [ $? -ne 0 ]; then
+    echo "action.yml file is not the same"
+    exit 1
+fi
+diff "$TESTDATA_PATH/.github/actions/check-branch/check-branch.sh" "$PWD/templates/github/actions/check-branch/check-branch.sh"
+if [ $? -ne 0 ]; then
+    echo "check-branch.sh file is not the same"
+    exit 1
+fi
+echo "OK"
+# endregion Test make github-actions
+
+# region Test make github-actions-release-assets
+printf "Test make github-actions-release-assets -> "
+rm -rf "$TESTDATA_PATH/.github"
+# Create a files for test
+create_files_test
+# Run enable recipe github-actions
+$tmake enable-recipe PACKAGE=dev NAME=github-actions > /dev/null
+# Run make to capture the output with the recipe enabled
+$tmake > "$TEST_OUTPUT"
+# Run make to capture the output with the recipe enabled
+$tmake -e GITHUB_PATH=testdata/.github -e GITHUB_PATH_IGNORE=true github-actions-release-assets >> "$TEST_OUTPUT"
+if [ $? -ne 0 ]; then
+    echo "make failed"
+    exit 1
+fi
+# Removing the lines that are not part of the output but are appended by github actions
+strip_output
+# Checking the output
+diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-github-actions-release-assets-bool64-dev.output"
+if [ $? -ne 0 ]; then
+    echo "make output is not the same"
+    exit 1
+fi
+diff "$TESTDATA_PATH/.github/workflows/check.yml" "$PWD/templates/github/workflows/check.yml"
+if [ $? -ne 0 ]; then
+    echo "check.yml file is not the same"
+    exit 1
+fi
+diff "$TESTDATA_PATH/.github/workflows/cloc.yml" "$PWD/templates/github/workflows/cloc.yml"
+if [ $? -ne 0 ]; then
+    echo "cloc.yml file is not the same"
+    exit 1
+fi
+diff "$TESTDATA_PATH/.github/workflows/golangci-lint.yml" "$PWD/templates/github/workflows/golangci-lint.yml"
+if [ $? -ne 0 ]; then
+    echo "golangci-lint.yml file is not the same"
+    exit 1
+fi
+diff "$TESTDATA_PATH/.github/workflows/release.yml" "$PWD/templates/github/workflows/release.yml"
+if [ $? -ne 0 ]; then
+    echo "release.yml file is not the same"
+    exit 1
+fi
+diff "$TESTDATA_PATH/.github/workflows/test-unit.yml" "$PWD/templates/github/workflows/test-unit.yml"
+if [ $? -ne 0 ]; then
+    echo "test-unit.yml file is not the same"
+    exit 1
+fi
+diff "$TESTDATA_PATH/.github/workflows/release-assets.yml" "$PWD/templates/github/workflows/release-assets.yml"
+if [ $? -ne 0 ]; then
+    echo "release-assets.yml file is not the same"
+    exit 1
+fi
+diff "$TESTDATA_PATH/.github/actions/check-branch/action.yml" "$PWD/templates/github/actions/check-branch/action.yml"
+if [ $? -ne 0 ]; then
+    echo "action.yml file is not the same"
+    exit 1
+fi
+diff "$TESTDATA_PATH/.github/actions/check-branch/check-branch.sh" "$PWD/templates/github/actions/check-branch/check-branch.sh"
+if [ $? -ne 0 ]; then
+    echo "check-branch.sh file is not the same"
+    exit 1
+fi
+echo "OK"
+# endregion Test make github-actions-release-assets
+

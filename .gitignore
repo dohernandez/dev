@@ -15,6 +15,7 @@
 /*.coverprofile
 /.vscode
 #/bench-*.txt
+testdata/.github
 
 # Dependency directories (remove the comment below to include it)
 vendor/
