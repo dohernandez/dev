@@ -67,12 +67,34 @@ printf_recipes() {
                 desc=$(echo "$desc_line" | sed 's/^#-## //' | tr -s ' ')
             fi
 
-#            printf "  \033[32m%-20s\033[0m %s\n" \
-#                    						`basename $file .mk` "$desc";
+            # Check if the recipe require another recipe to add to the description.
+            requires=$(awk '/^#- require - /{print $0}' $file)
 
+            comma=false
+
+            if [[ -n $requires ]]; then
+              desc="$desc (requires:"
+              # Loop over each required recipe
+              while IFS= read -r line; do
+                  plugin=$(echo "$line" | awk '{n=split($0,a,"/"); a[n]=""; for(i=1;i<n;i++) printf("%s%s",a[i],i<n-1?"/":"")}' | sed 's/^#- require - //')
+                  recipe=$(echo "$line" | awk -F'/' '{print $NF}')
+
+                  if [ "$comma" = true ]; then
+                      desc="$desc,"
+                  fi
+
+                  desc=$(printf "$desc %s/%s" "$plugin" "$recipe")
+
+                  comma=true
+              done <<< "$requires"
+              desc="$desc)"
+            fi
+
+            # Print recipe name and description
             printf "  \033[33m%-20s\033[0m   %s\n" \
                     						`basename $file .mk` "$desc";
 
+            # Print targets and descriptions
             awk -F':' '/^##/ {desc=$0} /^[a-zA-Z0-9][^$#\/\t=]*:([^=]|$)/ {print desc "\n" $1}' $file | \
             while read -r line; do
                 if [[ $line == "##"* ]]; then

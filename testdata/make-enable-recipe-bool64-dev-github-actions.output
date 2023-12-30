@@ -22,6 +22,6 @@ List of recipes enabled:
     [32mversion             [0m Print the version number of dev tools.
   [33mrelease-assets      [0m   
     [32mrelease-assets      [0m Build and compress binaries for release assets.
-  [33mgithub-actions      [0m   Create/replace GitHub Actions from template
+  [33mgithub-actions      [0m   Create/replace GitHub Actions from template (requires: bool64/dev/release-assets)
     [32mgithub-actions      [0m Create/Replace GitHub Actions from template
     [32mgithub-actions-release-assets[0m Create/Replace GitHub Actions from template for release-assets
