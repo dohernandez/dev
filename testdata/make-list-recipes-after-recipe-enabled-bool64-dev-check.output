@@ -32,6 +32,6 @@ List of recipes enabled:
   [33mtest-unit           [0m   
     [32mtest-unit           [0m Run unit tests
     [32mtest-unit-multi     [0m Run unit tests multiple times, use `UNIT_TEST_COUNT=10 make test-unit-multi` to control count
-  [33mcheck               [0m   Utilities for checking code
+  [33mcheck               [0m   Utilities for checking code (requires: bool64/dev/lint, bool64/dev/test-unit)
     [32mtest                [0m Run tests
     [32mcheck               [0m Run lint and test

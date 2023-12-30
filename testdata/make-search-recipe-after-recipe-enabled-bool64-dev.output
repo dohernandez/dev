@@ -1,9 +1,9 @@
 Search for available recipe to enable
 dev:
-  [33mcheck               [0m   Utilities for checking code
+  [33mcheck               [0m   Utilities for checking code (requires: bool64/dev/lint, bool64/dev/test-unit)
     [32mtest                [0m Run tests
     [32mcheck               [0m Run lint and test
-  [33mgithub-actions      [0m   Create/replace GitHub Actions from template
+  [33mgithub-actions      [0m   Create/replace GitHub Actions from template (requires: bool64/dev/release-assets)
     [32mgithub-actions      [0m Create/Replace GitHub Actions from template
     [32mgithub-actions-release-assets[0m Create/Replace GitHub Actions from template for release-assets
 
@@ -38,7 +38,7 @@ Enabling recipe: dev check
 Recipe dev check enabled successfully.
 Search for available recipe to enable
 dev:
-  [33mgithub-actions      [0m   Create/replace GitHub Actions from template
+  [33mgithub-actions      [0m   Create/replace GitHub Actions from template (requires: bool64/dev/release-assets)
     [32mgithub-actions      [0m Create/Replace GitHub Actions from template
     [32mgithub-actions-release-assets[0m Create/Replace GitHub Actions from template for release-assets
 
