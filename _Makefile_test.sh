@@ -334,8 +334,8 @@ echo "OK"
 # endregion Test make list-recipes after recipe enabled PACKAGE=dev NAME=check
 
 
-# region Test make install local plugin
-printf "Test make install local plugin -> "
+# region Test make install-plugin local plugin
+printf "Test make install-plugin local plugin -> "
 # Create a files for test
 create_files_test
 # Run make to capture the output search recipes before install the plugin
@@ -357,11 +357,11 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 echo "OK"
-# endregion Test make install local plugin
+# endregion Test make install-plugin local plugin
 
 
-# region Test make install local without yml plugin
-printf "Test make install local without yml plugin -> "
+# region Test make install-plugin local without yml plugin
+printf "Test make install-plugin local without yml plugin -> "
 # Creating a Makefile.test file for test
 cat "$MAKEFILE_FILE"> Makefile.test
 rm makefile.yaml.test
@@ -384,11 +384,11 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 echo "OK"
-# endregion Test make install local without yml plugin
+# endregion Test make install-plugin local without yml plugin
 
 
-# region Test make install package plugin
-printf "Test make install package plugin -> "
+# region Test make install-plugin package plugin
+printf "Test make install-plugin package plugin -> "
 # Create a files for test
 create_files_test
 # Running command to test
@@ -422,7 +422,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 echo "OK"
-# endregion Test make install package plugin
+# endregion Test make install-plugin package plugin
 
 # region Test make enable-recipe PACKAGE=dev NAME=github-actions
 printf "Test make enable-recipe PACKAGE=dev NAME=github-actions -> "
@@ -586,3 +586,28 @@ fi
 echo "OK"
 # endregion Test make github-actions-release-assets
 
+# region Test make enable-recipe local plugin with self require
+printf "Test make enable-recipe local plugin with self require -> "
+# Create a files for test
+create_files_test
+(echo "local"; echo "testdata/makefiles"; echo "") | $tmake install-plugin > /dev/null
+if [ $? -ne 0 ]; then
+    echo "make failed"
+    exit 1
+fi
+# Run make to capture the output make before to enable the recipe
+$tmake > "$TEST_OUTPUT"
+# Run enable recipe check (require self.test)
+$tmake enable-recipe PACKAGE=local NAME=check >> "$TEST_OUTPUT"
+# Run make to capture the output make after to enable the recipe
+$tmake >> "$TEST_OUTPUT"
+# Removing the lines that are not part of the output but are appended by github actions
+strip_output
+# Checking the output
+diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-enable-recipe-local-bool64-dev-self-require.output"
+if [ $? -ne 0 ]; then
+    echo "make output is not the same"
+    exit 1
+fi
+echo "OK"
+# endregion Test make enable-recipe local plugin with self require
