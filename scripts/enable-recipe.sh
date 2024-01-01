@@ -25,14 +25,14 @@ if [[ -z "$PLUGIN" || "$PLUGIN" == "dev" ]]; then
   done < <(find "$EXTEND_DEVGO_PATH/makefiles" -name "*.mk" -print0)
 else
     # Loop over each plugin
-    for plugin_key in "${PLUGINS[@]}"; do
-        plugin_name=$(eval "echo \${PLUGIN_${plugin_key}_NAME}")
+    for pkey in "${PLUGINS[@]}"; do
+        plugin_name=$(eval "echo \${PLUGIN_${pkey}_NAME}")
 
         if [ "$plugin_name" != "$PLUGIN" ]; then
             continue
         fi
 
-        plugin_makefiles_path=$(eval "echo \${PLUGIN_${plugin_key}_MAKEFILES_PATH}")
+        plugin_makefiles_path=$(eval "echo \${PLUGIN_${pkey}_MAKEFILES_PATH}")
 
         while IFS= read -r -d '' file; do
             # Extract the filename without extension
@@ -41,11 +41,11 @@ else
 
             # Create the map entry with the relative path and filename
             key="$filename_noext"
-            value="\$(PLUGIN_${plugin_key}_MAKEFILES_PATH)/$filename"
+            value="\$(PLUGIN_${pkey}_MAKEFILES_PATH)/$filename"
 
             # Add the entry to the map
             RECIPE_MAP+=("$key=$value")
-            RECIPE_PLUGIN_MAP+=("$key=$plugin_key")
+            RECIPE_PLUGIN_MAP+=("$key=$pkey")
         done < <(find "$plugin_makefiles_path" -name "*.mk" -print0)
     done
 fi
@@ -53,8 +53,9 @@ fi
 found=false
 
 # For checking if the recipe require another recipe
-recipe_relative_path=""
+recipe_path_makefile=""
 recipe_path=""
+plugin_key=""
 
 for entry in "${RECIPE_MAP[@]}"; do
     key=$(echo $entry | cut -d= -f1)
@@ -62,28 +63,29 @@ for entry in "${RECIPE_MAP[@]}"; do
 
     if [ "$key" = "$NAME" ]; then
         found=true
-        recipe_relative_path=$value
+        recipe_path_makefile=$value
 
         plugin_key=$(echo ${RECIPE_PLUGIN_MAP[$i]} | cut -d= -f2)
 
         if [[ "$plugin_key" == "dev" ]]; then
             # Replace occurrences of placeholders with actual values
-            recipe_path=$(echo "$recipe_relative_path" | sed "s#\$(EXTEND_DEVGO_PATH)#${EXTEND_DEVGO_PATH}#g")
+            recipe_path=$(echo "$recipe_path_makefile" | sed "s#\$(EXTEND_DEVGO_PATH)#${EXTEND_DEVGO_PATH}#g")
         else
             # Replace occurrences of placeholders with actual values
             variable_name="PLUGIN_${plugin_key}_MAKEFILES_PATH"
             placeholder="\$(PLUGIN_${plugin_key}_MAKEFILES_PATH)"
             replacement="${!variable_name}"
 
-            recipe_path=$(echo "$recipe_relative_path" | sed "s#${placeholder}#${replacement}#g")
+            recipe_path=$(echo "$recipe_path_makefile" | sed "s#${placeholder}#${replacement}#g")
         fi
+
         break
     fi
 done
 
 if [ "$found" = "true" ]; then
     # Check if the recipe is already included
-    if grep -q $recipe_relative_path "$MAKEFILE_FILE"; then
+    if grep -q $recipe_path_makefile "$MAKEFILE_FILE"; then
         echo "Recipe $PLUGIN $NAME already enabled."
 
         exit 0
@@ -94,7 +96,11 @@ if [ "$found" = "true" ]; then
         plugin=$(echo "$line" | awk '{n=split($0,a,"/"); a[n]=""; for(i=1;i<n;i++) printf("%s%s",a[i],i<n-1?"/":"")}' | sed 's/^#- require - //')
         recipe=$(echo "$line" | awk -F'/' '{print $NF}')
 
-        result=$(PLUGINS=$PLUGINS PLUGIN=$plugin NAME=$recipe bash $EXTEND_DEVGO_PATH/scripts/enable-recipe.sh)
+        if [ "$plugin" == "self" ]; then
+          plugin=$PLUGIN
+        fi
+
+        result=$(PLUGINS=${PLUGINS[*]} PLUGIN=$plugin NAME=$recipe bash $EXTEND_DEVGO_PATH/scripts/enable-recipe.sh)
 
         if [[ "$result" =~ ^Recipe\ .*\ enabled\ successfully\.$ ]] || [[ "$result" =~ ^Recipe\ .*\ already\ enabled\.$ ]]; then
             continue
@@ -113,10 +119,13 @@ if [ "$found" = "true" ]; then
 
         if [[ -z "$plugin" || "$plugin" == "dev" ]]; then
             recipe_path="$EXTEND_DEVGO_PATH/makefiles/$recipe.mk"
+        elif [ "$plugin" == "self" ]; then
+            variable_name="PLUGIN_${plugin_key}_MAKEFILES_PATH"
+            recipe_path="${!variable_name}/$recipe.mk"
         else
             # find plugin
-            for plugin_key in "${PLUGINS[@]}"; do
-                plugin_name=$(eval "echo \${PLUGIN_${plugin_key}_NAME}")
+            for pkey in "${PLUGINS[@]}"; do
+                plugin_name=$(eval "echo \${PLUGIN_${pkey}_NAME}")
 
                 if [ "$plugin_name" == "$plugin" ]; then
                     found=true
@@ -130,7 +139,7 @@ if [ "$found" = "true" ]; then
                 exit 1
             fi
 
-            variable_name="PLUGIN_${plugin_key}_MAKEFILES_PATH"
+            variable_name="PLUGIN_${pkey}_MAKEFILES_PATH"
             recipe_path="${!variable_name}/$recipe.mk"
         fi
 
@@ -140,7 +149,7 @@ if [ "$found" = "true" ]; then
         fi
     done < <(awk '/^#- source - /{print $0}' $recipe_path)
 
-    awk '/# End extra recipes here./{print "-include '"$recipe_relative_path"'"; print; next} 1' "$MAKEFILE_FILE" > "$MAKEFILE_FILE".tmp && mv "$MAKEFILE_FILE".tmp "$MAKEFILE_FILE"
+    awk '/# End extra recipes here./{print "-include '"$recipe_path_makefile"'"; print; next} 1' "$MAKEFILE_FILE" > "$MAKEFILE_FILE".tmp && mv "$MAKEFILE_FILE".tmp "$MAKEFILE_FILE"
     echo "Recipe $PLUGIN $NAME enabled successfully."
 else
     echo "Recipe $PLUGIN $NAME not found."

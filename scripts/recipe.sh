@@ -44,8 +44,9 @@ parse_makefile() {
 }
 
 printf_recipes() {
-    local excludes="$1"
+    local package="$1"
     local afiles="$2"
+    local excludes="$3"
 
     # Convert the space-separated string to an array
     IFS=' ' read -r -a files <<< "$afiles"
@@ -81,6 +82,10 @@ printf_recipes() {
 
                   if [ "$comma" = true ]; then
                       desc="$desc,"
+                  fi
+
+                  if [ "$plugin" == "self" ]; then
+                    plugin=$package
                   fi
 
                   desc=$(printf "$desc %s/%s" "$plugin" "$recipe")

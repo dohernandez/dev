@@ -76,5 +76,7 @@ bool64/dev:
     [32mtest-unit-multi     [0m Run unit tests multiple times, use `UNIT_TEST_COUNT=10 make test-unit-multi` to control count
 
 local:
+  [33mcheck               [0m   Utilities for check the code (requires: local/test)
+    [32mcheck               [0m Run checks
   [33mtest                [0m   Utilities for testing code (requires: bool64/dev/test-unit)
     [32mtest                [0m Run tests

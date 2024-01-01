@@ -10,4 +10,4 @@ enables=$(parse_makefile "$MAKEFILE_FILE")
 
 excludes="${EXTEND_DEVGO_PATH}/makefiles/main.mk ${EXTEND_DEVGO_PATH}/makefiles/recipe.mk"
 
-printf_recipes "$excludes" "$enables"
+printf_recipes "" "$enables" "$excludes"
