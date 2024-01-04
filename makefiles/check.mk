@@ -6,6 +6,8 @@
 
 #- target-group - BEFORE_CHECK_TARGETS:check
 BEFORE_CHECK_TARGETS :=
+#- target-group - CHECK_TARGETS:check
+CHECK_TARGETS := "lint" "test"
 #- target-group - AFTER_CHECK_TARGETS:check
 AFTER_CHECK_TARGETS :=
 
@@ -16,8 +18,9 @@ check:
 		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target; \
 	done
 
-	@make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) lint
-	@make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) test
+	@for target in $(CHECK_TARGETS); do \
+		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target; \
+	done
 
 	@for target in $(AFTER_CHECK_TARGETS); do \
 		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target; \

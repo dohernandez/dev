@@ -19,6 +19,8 @@ test-unit-multi:
 
 #- target-group - BEFORE_TEST_TARGETS:test
 BEFORE_TEST_TARGETS :=
+#- target-group - TEST_TARGETS:test
+TEST_TARGETS := "test-unit"
 #- target-group - AFTER_TEST_TARGETS:test
 AFTER_TEST_TARGETS :=
 
@@ -29,7 +31,9 @@ test:
 		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target; \
 	done
 
-	@make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) test-unit
+	@for target in $(TEST_TARGETS); do \
+		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target; \
+	done
 
 	@for target in $(AFTER_TEST_TARGETS); do \
 		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target; \

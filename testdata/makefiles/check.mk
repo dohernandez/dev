@@ -4,6 +4,8 @@
 #- require - dev/check
 #- require - self/test
 
+CHECK_TARGETS = "test"
+
 BEFORE_CHECK_TARGETS += before-check-requirements
 
 ## Run before check requirements local

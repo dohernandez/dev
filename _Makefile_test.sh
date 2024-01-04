@@ -30,11 +30,14 @@ create_files_test() {
 }
 
 strip_output() {
-    # Removing the lines that are not part of the output but are appended by github actions
-    cat "$TEST_OUTPUT" | grep -v "make\[1\]: Entering directory '/home/runner/work/dev/dev'" \
-      | grep -v "make\[1\]: Leaving directory '/home/runner/work/dev/dev'" \
-      | sed -r 's/make\[1\]: \*\*\* \[[^]]*\: ([^]]*)\] Error 1/make[1]: *** [\1] Error 1/' > "$TEST_OUTPUT.tmp" \
-      && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
+    # Regular expression to match both error message formats and extract "Error 1"
+    error_pattern='make(\\[[0-9]+\\])?:.*Error 1'
+
+    cat "$TEST_OUTPUT" | \
+        grep -v 'Entering directory' | \
+        grep -v 'Leaving directory' | \
+        awk -v pattern="$error_pattern" '{ while (match($0, pattern)) { $0 = substr($0, 1, RSTART-1) "Error 1" substr($0, RSTART+RLENGTH); } } 1' \
+        > "$TEST_OUTPUT.tmp" && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
 }
 
 check_output() {
@@ -255,7 +258,7 @@ Test_make_enable_recipe_not_found_package_dev_name_not_found() {
   echo "OK"
 }
 
-Test_make_disable-recipe_name_lint__not_found__name_check() {
+Test_make_disable_recipe_name_lint__not_found__name_check() {
   printf "Test make disable-recipe NAME=lint (not found) NAME=check -> "
   # Create a files for test
   create_files_test
