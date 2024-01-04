@@ -11,7 +11,7 @@ CHECK_TARGETS := "lint" "test"
 #- target-group - AFTER_CHECK_TARGETS:check
 AFTER_CHECK_TARGETS :=
 
-## Run all checks belonging to test check, lint and test
+## Run all checks belonging to check group, lint and test
 check:
 	@echo "Running check..."
 	@for target in $(BEFORE_CHECK_TARGETS); do \

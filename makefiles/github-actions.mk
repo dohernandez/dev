@@ -10,11 +10,39 @@ GITHUB_PATH ?= .github
 # GITHUB_PATH_IGNORE is used to ignore files in .github folder on tests
 GITHUB_PATH_IGNORE ?= false
 
+GITHUB_ACTIONS_RELEASE_ASSETS ?= false
+
 #-## Require a bool64/dev/release-assets
 
-## Create/Replace GitHub Actions from template
+#- target-group - BEFORE_GITHUB_ACTIONS_TARGETS:github-actions
+BEFORE_GITHUB_ACTIONS_TARGETS :=
+#- target-group - GITHUB_ACTIONS_TARGETS:github-actions
+GITHUB_ACTIONS_TARGETS := "github-actions-base"
+#- target-group - AFTER_GITHUB_ACTIONS_TARGETS:github-actions
+ifeq ($(GITHUB_ACTIONS_RELEASE_ASSETS),true)
+	AFTER_GITHUB_ACTIONS_TARGETS := github-actions-release-assets
+else
+	AFTER_GITHUB_ACTIONS_TARGETS :=
+endif
+
+## Run all github-actions belonging to github-actions group
 github-actions:
-	@echo "Generating GitHub Actions"
+	@echo "Generating/Replacing GitHub Actions..."
+	@for target in $(BEFORE_GITHUB_ACTIONS_TARGETS); do \
+		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target; \
+	done
+
+	@for target in $(GITHUB_ACTIONS_TARGETS); do \
+		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target; \
+	done
+
+	@for target in $(AFTER_GITHUB_ACTIONS_TARGETS); do \
+		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target; \
+	done
+
+## Create/Replace GitHub Actions from template
+github-actions-base:
+	@echo "Generating GitHub Actions base..."
 	@mkdir -p $(PWD)/$(GITHUB_PATH)/workflows
 	@if [ -n "$$(find "$(PWD)/$(GITHUB_PATH)/workflows" -name '*.yml' -print -quit)" ]; then \
 		chmod +w "$(PWD)/$(GITHUB_PATH)/workflows"/*.yml; \
