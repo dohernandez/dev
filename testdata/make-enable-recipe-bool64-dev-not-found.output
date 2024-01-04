@@ -7,7 +7,7 @@ Usage
   [32mversion:            [0m  Print the version number of dev tools.
 Enabling recipe: dev not-found
 Recipe dev not-found not found.
-make[1]: *** [enable-recipe] Error 1
+Error 1
 Usage
   [32msearch-recipes:     [0m  Search all available recipes
   [32menable-recipe:      [0m  Enable a recipe into Makefile, use make enable-recipe PACKAGE=package_name NAME=recipe_name

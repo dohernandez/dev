@@ -1,9 +1,12 @@
 #-## Utilities for testing code
 
 #- Placeholders require include the file in the Makefile
-#- require - bool64/dev/test-unit
+#- require - dev/test
 
-## Run tests
-test: test-unit
+BEFORE_TEST_TARGETS += test-local
 
-.PHONY: test
+## Run tests local
+test-local:
+	@echo "Running tests local..."
+
+.PHONY: test-local

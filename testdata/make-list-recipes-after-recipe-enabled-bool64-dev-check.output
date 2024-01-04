@@ -21,17 +21,17 @@ Usage
   [32mfix-lint:           [0m  Apply goimports and gofmt
   [32mtest-unit:          [0m  Run unit tests
   [32mtest-unit-multi:    [0m  Run unit tests multiple times, use `UNIT_TEST_COUNT=10 make test-unit-multi` to control count
-  [32mtest:               [0m  Run tests
-  [32mcheck:              [0m  Run lint and test
+  [32mtest:               [0m  Run all tests belonging to test group
+  [32mcheck:              [0m  Run all checks belonging to test check, lint and test
 List of recipes enabled:
   [33mversion             [0m   Print the version number of make dev tools.
     [32mversion             [0m Print the version number of dev tools.
   [33mlint                [0m   
     [32mlint                [0m Check with golangci-lint
     [32mfix-lint            [0m Apply goimports and gofmt
-  [33mtest-unit           [0m   
+  [33mtest                [0m   Utilities for testing code
     [32mtest-unit           [0m Run unit tests
     [32mtest-unit-multi     [0m Run unit tests multiple times, use `UNIT_TEST_COUNT=10 make test-unit-multi` to control count
-  [33mcheck               [0m   Utilities for checking code (requires: bool64/dev/lint, bool64/dev/test-unit)
-    [32mtest                [0m Run tests
-    [32mcheck               [0m Run lint and test
+    [32mtest                [0m Run all tests belonging to test group
+  [33mcheck               [0m   Utilities for checking code (requires: bool64/dev/lint, /test)
+    [32mcheck               [0m Run all checks belonging to test check, lint and test
