@@ -19,7 +19,7 @@ Usage
   [32mtest-unit:          [0m  Run unit tests
   [32mtest-unit-multi:    [0m  Run unit tests multiple times, use `UNIT_TEST_COUNT=10 make test-unit-multi` to control count
   [32mtest:               [0m  Run all tests belonging to test group
-  [32mcheck:              [0m  Run all checks belonging to test check, lint and test
+  [32mcheck:              [0m  Run all checks belonging to check group, lint and test
 Enabling recipe: dev check
 Recipe dev check already enabled.
 Usage
@@ -34,4 +34,4 @@ Usage
   [32mtest-unit:          [0m  Run unit tests
   [32mtest-unit-multi:    [0m  Run unit tests multiple times, use `UNIT_TEST_COUNT=10 make test-unit-multi` to control count
   [32mtest:               [0m  Run all tests belonging to test group
-  [32mcheck:              [0m  Run all checks belonging to test check, lint and test
+  [32mcheck:              [0m  Run all checks belonging to check group, lint and test

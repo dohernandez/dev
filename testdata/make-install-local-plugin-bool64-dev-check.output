@@ -1,9 +1,10 @@
 Search for available recipe to enable
 dev:
   [33mcheck               [0m   Utilities for checking code (requires: bool64/dev/lint, dev/test)
-    [32mcheck               [0m Run all checks belonging to test check, lint and test
+    [32mcheck               [0m Run all checks belonging to check group, lint and test
   [33mgithub-actions      [0m   Create/replace GitHub Actions from template (requires: bool64/dev/release-assets)
-    [32mgithub-actions      [0m Create/Replace GitHub Actions from template
+    [32mgithub-actions      [0m Run all github-actions belonging to github-actions group
+    [32mgithub-actions-base [0m Create/Replace GitHub Actions from template
     [32mgithub-actions-release-assets[0m Create/Replace GitHub Actions from template for release-assets
   [33mtest                [0m   Utilities for testing code
     [32mtest-unit           [0m Run unit tests
@@ -44,9 +45,10 @@ Plugin local added to makefile.yaml.test
 Search for available recipe to enable
 dev:
   [33mcheck               [0m   Utilities for checking code (requires: bool64/dev/lint, dev/test)
-    [32mcheck               [0m Run all checks belonging to test check, lint and test
+    [32mcheck               [0m Run all checks belonging to check group, lint and test
   [33mgithub-actions      [0m   Create/replace GitHub Actions from template (requires: bool64/dev/release-assets)
-    [32mgithub-actions      [0m Create/Replace GitHub Actions from template
+    [32mgithub-actions      [0m Run all github-actions belonging to github-actions group
+    [32mgithub-actions-base [0m Create/Replace GitHub Actions from template
     [32mgithub-actions-release-assets[0m Create/Replace GitHub Actions from template for release-assets
   [33mtest                [0m   Utilities for testing code
     [32mtest-unit           [0m Run unit tests
