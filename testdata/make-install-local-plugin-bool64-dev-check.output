@@ -1,7 +1,7 @@
 Search for available recipe to enable
 dev:
   [33mcheck               [0m   Utilities for checking code (requires: bool64/dev/lint, dev/test)
-    [32mcheck               [0m Run lint and test
+    [32mcheck               [0m Run all checks belonging to test check, lint and test
   [33mgithub-actions      [0m   Create/replace GitHub Actions from template (requires: bool64/dev/release-assets)
     [32mgithub-actions      [0m Create/Replace GitHub Actions from template
     [32mgithub-actions-release-assets[0m Create/Replace GitHub Actions from template for release-assets
@@ -44,7 +44,7 @@ Plugin local added to makefile.yaml.test
 Search for available recipe to enable
 dev:
   [33mcheck               [0m   Utilities for checking code (requires: bool64/dev/lint, dev/test)
-    [32mcheck               [0m Run lint and test
+    [32mcheck               [0m Run all checks belonging to test check, lint and test
   [33mgithub-actions      [0m   Create/replace GitHub Actions from template (requires: bool64/dev/release-assets)
     [32mgithub-actions      [0m Create/Replace GitHub Actions from template
     [32mgithub-actions-release-assets[0m Create/Replace GitHub Actions from template for release-assets
@@ -82,7 +82,8 @@ bool64/dev:
     [32mtest-unit-multi     [0m Run unit tests multiple times, use `UNIT_TEST_COUNT=10 make test-unit-multi` to control count
 
 local:
-  [33mcheck               [0m   Utilities for check the code (requires: local/test)
-    [32mcheck               [0m Run checks
+  [33mcheck               [0m   Utilities for check the code (requires: dev/check, local/test)
+    [32mbefore-check-requirements[0m Run before check requirements local
+    [32mafter-check-requirements[0m Run after check requirements local
   [33mtest                [0m   Utilities for testing code (requires: dev/test)
     [32mtest-local          [0m Run tests local

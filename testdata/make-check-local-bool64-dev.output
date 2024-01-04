@@ -5,18 +5,20 @@ Usage
   [32mdisable-recipe:     [0m  Disable a recipe from Makefile, use make disable-recipe NAME=recipe_name
   [32minstall-plugin:     [0m  Install a plugin, use make install-plugin
   [32mversion:            [0m  Print the version number of dev tools.
-Enabling recipe: dev check
-Recipe dev check enabled successfully.
-Usage
-  [32msearch-recipes:     [0m  Search all available recipes
-  [32menable-recipe:      [0m  Enable a recipe into Makefile, use make enable-recipe PACKAGE=package_name NAME=recipe_name
-  [32mlist-recipes:       [0m  List the recipes enabled into Makefile
-  [32mdisable-recipe:     [0m  Disable a recipe from Makefile, use make disable-recipe NAME=recipe_name
-  [32minstall-plugin:     [0m  Install a plugin, use make install-plugin
-  [32mversion:            [0m  Print the version number of dev tools.
   [32mlint:               [0m  Check with golangci-lint
   [32mfix-lint:           [0m  Apply goimports and gofmt
   [32mtest-unit:          [0m  Run unit tests
   [32mtest-unit-multi:    [0m  Run unit tests multiple times, use `UNIT_TEST_COUNT=10 make test-unit-multi` to control count
   [32mtest:               [0m  Run all tests belonging to test group
   [32mcheck:              [0m  Run all checks belonging to test check, lint and test
+  [32mtest-local:         [0m  Run tests local
+  [32mbefore-check-requirements:[0m  Run before check requirements local
+  [32mafter-check-requirements:[0m  Run after check requirements local
+Running check...
+Running before check requirements...
+Checking packages.
+Running tests...
+Running tests local...
+Running unit tests.
+?   	github.com/dohernandez/dev/makefiles	[no test files]
+Running after check requirements...

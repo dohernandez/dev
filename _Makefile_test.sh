@@ -591,6 +591,33 @@ Test_make_test_local_plugin() {
   echo "OK"
 }
 
+Test_make_check_local_plugin() {
+  printf "Test make check local plugin -> "
+  # Create a files for test
+  create_files_test
+  (echo "local"; echo "testdata/makefiles"; echo "") | $tmake install-plugin > /dev/null
+  if [ $? -ne 0 ]; then
+      echo "make failed"
+      exit 1
+  fi
+  # Run enable recipe check
+  $tmake enable-recipe PACKAGE=local NAME=check > /dev/null
+  # Run make to capture the output make after to enable the recipe
+  $tmake > "$TEST_OUTPUT"
+  # Run make check
+  $tmake -e UNIT_TEST_PATH=./makefiles check >> "$TEST_OUTPUT"
+  if [ $? -ne 0 ]; then
+      echo "make failed"
+      exit 1
+  fi
+  # Removing the lines that are not part of the output but are appended by github actions
+  strip_output
+  # Checking the output
+  check_output "$TEST_OUTPUT" "$TESTDATA_PATH/make-check-local-bool64-dev.output"
+
+  echo "OK"
+}
+
 # Get a list of all defined functions
 all_functions=$(declare -F | cut -d' ' -f3)
 

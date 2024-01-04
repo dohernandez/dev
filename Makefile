@@ -33,4 +33,8 @@ endif
 ## Run tests
 test:
 	@echo "Running unit tests"
-	@bash _Makefile_test.sh
+	@if [ "$(TEST)" = "" ]; then \
+		bash _Makefile_test.sh; \
+	else \
+		bash _Makefile_test.sh $(TEST); \
+	fi
