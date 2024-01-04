@@ -2,12 +2,9 @@
 
 #- Placeholders require include the file in the Makefile
 #- require - bool64/dev/lint
-#- require - bool64/dev/test-unit
-
-## Run tests
-test: test-unit
+#- require - self/test
 
 ## Run lint and test
 check: lint test
 
-.PHONY: test check
+.PHONY: check

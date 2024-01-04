@@ -1,11 +1,14 @@
 Search for available recipe to enable
 dev:
-  [33mcheck               [0m   Utilities for checking code (requires: bool64/dev/lint, bool64/dev/test-unit)
-    [32mtest                [0m Run tests
+  [33mcheck               [0m   Utilities for checking code (requires: bool64/dev/lint, dev/test)
     [32mcheck               [0m Run lint and test
   [33mgithub-actions      [0m   Create/replace GitHub Actions from template (requires: bool64/dev/release-assets)
     [32mgithub-actions      [0m Create/Replace GitHub Actions from template
     [32mgithub-actions-release-assets[0m Create/Replace GitHub Actions from template for release-assets
+  [33mtest                [0m   Utilities for testing code
+    [32mtest-unit           [0m Run unit tests
+    [32mtest-unit-multi     [0m Run unit tests multiple times, use `UNIT_TEST_COUNT=10 make test-unit-multi` to control count
+    [32mtest                [0m Run all tests belonging to test group
 
 bool64/dev:
   [33mbench               [0m   
@@ -63,3 +66,6 @@ bool64/dev:
     [32mtest-integration    [0m Run integration tests
     [32mstart-deps          [0m Start dependencies for integration tests or local dev via docker-compose up
     [32mstop-deps           [0m Stop dependencies for integration tests or local dev via docker-compose down
+  [33mtest-unit           [0m   
+    [32mtest-unit           [0m Run unit tests
+    [32mtest-unit-multi     [0m Run unit tests multiple times, use `UNIT_TEST_COUNT=10 make test-unit-multi` to control count

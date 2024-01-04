@@ -37,6 +37,16 @@ strip_output() {
       && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
 }
 
+check_output() {
+#    cat "$1" > "$2"
+    # Checking the output
+    diff "$1" "$2"
+    if [ $? -ne 0 ]; then
+        echo "make output is not the same"
+        exit 1
+    fi
+}
+
 # region Test make
 printf "Test make -> "
 # Create a files for test
@@ -50,7 +60,7 @@ fi
 # Removing the lines that are not part of the output but are appended by github actions
 strip_output
 # Checking the output
-diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-bool64-dev.output"
+check_output "$TEST_OUTPUT" "$TESTDATA_PATH/make-bool64-dev.output"
 if [ $? -ne 0 ]; then
     echo "make output is not the same"
     exit 1
@@ -72,7 +82,7 @@ fi
 # Removing the lines that are not part of the output but are appended by github actions
 strip_output
 # Checking the output
-diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-search-recipes-bool64-dev.output"
+check_output "$TEST_OUTPUT" "$TESTDATA_PATH/make-search-recipes-bool64-dev.output"
 if [ $? -ne 0 ]; then
     echo "make output is not the same"
     exit 1
@@ -94,7 +104,7 @@ fi
 # Removing the lines that are not part of the output but are appended by github actions
 strip_output
 # Checking the output
-diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-list-recipes-bool64-dev.output"
+check_output "$TEST_OUTPUT" "$TESTDATA_PATH/make-list-recipes-bool64-dev.output"
 if [ $? -ne 0 ]; then
     echo "make output is not the same"
     exit 1
@@ -120,7 +130,7 @@ $tmake >> "$TEST_OUTPUT"
 # Removing the lines that are not part of the output but are appended by github actions
 strip_output
 # Checking the output
-diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-enable-recipe-bool64-dev-lint.output"
+check_output "$TEST_OUTPUT" "$TESTDATA_PATH/make-enable-recipe-bool64-dev-lint.output"
 if [ $? -ne 0 ]; then
     echo "make output is not the same"
     exit 1
@@ -148,7 +158,7 @@ $tmake >> "$TEST_OUTPUT"
 # Removing the lines that are not part of the output but are appended by github actions
 strip_output
 # Checking the output
-diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-disable-recipe-bool64-dev-lint.output"
+check_output "$TEST_OUTPUT" "$TESTDATA_PATH/make-disable-recipe-bool64-dev-lint.output"
 if [ $? -ne 0 ]; then
     echo "make output is not the same"
     exit 1
@@ -175,12 +185,19 @@ $tmake >> "$TEST_OUTPUT"
 # Removing the lines that are not part of the output but are appended by github actions
 strip_output
 # Checking the output
-diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-enable-recipe-bool64-dev-check.output"
+check_output "$TEST_OUTPUT" "$TESTDATA_PATH/make-enable-recipe-bool64-dev-check.output"
 if [ $? -ne 0 ]; then
     echo "make output is not the same"
     exit 1
 fi
 echo "OK"
+# TODO: Check
+## Start extra recipes here.
+#-include $(PLUGIN_BOOL64DEV_MAKEFILES_PATH)/lint.mk
+#-include $(PLUGIN_BOOL64DEV_MAKEFILES_PATH)/test-unit.mk
+#-include $(EXTEND_DEVGO_PATH)/makefiles/test.mk
+#-include $(EXTEND_DEVGO_PATH)/makefiles/check.mk
+## End extra recipes here.
 # endregion Test make enable-recipe PACKAGE=dev NAME=check
 
 
@@ -205,7 +222,7 @@ fi
 # Removing the lines that are not part of the output but are appended by github actions
 strip_output
 # Checking the output
-diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-search-recipe-after-recipe-enabled-bool64-dev.output"
+check_output "$TEST_OUTPUT" "$TESTDATA_PATH/make-search-recipe-after-recipe-enabled-bool64-dev.output"
 if [ $? -ne 0 ]; then
     echo "make output is not the same"
     exit 1
@@ -239,7 +256,7 @@ $tmake >> "$TEST_OUTPUT"
 # Removing the lines that are not part of the output but are appended by github actions
 strip_output
 # Checking the output
-diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-enable-recipe-twice-bool64-dev-check.output"
+check_output "$TEST_OUTPUT" "$TESTDATA_PATH/make-enable-recipe-twice-bool64-dev-check.output"
 if [ $? -ne 0 ]; then
     echo "make output is not the same"
     exit 1
@@ -265,7 +282,7 @@ $tmake >> "$TEST_OUTPUT"
 # Removing the lines that are not part of the output but are appended by github actions
 strip_output
 # Checking the output
-diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-enable-recipe-bool64-dev-not-found.output"
+check_output "$TEST_OUTPUT" "$TESTDATA_PATH/make-enable-recipe-bool64-dev-not-found.output"
 if [ $? -ne 0 ]; then
     echo "make output is not the same"
     exit 1
@@ -291,7 +308,7 @@ $tmake >> "$TEST_OUTPUT"
 # Removing the lines that are not part of the output but are appended by github actions
 strip_output
 # Checking the output
-diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-disable-recipe-lint-not-found-bool64-dev-check.output"
+check_output "$TEST_OUTPUT" "$TESTDATA_PATH/make-disable-recipe-lint-not-found-bool64-dev-check.output"
 if [ $? -ne 0 ]; then
     echo "make output is not the same"
     exit 1
@@ -325,7 +342,7 @@ fi
 # Removing the lines that are not part of the output but are appended by github actions
 strip_output
 # Checking the output
-diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-list-recipes-after-recipe-enabled-bool64-dev-check.output"
+check_output "$TEST_OUTPUT" "$TESTDATA_PATH/make-list-recipes-after-recipe-enabled-bool64-dev-check.output"
 if [ $? -ne 0 ]; then
     echo "make output is not the same"
     exit 1
@@ -351,7 +368,7 @@ $tmake search-recipes >> "$TEST_OUTPUT"
 # Removing the lines that are not part of the output but are appended by github actions
 strip_output
 # Checking the output
-diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-install-local-plugin-bool64-dev-check.output"
+check_output "$TEST_OUTPUT" "$TESTDATA_PATH/make-install-local-plugin-bool64-dev-check.output"
 if [ $? -ne 0 ]; then
     echo "make output is not the same"
     exit 1
@@ -378,7 +395,7 @@ $tmake search-recipes >> "$TEST_OUTPUT"
 # Removing the lines that are not part of the output but are appended by github actions
 strip_output
 # Checking the output
-diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-install-local-plugin-bool64-dev-check.output"
+check_output "$TEST_OUTPUT" "$TESTDATA_PATH/make-install-local-plugin-bool64-dev-check.output"
 if [ $? -ne 0 ]; then
     echo "make output is not the same"
     exit 1
@@ -400,7 +417,7 @@ fi
 # Removing the lines that are not part of the output but are appended by github actions
 strip_output
 # Checking the output
-diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-install-package-plugin-bool64-dev-check.output"
+check_output "$TEST_OUTPUT" "$TESTDATA_PATH/make-install-package-plugin-bool64-dev-check.output"
 if [ $? -ne 0 ]; then
     echo "make output is not the same"
     exit 1
@@ -447,7 +464,7 @@ fi
 # Removing the lines that are not part of the output but are appended by github actions
 strip_output
 # Checking the output
-diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-enable-recipe-bool64-dev-github-actions.output"
+check_output "$TEST_OUTPUT" "$TESTDATA_PATH/make-enable-recipe-bool64-dev-github-actions.output"
 if [ $? -ne 0 ]; then
     echo "make output is not the same"
     exit 1
@@ -474,7 +491,7 @@ fi
 # Removing the lines that are not part of the output but are appended by github actions
 strip_output
 # Checking the output
-diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-github-actions-bool64-dev.output"
+check_output "$TEST_OUTPUT" "$TESTDATA_PATH/make-github-actions-bool64-dev.output"
 if [ $? -ne 0 ]; then
     echo "make output is not the same"
     exit 1
@@ -538,7 +555,7 @@ fi
 # Removing the lines that are not part of the output but are appended by github actions
 strip_output
 # Checking the output
-diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-github-actions-release-assets-bool64-dev.output"
+check_output "$TEST_OUTPUT" "$TESTDATA_PATH/make-github-actions-release-assets-bool64-dev.output"
 if [ $? -ne 0 ]; then
     echo "make output is not the same"
     exit 1
@@ -604,10 +621,40 @@ $tmake >> "$TEST_OUTPUT"
 # Removing the lines that are not part of the output but are appended by github actions
 strip_output
 # Checking the output
-diff "$TEST_OUTPUT" "$TESTDATA_PATH/make-enable-recipe-local-bool64-dev-self-require.output"
+check_output "$TEST_OUTPUT" "$TESTDATA_PATH/make-enable-recipe-local-bool64-dev-self-require.output"
 if [ $? -ne 0 ]; then
     echo "make output is not the same"
     exit 1
 fi
 echo "OK"
 # endregion Test make enable-recipe local plugin with self require
+
+# region Test make test local plugin
+printf "Test make test local plugin -> "
+# Create a files for test
+create_files_test
+(echo "local"; echo "testdata/makefiles"; echo "") | $tmake install-plugin > /dev/null
+if [ $? -ne 0 ]; then
+    echo "make failed"
+    exit 1
+fi
+# Run enable recipe test
+$tmake enable-recipe PACKAGE=local NAME=test > /dev/null
+# Run make to capture the output make after to enable the recipe
+$tmake > "$TEST_OUTPUT"
+# Run make test
+$tmake -e UNIT_TEST_PATH=./makefiles test >> "$TEST_OUTPUT"
+if [ $? -ne 0 ]; then
+    echo "make failed"
+    exit 1
+fi
+# Removing the lines that are not part of the output but are appended by github actions
+strip_output
+# Checking the output
+check_output "$TEST_OUTPUT" "$TESTDATA_PATH/make-test-local-bool64-dev.output"
+if [ $? -ne 0 ]; then
+    echo "make output is not the same"
+    exit 1
+fi
+echo "OK"
+# endregion Test test local plugin
