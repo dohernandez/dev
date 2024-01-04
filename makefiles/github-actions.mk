@@ -54,7 +54,7 @@ github-actions-base:
 		&& chmod +w $(PWD)/$(GITHUB_PATH)/workflows/*.yml \
 		&& mkdir -p $(PWD)/$(GITHUB_PATH)/actions
 	@if [ -n "$$(find "$(PWD)/$(GITHUB_PATH)/actions" -name '*.yml' -print -quit)" ]; then \
-		chmod +w "$(PWD)/$(GITHUB_PATH)/actions"/*.yml; \
+		chmod +w "$(PWD)/$(GITHUB_PATH)/actions"/*/*.yml; \
 		if [ $$? -ne 0 ]; then \
             echo "could not chmod +w existing actions"; \
         fi; \
