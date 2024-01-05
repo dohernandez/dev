@@ -288,7 +288,7 @@ Test_make_list_recipes_after_recipe_enabled_package_dev_name_check() {
   $tmake > "$TEST_OUTPUT"
   # Run make to capture the output list recipes before enable the recipe
   $tmake list-recipes >> "$TEST_OUTPUT"
-  # Running command to enable first time the recipe
+  # Running command to test
   $tmake enable-recipe PACKAGE=dev NAME=check >> "$TEST_OUTPUT"
   if [ $? -ne 0 ]; then
       echo "make failed"
@@ -418,8 +418,8 @@ Test_make_enable_recipe_package_dev_name_github_actions() {
   echo "OK"
 }
 
-Test_make_github_actions() {
-  printf "Test make github-actions -> "
+Test_make_github_actions_base() {
+  printf "Test make github-actions-base -> "
   rm -rf "$TESTDATA_PATH/.github"
   # Create a files for test
   create_files_test
@@ -427,8 +427,8 @@ Test_make_github_actions() {
   $tmake enable-recipe PACKAGE=dev NAME=github-actions > /dev/null
   # Run make to capture the output with the recipe enabled
   $tmake > "$TEST_OUTPUT"
-  # Run make to capture the output with the recipe enabled
-  $tmake -e GITHUB_PATH=testdata/.github -e GITHUB_PATH_IGNORE=true github-actions >> "$TEST_OUTPUT"
+  # Running command to test
+  $tmake -e GITHUB_PATH=testdata/.github -e GITHUB_PATH_IGNORE=true github-actions-base >> "$TEST_OUTPUT"
   if [ $? -ne 0 ]; then
       echo "make failed"
       exit 1
@@ -436,7 +436,7 @@ Test_make_github_actions() {
   # Removing the lines that are not part of the output but are appended by github actions
   strip_output
   # Checking the output
-  check_output "$TEST_OUTPUT" "$TESTDATA_PATH/make-github-actions-bool64-dev.output"
+  check_output "$TEST_OUTPUT" "$TESTDATA_PATH/make-github-actions-base-bool64-dev.output"
 
   diff "$TESTDATA_PATH/.github/workflows/check.yml" "$PWD/templates/github/workflows/check.yml"
   if [ $? -ne 0 ]; then
@@ -489,7 +489,9 @@ Test_make_github_actions_release_assets() {
   $tmake enable-recipe PACKAGE=dev NAME=github-actions > /dev/null
   # Run make to capture the output with the recipe enabled
   $tmake > "$TEST_OUTPUT"
-  # Run make to capture the output with the recipe enabled
+  # Create GitHub Actions base files
+  $tmake -e GITHUB_PATH=testdata/.github -e GITHUB_PATH_IGNORE=true github-actions > /dev/null
+  # Running command to test
   $tmake -e GITHUB_PATH=testdata/.github -e GITHUB_PATH_IGNORE=true github-actions-release-assets >> "$TEST_OUTPUT"
   if [ $? -ne 0 ]; then
       echo "make failed"
@@ -544,10 +546,139 @@ Test_make_github_actions_release_assets() {
   echo "OK"
 }
 
+Test_make_github_actions() {
+  printf "Test make github-actions -> "
+  rm -rf "$TESTDATA_PATH/.github"
+  # Create a files for test
+  create_files_test
+  # Run enable recipe github-actions
+  $tmake enable-recipe PACKAGE=dev NAME=github-actions > /dev/null
+  # Run make to capture the output with the recipe enabled
+  $tmake > "$TEST_OUTPUT"
+  # Running command to test
+  $tmake -e GITHUB_PATH=testdata/.github -e GITHUB_PATH_IGNORE=true github-actions >> "$TEST_OUTPUT"
+  if [ $? -ne 0 ]; then
+      echo "make failed"
+      exit 1
+  fi
+  # Removing the lines that are not part of the output but are appended by github actions
+  strip_output
+  # Checking the output
+  check_output "$TEST_OUTPUT" "$TESTDATA_PATH/make-github-actions-bool64-dev.output"
+
+  diff "$TESTDATA_PATH/.github/workflows/check.yml" "$PWD/templates/github/workflows/check.yml"
+  if [ $? -ne 0 ]; then
+      echo "check.yml file is not the same"
+      exit 1
+  fi
+  diff "$TESTDATA_PATH/.github/workflows/cloc.yml" "$PWD/templates/github/workflows/cloc.yml"
+  if [ $? -ne 0 ]; then
+      echo "cloc.yml file is not the same"
+      exit 1
+  fi
+  diff "$TESTDATA_PATH/.github/workflows/golangci-lint.yml" "$PWD/templates/github/workflows/golangci-lint.yml"
+  if [ $? -ne 0 ]; then
+      echo "golangci-lint.yml file is not the same"
+      exit 1
+  fi
+  diff "$TESTDATA_PATH/.github/workflows/release.yml" "$PWD/templates/github/workflows/release.yml"
+  if [ $? -ne 0 ]; then
+      echo "release.yml file is not the same"
+      exit 1
+  fi
+  diff "$TESTDATA_PATH/.github/workflows/test-unit.yml" "$PWD/templates/github/workflows/test-unit.yml"
+  if [ $? -ne 0 ]; then
+      echo "test-unit.yml file is not the same"
+      exit 1
+  fi
+  if [ -e "$TESTDATA_PATH/.github/workflows/release-assets.yml" ]; then
+      echo "The file $file_name exists in the folder $folder_path"
+  fi
+  diff "$TESTDATA_PATH/.github/actions/check-branch/action.yml" "$PWD/templates/github/actions/check-branch/action.yml"
+  if [ $? -ne 0 ]; then
+      echo "action.yml file is not the same"
+      exit 1
+  fi
+  diff "$TESTDATA_PATH/.github/actions/check-branch/check-branch.sh" "$PWD/templates/github/actions/check-branch/check-branch.sh"
+  if [ $? -ne 0 ]; then
+      echo "check-branch.sh file is not the same"
+      exit 1
+  fi
+
+  echo "OK"
+}
+
+Test_make_github_actions_with_release_assets_enabled() {
+  printf "Test make github-actions with release-assets enabled -> "
+  rm -rf "$TESTDATA_PATH/.github"
+  # Create a files for test
+  create_files_test
+  # Run enable recipe github-actions
+  $tmake enable-recipe PACKAGE=dev NAME=github-actions > /dev/null
+  # Run make to capture the output with the recipe enabled
+  $tmake > "$TEST_OUTPUT"
+  # Enable release-assets
+  echo "GITHUB_ACTIONS_RELEASE_ASSETS=true" >> Makefile.test
+  # Running command to test
+  $tmake -e GITHUB_PATH=testdata/.github -e GITHUB_PATH_IGNORE=true -e GITHUB_PATH_IGNORE=true github-actions >> "$TEST_OUTPUT"
+  if [ $? -ne 0 ]; then
+      echo "make failed"
+      exit 1
+  fi
+  # Removing the lines that are not part of the output but are appended by github actions
+  strip_output
+  # Checking the output
+  check_output "$TEST_OUTPUT" "$TESTDATA_PATH/make-github-actions-release-assets-enabled-bool64-dev.output"
+
+  diff "$TESTDATA_PATH/.github/workflows/check.yml" "$PWD/templates/github/workflows/check.yml"
+  if [ $? -ne 0 ]; then
+      echo "check.yml file is not the same"
+      exit 1
+  fi
+  diff "$TESTDATA_PATH/.github/workflows/cloc.yml" "$PWD/templates/github/workflows/cloc.yml"
+  if [ $? -ne 0 ]; then
+      echo "cloc.yml file is not the same"
+      exit 1
+  fi
+  diff "$TESTDATA_PATH/.github/workflows/golangci-lint.yml" "$PWD/templates/github/workflows/golangci-lint.yml"
+  if [ $? -ne 0 ]; then
+      echo "golangci-lint.yml file is not the same"
+      exit 1
+  fi
+  diff "$TESTDATA_PATH/.github/workflows/release.yml" "$PWD/templates/github/workflows/release.yml"
+  if [ $? -ne 0 ]; then
+      echo "release.yml file is not the same"
+      exit 1
+  fi
+  diff "$TESTDATA_PATH/.github/workflows/test-unit.yml" "$PWD/templates/github/workflows/test-unit.yml"
+  if [ $? -ne 0 ]; then
+      echo "test-unit.yml file is not the same"
+      exit 1
+  fi
+  diff "$TESTDATA_PATH/.github/workflows/release-assets.yml" "$PWD/templates/github/workflows/release-assets.yml"
+  if [ $? -ne 0 ]; then
+      echo "release-assets.yml file is not the same"
+      exit 1
+  fi
+  diff "$TESTDATA_PATH/.github/actions/check-branch/action.yml" "$PWD/templates/github/actions/check-branch/action.yml"
+  if [ $? -ne 0 ]; then
+      echo "action.yml file is not the same"
+      exit 1
+  fi
+  diff "$TESTDATA_PATH/.github/actions/check-branch/check-branch.sh" "$PWD/templates/github/actions/check-branch/check-branch.sh"
+  if [ $? -ne 0 ]; then
+      echo "check-branch.sh file is not the same"
+      exit 1
+  fi
+
+  echo "OK"
+}
+
 Test_make_enable_recipe_local_plugin_with_self_require() {
   printf "Test make enable-recipe local plugin with self require -> "
   # Create a files for test
   create_files_test
+  # Running command to test
   (echo "local"; echo "testdata/makefiles"; echo "") | $tmake install-plugin > /dev/null
   if [ $? -ne 0 ]; then
       echo "make failed"
@@ -571,6 +702,7 @@ Test_make_test_local_plugin() {
   printf "Test make test local plugin -> "
   # Create a files for test
   create_files_test
+  # Running command to test
   (echo "local"; echo "testdata/makefiles"; echo "") | $tmake install-plugin > /dev/null
   if [ $? -ne 0 ]; then
       echo "make failed"
@@ -598,6 +730,7 @@ Test_make_check_local_plugin() {
   printf "Test make check local plugin -> "
   # Create a files for test
   create_files_test
+  # Running command to test
   (echo "local"; echo "testdata/makefiles"; echo "") | $tmake install-plugin > /dev/null
   if [ $? -ne 0 ]; then
       echo "make failed"
@@ -620,6 +753,10 @@ Test_make_check_local_plugin() {
 
   echo "OK"
 }
+
+##############################################
+
+# This script is used to run all the functions tests in this file
 
 # Get a list of all defined functions
 all_functions=$(declare -F | cut -d' ' -f3)
