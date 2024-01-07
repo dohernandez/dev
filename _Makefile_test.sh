@@ -458,9 +458,9 @@ Test_make_github_actions_base() {
       echo "release.yml file is not the same"
       exit 1
   fi
-  diff "$TESTDATA_PATH/.github/workflows/test-unit.yml" "$PWD/templates/github/workflows/test-unit.yml"
+  diff "$TESTDATA_PATH/.github/workflows/test.yml" "$PWD/templates/github/workflows/test.yml"
   if [ $? -ne 0 ]; then
-      echo "test-unit.yml file is not the same"
+      echo "test.yml file is not the same"
       exit 1
   fi
   if [ -e "$TESTDATA_PATH/.github/workflows/release-assets.yml" ]; then
@@ -522,9 +522,9 @@ Test_make_github_actions_release_assets() {
       echo "release.yml file is not the same"
       exit 1
   fi
-  diff "$TESTDATA_PATH/.github/workflows/test-unit.yml" "$PWD/templates/github/workflows/test-unit.yml"
+  diff "$TESTDATA_PATH/.github/workflows/test.yml" "$PWD/templates/github/workflows/test.yml"
   if [ $? -ne 0 ]; then
-      echo "test-unit.yml file is not the same"
+      echo "test.yml file is not the same"
       exit 1
   fi
   diff "$TESTDATA_PATH/.github/workflows/release-assets.yml" "$PWD/templates/github/workflows/release-assets.yml"
@@ -586,9 +586,9 @@ Test_make_github_actions() {
       echo "release.yml file is not the same"
       exit 1
   fi
-  diff "$TESTDATA_PATH/.github/workflows/test-unit.yml" "$PWD/templates/github/workflows/test-unit.yml"
+  diff "$TESTDATA_PATH/.github/workflows/test.yml" "$PWD/templates/github/workflows/test.yml"
   if [ $? -ne 0 ]; then
-      echo "test-unit.yml file is not the same"
+      echo "test.yml file is not the same"
       exit 1
   fi
   if [ -e "$TESTDATA_PATH/.github/workflows/release-assets.yml" ]; then
@@ -650,9 +650,9 @@ Test_make_github_actions_with_release_assets_enabled() {
       echo "release.yml file is not the same"
       exit 1
   fi
-  diff "$TESTDATA_PATH/.github/workflows/test-unit.yml" "$PWD/templates/github/workflows/test-unit.yml"
+  diff "$TESTDATA_PATH/.github/workflows/test.yml" "$PWD/templates/github/workflows/test.yml"
   if [ $? -ne 0 ]; then
-      echo "test-unit.yml file is not the same"
+      echo "test.yml file is not the same"
       exit 1
   fi
   diff "$TESTDATA_PATH/.github/workflows/release-assets.yml" "$PWD/templates/github/workflows/release-assets.yml"
