@@ -5,6 +5,8 @@
 
 BEFORE_TEST_TARGETS += test-local
 
+TEST_SUITE = "testdata"
+
 ## Run tests local
 test-local:
 	@echo "Running tests local..."

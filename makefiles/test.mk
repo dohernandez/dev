@@ -26,7 +26,7 @@ AFTER_TEST_TARGETS :=
 
 ## Run all tests belonging to test group
 test:
-	@echo "Running tests..."
+	@echo "Running tests$(if $(TEST_SUITE), $(TEST_SUITE),)..."
 	@for target in $(BEFORE_TEST_TARGETS); do \
 		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target; \
 	done
