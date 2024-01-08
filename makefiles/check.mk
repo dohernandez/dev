@@ -15,15 +15,15 @@ AFTER_CHECK_TARGETS :=
 check:
 	@echo "Running check..."
 	@for target in $(BEFORE_CHECK_TARGETS); do \
-		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target; \
+		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target || exit 1; \
 	done
 
 	@for target in $(CHECK_TARGETS); do \
-		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target; \
+		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target || exit 1; \
 	done
 
 	@for target in $(AFTER_CHECK_TARGETS); do \
-		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target; \
+		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target || exit 1; \
 	done
 
 .PHONY: check
