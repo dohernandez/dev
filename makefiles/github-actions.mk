@@ -24,11 +24,11 @@ AFTER_GITHUB_ACTIONS_TARGETS :=
 github-actions:
 	@echo "Generating/Replacing GitHub Actions..."
 	@for target in $(BEFORE_GITHUB_ACTIONS_TARGETS); do \
-		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target; \
+		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target || exit 1; \
 	done
 
 	@for target in $(GITHUB_ACTIONS_TARGETS); do \
-		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target; \
+		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target || exit 1; \
 	done
 
 	@if [ "$(GITHUB_ACTIONS_RELEASE_ASSETS)" = "true" ]; then \
@@ -36,7 +36,7 @@ github-actions:
 	fi
 
 	@for target in $(AFTER_GITHUB_ACTIONS_TARGETS); do \
-		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target; \
+		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target || exit 1; \
 	done
 
 ## Create/Replace GitHub Actions from template

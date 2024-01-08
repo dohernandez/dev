@@ -28,15 +28,15 @@ AFTER_TEST_TARGETS :=
 test:
 	@echo "Running tests$(if $(TEST_SUITE), $(TEST_SUITE),)..."
 	@for target in $(BEFORE_TEST_TARGETS); do \
-		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target; \
+		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target || exit 1; \
 	done
 
 	@for target in $(TEST_TARGETS); do \
-		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target; \
+		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target || exit 1; \
 	done
 
 	@for target in $(AFTER_TEST_TARGETS); do \
-		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target; \
+		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target || exit 1; \
 	done
 
 .PHONY: test-unit test-unit-multi test
