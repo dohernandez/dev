@@ -13,6 +13,28 @@ GITHUB_PATH_IGNORE ?= false
 # GITHUB_ACTIONS_RELEASE_ASSETS is used to create release-assets.yml
 GITHUB_ACTIONS_RELEASE_ASSETS ?= false
 
+#- target-group - BEFORE_GITHUB_TARGETS:github
+BEFORE_GITHUB_TARGETS :=
+#- target-group - GITHUB_TARGETS:github
+GITHUB_TARGETS := "github-actions github-dependabot"
+#- target-group - AFTER_GITHUB_TARGETS:github
+AFTER_GITHUB_TARGETS :=
+
+## Run all github belonging to github group. Run github-actions, github-dependabot
+github:
+	@echo "Generating/Replacing GitHub..."
+	@for target in $(BEFORE_GITHUB_TARGETS); do \
+		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target || exit 1; \
+	done
+
+	@for target in $(GITHUB_TARGETS); do \
+		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target || exit 1; \
+	done
+
+	@for target in $(AFTER_GITHUB_TARGETS); do \
+		make -f $(MAKEFILE_FILE) -e PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) $$target || exit 1; \
+	done
+
 #- target-group - BEFORE_GITHUB_ACTIONS_TARGETS:github-actions
 BEFORE_GITHUB_ACTIONS_TARGETS :=
 #- target-group - GITHUB_ACTIONS_TARGETS:github-actions
@@ -20,7 +42,7 @@ GITHUB_ACTIONS_TARGETS := "github-actions-base"
 #- target-group - AFTER_GITHUB_ACTIONS_TARGETS:github-actions
 AFTER_GITHUB_ACTIONS_TARGETS :=
 
-## Run all github-actions belonging to github-actions group
+## Run all github-actions belonging to github-actions group. Run github-actions-base
 github-actions:
 	@echo "Generating/Replacing GitHub Actions..."
 	@for target in $(BEFORE_GITHUB_ACTIONS_TARGETS); do \
