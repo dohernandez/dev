@@ -6,7 +6,8 @@ Usage
   [32minstall-plugin:     [0m  Install a plugin, use make install-plugin
   [32mversion:            [0m  Print the version number of dev tools.
   [32mrelease-assets:     [0m  Build and compress binaries for release assets.
-  [32mgithub-actions:     [0m  Run all github-actions belonging to github-actions group
+  [32mgithub:             [0m  Run all github belonging to github group. Run github-actions, github-dependabot
+  [32mgithub-actions:     [0m  Run all github-actions belonging to github-actions group. Run github-actions-base
   [32mgithub-actions-base:[0m  Create/Replace GitHub Actions from template
   [32mgithub-actions-release-assets:[0m  Create/Replace GitHub Actions from template for release-assets
   [32mgithub-dependabot:  [0m  Create/Replace GitHub dependabot from template for dependabot

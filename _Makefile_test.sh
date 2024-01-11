@@ -41,7 +41,7 @@ strip_output() {
 }
 
 check_output() {
-    cat "$1" > "$2"
+#    cat "$1" > "$2"
     # Checking the output
     diff "$1" "$2"
     if [ $? -ne 0 ]; then
@@ -674,8 +674,8 @@ Test_make_github_actions_with_release_assets_enabled() {
   echo "OK"
 }
 
-Test_make_github_actions_with_release_assets_enabled() {
-  printf "Test make github-actions with release-assets enabled -> "
+Test_make_github_dependabot() {
+  printf "Test make github-dependabot -> "
   rm -rf "$TESTDATA_PATH/.github"
   # Create a files for test
   create_files_test
@@ -693,6 +693,74 @@ Test_make_github_actions_with_release_assets_enabled() {
   strip_output
   # Checking the output
   check_output "$TEST_OUTPUT" "$TESTDATA_PATH/make-github-dependabot-bool64-dev.output"
+
+  diff "$TESTDATA_PATH/.github/dependabot.yml" "$PWD/templates/github/dependabot.yml"
+  if [ $? -ne 0 ]; then
+      echo "dependabot.yml file is not the same"
+      exit 1
+  fi
+
+  echo "OK"
+}
+
+Test_make_github() {
+  printf "Test make github -> "
+  rm -rf "$TESTDATA_PATH/.github"
+  # Create a files for test
+  create_files_test
+  # Run enable recipe github-actions
+  $tmake enable-recipe PACKAGE=dev NAME=github-actions > /dev/null
+  # Run make to capture the output with the recipe enabled
+  $tmake > "$TEST_OUTPUT"
+  # Running command to test
+  $tmake -e GITHUB_PATH=testdata/.github -e GITHUB_PATH_IGNORE=true github >> "$TEST_OUTPUT"
+  if [ $? -ne 0 ]; then
+      echo "make failed"
+      exit 1
+  fi
+  # Removing the lines that are not part of the output but are appended by github actions
+  strip_output
+  # Checking the output
+  check_output "$TEST_OUTPUT" "$TESTDATA_PATH/make-github-bool64-dev.output"
+
+  diff "$TESTDATA_PATH/.github/workflows/check.yml" "$PWD/templates/github/workflows/check.yml"
+  if [ $? -ne 0 ]; then
+      echo "check.yml file is not the same"
+      exit 1
+  fi
+  diff "$TESTDATA_PATH/.github/workflows/cloc.yml" "$PWD/templates/github/workflows/cloc.yml"
+  if [ $? -ne 0 ]; then
+      echo "cloc.yml file is not the same"
+      exit 1
+  fi
+  diff "$TESTDATA_PATH/.github/workflows/golangci-lint.yml" "$PWD/templates/github/workflows/golangci-lint.yml"
+  if [ $? -ne 0 ]; then
+      echo "golangci-lint.yml file is not the same"
+      exit 1
+  fi
+  diff "$TESTDATA_PATH/.github/workflows/release.yml" "$PWD/templates/github/workflows/release.yml"
+  if [ $? -ne 0 ]; then
+      echo "release.yml file is not the same"
+      exit 1
+  fi
+  diff "$TESTDATA_PATH/.github/workflows/test.yml" "$PWD/templates/github/workflows/test.yml"
+  if [ $? -ne 0 ]; then
+      echo "test.yml file is not the same"
+      exit 1
+  fi
+  if [ -e "$TESTDATA_PATH/.github/workflows/release-assets.yml" ]; then
+      echo "The file $file_name exists in the folder $folder_path"
+  fi
+  diff "$TESTDATA_PATH/.github/actions/check-branch/action.yml" "$PWD/templates/github/actions/check-branch/action.yml"
+  if [ $? -ne 0 ]; then
+      echo "action.yml file is not the same"
+      exit 1
+  fi
+  diff "$TESTDATA_PATH/.github/actions/check-branch/check-branch.sh" "$PWD/templates/github/actions/check-branch/check-branch.sh"
+  if [ $? -ne 0 ]; then
+      echo "check-branch.sh file is not the same"
+      exit 1
+  fi
 
   diff "$TESTDATA_PATH/.github/dependabot.yml" "$PWD/templates/github/dependabot.yml"
   if [ $? -ne 0 ]; then
