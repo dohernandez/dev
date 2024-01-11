@@ -41,7 +41,7 @@ strip_output() {
 }
 
 check_output() {
-#    cat "$1" > "$2"
+    cat "$1" > "$2"
     # Checking the output
     diff "$1" "$2"
     if [ $? -ne 0 ]; then
@@ -620,7 +620,7 @@ Test_make_github_actions_with_release_assets_enabled() {
   # Enable release-assets
   echo "GITHUB_ACTIONS_RELEASE_ASSETS=true" >> Makefile.test
   # Running command to test
-  $tmake -e GITHUB_PATH=testdata/.github -e GITHUB_PATH_IGNORE=true -e GITHUB_PATH_IGNORE=true github-actions >> "$TEST_OUTPUT"
+  $tmake -e GITHUB_PATH=testdata/.github -e GITHUB_PATH_IGNORE=true github-actions >> "$TEST_OUTPUT"
   if [ $? -ne 0 ]; then
       echo "make failed"
       exit 1
@@ -668,6 +668,35 @@ Test_make_github_actions_with_release_assets_enabled() {
   diff "$TESTDATA_PATH/.github/actions/check-branch/check-branch.sh" "$PWD/templates/github/actions/check-branch/check-branch.sh"
   if [ $? -ne 0 ]; then
       echo "check-branch.sh file is not the same"
+      exit 1
+  fi
+
+  echo "OK"
+}
+
+Test_make_github_actions_with_release_assets_enabled() {
+  printf "Test make github-actions with release-assets enabled -> "
+  rm -rf "$TESTDATA_PATH/.github"
+  # Create a files for test
+  create_files_test
+  # Run enable recipe github-actions
+  $tmake enable-recipe PACKAGE=dev NAME=github-actions > /dev/null
+  # Run make to capture the output with the recipe enabled
+  $tmake > "$TEST_OUTPUT"
+  # Running command to test
+  $tmake -e GITHUB_PATH=testdata/.github -e GITHUB_PATH_IGNORE=true github-dependabot >> "$TEST_OUTPUT"
+  if [ $? -ne 0 ]; then
+      echo "make failed"
+      exit 1
+  fi
+  # Removing the lines that are not part of the output but are appended by github actions
+  strip_output
+  # Checking the output
+  check_output "$TEST_OUTPUT" "$TESTDATA_PATH/make-github-dependabot-bool64-dev.output"
+
+  diff "$TESTDATA_PATH/.github/dependabot.yml" "$PWD/templates/github/dependabot.yml"
+  if [ $? -ne 0 ]; then
+      echo "dependabot.yml file is not the same"
       exit 1
   fi
 

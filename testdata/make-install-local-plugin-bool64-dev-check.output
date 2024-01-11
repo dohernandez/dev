@@ -6,6 +6,7 @@ dev:
     [32mgithub-actions      [0m Run all github-actions belonging to github-actions group
     [32mgithub-actions-base [0m Create/Replace GitHub Actions from template
     [32mgithub-actions-release-assets[0m Create/Replace GitHub Actions from template for release-assets
+    [32mgithub-dependabot   [0m Create/Replace GitHub dependabot from template for dependabot
   [33mtest                [0m   Utilities for testing code
     [32mtest-unit           [0m Run unit tests
     [32mtest-unit-multi     [0m Run unit tests multiple times, use `UNIT_TEST_COUNT=10 make test-unit-multi` to control count
@@ -50,6 +51,7 @@ dev:
     [32mgithub-actions      [0m Run all github-actions belonging to github-actions group
     [32mgithub-actions-base [0m Create/Replace GitHub Actions from template
     [32mgithub-actions-release-assets[0m Create/Replace GitHub Actions from template for release-assets
+    [32mgithub-dependabot   [0m Create/Replace GitHub dependabot from template for dependabot
   [33mtest                [0m   Utilities for testing code
     [32mtest-unit           [0m Run unit tests
     [32mtest-unit-multi     [0m Run unit tests multiple times, use `UNIT_TEST_COUNT=10 make test-unit-multi` to control count
