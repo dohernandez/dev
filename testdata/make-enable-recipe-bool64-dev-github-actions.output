@@ -18,6 +18,7 @@ Usage
   [32mgithub-actions:     [0m  Run all github-actions belonging to github-actions group
   [32mgithub-actions-base:[0m  Create/Replace GitHub Actions from template
   [32mgithub-actions-release-assets:[0m  Create/Replace GitHub Actions from template for release-assets
+  [32mgithub-dependabot:  [0m  Create/Replace GitHub dependabot from template for dependabot
 List of recipes enabled:
   [33mversion             [0m   Print the version number of make dev tools.
     [32mversion             [0m Print the version number of dev tools.
@@ -27,3 +28,4 @@ List of recipes enabled:
     [32mgithub-actions      [0m Run all github-actions belonging to github-actions group
     [32mgithub-actions-base [0m Create/Replace GitHub Actions from template
     [32mgithub-actions-release-assets[0m Create/Replace GitHub Actions from template for release-assets
+    [32mgithub-dependabot   [0m Create/Replace GitHub dependabot from template for dependabot

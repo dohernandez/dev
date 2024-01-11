@@ -10,6 +10,4 @@ Usage
   [32mgithub-actions-base:[0m  Create/Replace GitHub Actions from template
   [32mgithub-actions-release-assets:[0m  Create/Replace GitHub Actions from template for release-assets
   [32mgithub-dependabot:  [0m  Create/Replace GitHub dependabot from template for dependabot
-Generating/Replacing GitHub Actions...
-Generating GitHub Actions base...
-Some of the actions require secrets `PAT` to be set in the repository settings.
+Generating GitHub dependabot

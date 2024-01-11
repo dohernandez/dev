@@ -70,6 +70,7 @@ github-actions-base:
 ## Create/Replace GitHub Actions from template for release-assets
 github-actions-release-assets:
 	@echo "Generating GitHub Actions for release-assets"
+	@mkdir -p $(PWD)/$(GITHUB_PATH)/workflows
 	@cp $(EXTEND_DEVGO_PATH)/templates/github/workflows/release-assets.yml $(PWD)/$(GITHUB_PATH)/workflows/ \
 			&& chmod +w $(PWD)/$(GITHUB_PATH)/workflows/release-assets.yml
 	@if [ "$(GITHUB_PATH_IGNORE)" != "true" ]; then \
@@ -77,4 +78,14 @@ github-actions-release-assets:
 	fi
 	@echo "Some of the actions require secrets \`PAT\` to be set in the repository settings."
 
-.PHONY: github-actions github-actions-release-assets
+## Create/Replace GitHub dependabot from template for dependabot
+github-dependabot:
+	@echo "Generating GitHub dependabot"
+	@mkdir -p $(PWD)/$(GITHUB_PATH)
+	@cp $(EXTEND_DEVGO_PATH)/templates/github/dependabot.yml $(PWD)/$(GITHUB_PATH)/ \
+			&& chmod +w $(PWD)/$(GITHUB_PATH)/dependabot.yml
+	@if [ "$(GITHUB_PATH_IGNORE)" != "true" ]; then \
+		git add $(PWD)/$(GITHUB_PATH)/dependabot.yml; \
+	fi
+
+.PHONY: github-actions github-actions-release-assets github-dependabot
