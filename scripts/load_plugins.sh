@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# TODO: Add support for multiple manifest files.
-# TODO: Add support to add repo in noprune.go to avoid removal of deps when tidy.
-
 [ -z "$PLUGIN_MANIFEST_FILE" ] && PLUGIN_MANIFEST_FILE="makefile.yml"
 [ -z "$VENDOR_PATH" ] && VENDOR_PATH="./vendor"
 [ -z "$GOMOD_FILE" ] && GOMOD_FILE="go.mod"
@@ -11,9 +8,7 @@ if [ -d "$VENDOR_PATH" ]; then
     modVendor="-mod=vendor"
 fi
 
-if [ -f "$GOMOD_FILE" ]; then
-    modfile="-modfile=$GOMOD_FILE"
-fi
+modfile="-modfile=$GOMOD_FILE"
 
 PLUGINS=()
 

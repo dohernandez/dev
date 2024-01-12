@@ -1,12 +1,5 @@
 GO ?= go
 PWD := $(shell pwd)
-GOPATH := $(realpath $(shell $(GO) env GOPATH))
-
-ifneq ($(wildcard ./vendor),)
-    modVendor := -mod=vendor
-endif
-
-MODULE_NAME := $(shell test -f go.mod && GO111MODULE=on $(GO) list $(modVendor) -m)
 
 EXTEND_DEVGO_PATH ?= $(PWD)
 EXTEND_DEVGO_MAKEFILES ?= $(EXTEND_DEVGO_PATH)/makefiles
