@@ -2,15 +2,14 @@
 
 # The head of Makefile determines location of dev-go to include standard targets.
 GO ?= go
+# Detecting GOPATH and removing trailing "/" if any
+GOPATH := $(realpath $(shell $(GO) env GOPATH))
 export GO111MODULE = on
 
 ifneq "$(wildcard ./vendor )" ""
   modVendor =  -mod=vendor
   ifeq (,$(findstring -mod,$(GOFLAGS)))
       export GOFLAGS := ${GOFLAGS} ${modVendor}
-  endif
-  ifneq "$(wildcard ./vendor/github.com/dohernandez/dev)" ""
-  	EXTEND_DEVGO_PATH := ./vendor/github.com/dohernandez/dev
   endif
 endif
 
@@ -22,6 +21,8 @@ ifeq ($(EXTEND_DEVGO_PATH),)
 	endif
 endif
 
+export MODULE_NAME := $(shell test -f go.mod && GO111MODULE=on $(GO) list $(modVendor) -m)
+
 -include $(EXTEND_DEVGO_PATH)/makefiles/main.mk
 
 # Start extra recipes here.
@@ -32,4 +33,3 @@ endif
 # Add your custom targets here.
 
 .PHONY:
-
