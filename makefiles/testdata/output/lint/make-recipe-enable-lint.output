@@ -1,3 +1,5 @@
+Enabling recipe: dev lint
+Recipe dev lint enabled successfully.
 Usage
   [32msearch-recipes:     [0m  Search all available recipes
   [32menable-recipe:      [0m  Enable a recipe into Makefile, use make enable-recipe PACKAGE=package_name NAME=recipe_name
@@ -5,11 +7,8 @@ Usage
   [32mdisable-recipe:     [0m  Disable a recipe from Makefile, use make disable-recipe NAME=recipe_name
   [32minstall-plugin:     [0m  Install a plugin, use make install-plugin
   [32mversion:            [0m  Print the version number of dev tools.
-  [32mtest-unit:          [0m  Run unit tests
-  [32mtest-unit-multi:    [0m  Run unit tests multiple times, use `UNIT_TEST_COUNT=10 make test-unit-multi` to control count
-  [32mtest:               [0m  Run all tests belonging to test group
-  [32mtest-local:         [0m  Run tests local
-Running tests testdata...
-Running tests local...
-Running unit tests.
-?   	testenv/gotest	[no test files]
+  [32mlint-cli:           [0m  Check/install golangci-lint version tool; GOLANGCI_LINT_VERSION
+  [32mlint:               [0m  Check with golangci-lint
+  [32mgci-cli:            [0m  Check/install gci tool
+  [32mgofumpt-cli:        [0m  Check/install gofumpt tool
+  [32mfix-lint:           [0m  Apply goimports and gofmt

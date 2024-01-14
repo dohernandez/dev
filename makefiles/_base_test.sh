@@ -1,14 +1,14 @@
 #!/bin/bash
 
 [ -z "$tmake" ] && tmake="make"
-OUTPUT_PATH="makefiles/testdata/output/base"
+OUTPUT_PATH="$ROOT_PATH/makefiles/testdata/output/base"
 
 Test_make() {
   printf "Test make -> "
   # Create a files for test
   create_files_test
   # Running command to test
-  $tmake > "$TEST_OUTPUT"
+  $tmake > "$TEST_OUTPUT" 2>/dev/null
   if [ $? -ne 0 ]; then
       echo "make failed"
       exit 1

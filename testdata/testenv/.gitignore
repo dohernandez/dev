@@ -1,0 +1,8 @@
+go.mod
+go.sum
+Makefile
+makefile.yml
+noprune.go
+test.out
+unit.coverprofile
+.github

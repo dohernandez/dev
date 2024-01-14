@@ -1,16 +1,19 @@
 Installing plugin:
 Using package: github.com/dohernandez/storage
 Using makefiles folder: makefiles
-Plugin github.com/dohernandez/storage added to makefile.yaml.test
-Plugin github.com/dohernandez/storage added to noprune.go.test
+Using main file: main.mk
+Plugin github.com/dohernandez/storage added to makefile.yml
+Plugin github.com/dohernandez/storage added to noprune.go
 Run `go mod vendor` to add the package to the vendor folder.
+go: module github.com/dohernandez/storage: not a known dependency
+go: added github.com/dohernandez/storage v0.3.14
 Installing plugin:
 Using package: local
-Using makefiles folder: testdata/makefiles
-Plugin local added to makefile.yaml.test
+Using makefiles folder: makefiles
+Plugin local added to makefile.yml
 Search for available recipe to enable
 dev:
-  [33mcheck               [0m   Utilities for checking code (requires: bool64/dev/lint, dev/test)
+  [33mcheck               [0m   Utilities for checking code (requires: dev/lint, dev/test)
     [32mcheck               [0m Run all checks belonging to check group, lint and test
   [33mgithub-actions      [0m   Create/replace GitHub Actions from template (requires: bool64/dev/release-assets)
     [32mgithub              [0m Run all github belonging to github group. Run github-actions, github-dependabot
@@ -18,6 +21,12 @@ dev:
     [32mgithub-actions-base [0m Create/Replace GitHub Actions from template
     [32mgithub-actions-release-assets[0m Create/Replace GitHub Actions from template for release-assets
     [32mgithub-dependabot   [0m Create/Replace GitHub dependabot from template for dependabot
+  [33mlint                [0m   
+    [32mlint-cli            [0m Check/install golangci-lint version tool; GOLANGCI_LINT_VERSION
+    [32mlint                [0m Check with golangci-lint
+    [32mgci-cli             [0m Check/install gci tool
+    [32mgofumpt-cli         [0m Check/install gofumpt tool
+    [32mfix-lint            [0m Apply goimports and gofmt
   [33mtest                [0m   Utilities for testing code
     [32mtest-unit           [0m Run unit tests
     [32mtest-unit-multi     [0m Run unit tests multiple times, use `UNIT_TEST_COUNT=10 make test-unit-multi` to control count

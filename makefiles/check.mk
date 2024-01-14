@@ -1,7 +1,7 @@
 #-## Utilities for checking code
 
 #- Placeholders require include the file in the Makefile
-#- require - bool64/dev/lint
+#- require - self/lint
 #- require - self/test
 
 #- target-group - BEFORE_CHECK_TARGETS:check

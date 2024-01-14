@@ -1,14 +1,14 @@
 #!/bin/bash
 
 [ -z "$tmake" ] && tmake="make"
-OUTPUT_PATH="makefiles/testdata/output/test"
+OUTPUT_PATH="$ROOT_PATH/makefiles/testdata/output/test"
 
 Test_make_test_local_plugin() {
   printf "Test make test local plugin -> "
   # Create a files for test
   create_files_test
   # Running command to test
-  (echo "local"; echo "testdata/makefiles"; echo "") | $tmake install-plugin > /dev/null
+  (echo "local"; echo "makefiles"; echo "") | $tmake install-plugin > /dev/null
   if [ $? -ne 0 ]; then
       echo "make failed"
       exit 1
@@ -18,7 +18,7 @@ Test_make_test_local_plugin() {
   # Run make to capture the output make after to enable the recipe
   $tmake > "$TEST_OUTPUT"
   # Run make test
-  $tmake -e UNIT_TEST_PATH=./makefiles test-local >> "$TEST_OUTPUT"
+  $tmake -e UNIT_TEST_PATH=./gotest test-local >> "$TEST_OUTPUT"
   if [ $? -ne 0 ]; then
       echo "make failed"
       exit 1
@@ -36,7 +36,7 @@ Test_make_test_with_local_plugin() {
   # Create a files for test
   create_files_test
   # Running command to test
-  (echo "local"; echo "testdata/makefiles"; echo "") | $tmake install-plugin > /dev/null
+  (echo "local"; echo "makefiles"; echo "") | $tmake install-plugin > /dev/null
   if [ $? -ne 0 ]; then
       echo "make failed"
       exit 1
@@ -46,7 +46,7 @@ Test_make_test_with_local_plugin() {
   # Run make to capture the output make after to enable the recipe
   $tmake > "$TEST_OUTPUT"
   # Run make test
-  $tmake -e UNIT_TEST_PATH=./makefiles test >> "$TEST_OUTPUT"
+  $tmake -e UNIT_TEST_PATH=./gotest test >> "$TEST_OUTPUT"
   if [ $? -ne 0 ]; then
       echo "make failed"
       exit 1

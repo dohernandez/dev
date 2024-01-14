@@ -1,11 +1,16 @@
 #!/bin/bash
 
+# Export the environment variables
+# Read key-value pairs from the ENV_VARS variable and export them as environment variables
+while IFS= read -r line || [ -n "$line" ]; do
+  export "$line"
+done <<< "$ENV_VARS"
+
 [ -z "$TEST_PATH" ] && TEST_PATH="."
 
 PWD=$(pwd)
 
 TESTDATA_PATH="$PWD/testdata"
-TEST_OUTPUT="$PWD/test.out"
 MAKEFILE_FILE="$PWD/testdata/Makefile"
 PLUGIN_MANIFEST_FILE="$PWD/testdata/makefile.yml"
 NOPRUNE_FILE="$PWD/testdata/noprune.go"
@@ -13,22 +18,21 @@ GOMOD_FILE="$PWD/testdata/go.mod"
 
 cat "$PWD/makefiles/base.mk" > "$MAKEFILE_FILE"
 
+TESTDATA_ENV_PATH="$TESTDATA_PATH/testenv"
+TEST_OUTPUT="$TESTDATA_ENV_PATH/test.out"
+
 # tmake is the base command to run make
 # Every timme the command runs, it runs in a new shell with the local env
 # avoiding to use the env from the upstream runner
-tmake="make -f Makefile.test \
-      -e MAKEFILE_FILE=Makefile.test \
-      -e PLUGIN_MANIFEST_FILE=makefile.yaml.test \
-      -e NOPRUNE_FILE=noprune.go.test \
-      -e GOMOD_FILE=$GOMOD_FILE \
-      "
+tmake="make"
 
 # create_files_test create a files for test
 create_files_test() {
     # Creating files for test
-    cat "$MAKEFILE_FILE"> Makefile.test
-    cat "$PLUGIN_MANIFEST_FILE" > makefile.yaml.test
-    cat "$NOPRUNE_FILE" > noprune.go.test
+    cat "$MAKEFILE_FILE"> "$TESTDATA_ENV_PATH/Makefile"
+    cat "$PLUGIN_MANIFEST_FILE" > "$TESTDATA_ENV_PATH/makefile.yml"
+    cat "$NOPRUNE_FILE" > "$TESTDATA_ENV_PATH/noprune.go"
+    cat "$GOMOD_FILE" > "$TESTDATA_ENV_PATH/go.mod"
 }
 
 strip_output() {
@@ -52,6 +56,15 @@ check_output() {
       if [ -n "$TEST_FILE" ]; then
         echo "Error in $TEST_FILE:${BASH_LINENO[0]}: make output is not the same"
       fi
+      exit 1
+    fi
+}
+
+check_empty_output() {
+    # Checking the output
+    content=$(cat "$1")
+    if [ -n "$content" ]; then
+      echo "Error in $TEST_FILE:${BASH_LINENO[0]}: make output is not empty"
       exit 1
     fi
 }
@@ -108,8 +121,7 @@ for test_file in $test_files; do
 
   # Execute each function
   for func in $test_functions; do
-
-    output=$(eval "$func")
+    output=$(cd "$TESTDATA_ENV_PATH" && eval "$func")
     if [ $? -ne 0 ]; then
       if [ "$print_output" = false ]; then
         echo ""
