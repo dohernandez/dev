@@ -1,0 +1,67 @@
+Installing plugin:
+Using package: github.com/dohernandez/storage
+Using makefiles folder: makefiles
+Plugin github.com/dohernandez/storage added to makefile.yaml.test
+Plugin github.com/dohernandez/storage added to noprune.go.test
+Run `go mod vendor` to add the package to the vendor folder.
+Installing plugin:
+Using package: local
+Using makefiles folder: testdata/makefiles
+Plugin local added to makefile.yaml.test
+Search for available recipe to enable
+dev:
+  [33mcheck               [0m   Utilities for checking code (requires: bool64/dev/lint, dev/test)
+    [32mcheck               [0m Run all checks belonging to check group, lint and test
+  [33mgithub-actions      [0m   Create/replace GitHub Actions from template (requires: bool64/dev/release-assets)
+    [32mgithub              [0m Run all github belonging to github group. Run github-actions, github-dependabot
+    [32mgithub-actions      [0m Run all github-actions belonging to github-actions group. Run github-actions-base
+    [32mgithub-actions-base [0m Create/Replace GitHub Actions from template
+    [32mgithub-actions-release-assets[0m Create/Replace GitHub Actions from template for release-assets
+    [32mgithub-dependabot   [0m Create/Replace GitHub dependabot from template for dependabot
+  [33mtest                [0m   Utilities for testing code
+    [32mtest-unit           [0m Run unit tests
+    [32mtest-unit-multi     [0m Run unit tests multiple times, use `UNIT_TEST_COUNT=10 make test-unit-multi` to control count
+    [32mtest                [0m Run all tests belonging to test group
+
+bool64/dev:
+  [33mbench               [0m   
+    [32mbench               [0m Run benchmark and show result stats, iterations count controlled by BENCH_COUNT, default 5.
+    [32mbench-stat-cli      [0m Run benchmark and show result stats, iterations count controlled by BENCH_COUNT, default 5.
+    [32mbench-run           [0m Run benchmark, iterations count controlled by BENCH_COUNT, default 5.
+    [32mbench-stat-diff     [0m Show benchmark comparison with base branch.
+    [32mbench-stat          [0m Show result of benchmark.
+  [33mbuild               [0m   
+    [32mbuild-linux         [0m Build Linux binary
+    [32mbuild               [0m Build binary
+    [32mrun                 [0m Build and run binary
+  [33mgithub-actions      [0m   
+    [32mgithub-actions      [0m Replace GitHub Actions from template
+  [33mlint                [0m   
+    [32mlint                [0m Check with golangci-lint
+    [32mfix-lint            [0m Apply goimports and gofmt
+  [33mrelease-assets      [0m   
+    [32mrelease-assets      [0m Build and compress binaries for release assets.
+  [33mreset-ci            [0m   
+    [32mreset-ci            [0m Reset CI files from bool64/dev templates, make sure to review changes before committing.
+  [33mtest-integration    [0m   
+    [32mtest-integration    [0m Run integration tests
+    [32mstart-deps          [0m Start dependencies for integration tests or local dev via docker-compose up
+    [32mstop-deps           [0m Stop dependencies for integration tests or local dev via docker-compose down
+  [33mtest-unit           [0m   
+    [32mtest-unit           [0m Run unit tests
+    [32mtest-unit-multi     [0m Run unit tests multiple times, use `UNIT_TEST_COUNT=10 make test-unit-multi` to control count
+
+dohernandez/storage:
+  [33mcheck               [0m   Utilities for checking code includes checks postgresql instance ready (requires: dev/check, dohernandez/storage/pg)
+  [33mgithub-actions      [0m   Create/replace GitHub Actions from template (requires: dev/github-actions)
+    [32mgithub-actions-test-db[0m Inject/Replace GitHub Actions test db service
+  [33mpg                  [0m   Manage required postgresql tools
+    [32mpg-isready-cli      [0m Check/install pg-isready tool
+    [32mpg-ready            [0m Check postgres service and database is up and running
+
+local:
+  [33mcheck               [0m   Utilities for check the code (requires: dev/check, local/test)
+    [32mbefore-check-requirements[0m Run before check requirements local
+    [32mafter-check-requirements[0m Run after check requirements local
+  [33mtest                [0m   Utilities for testing code (requires: dev/test)
+    [32mtest-local          [0m Run tests local

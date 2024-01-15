@@ -22,16 +22,22 @@ export GOMOD_FILE := $(GOMOD_FILE)
 EXTEND_MANIFEST_FILE ?= $(EXTEND_DEVGO_MAKEFILES)/makefile.yml
 export EXTEND_MANIFEST_FILE := $(EXTEND_MANIFEST_FILE)
 
-#-# Get plugins
+#-# Get plugins from dev package
 EXTEND_PLUGIN_EXPORTS := $(shell GOMOD_FILE=$(GOMOD_FILE) PLUGIN_MANIFEST_FILE=$(EXTEND_MANIFEST_FILE) bash $(EXTEND_DEVGO_SCRIPTS)/load_plugins.sh)
 
-#-# Set plugins
+EXTEND_PLUGINS = $(filter PLUGINS=%,$(EXTEND_PLUGIN_EXPORTS))
+EXTEND_PLUGINS := $(subst PLUGINS=,,$(EXTEND_PLUGINS))
+
+EXTEND_PLUGIN_EXPORTS := $(patsubst PLUGINS=%,,$(EXTEND_PLUGIN_EXPORTS))
+
+#-# Set plugins from dev package
 $(foreach _export,$(EXTEND_PLUGIN_EXPORTS), \
 	$(eval export $(_export)) \
 )
 
-EXTEND_PLUGINS := $(subst :, ,$(PLUGINS))
+EXTEND_PLUGINS := $(subst :, ,$(EXTEND_PLUGINS))
 
+#-# Get plugins from package
 PLUGIN_MANIFEST_FILE ?= makefile.yml
 export PLUGIN_MANIFEST_FILE := $(PLUGIN_MANIFEST_FILE)
 
@@ -41,14 +47,30 @@ ifneq ($(wildcard $(PLUGIN_MANIFEST_FILE)),)
 	PLUGIN_EXPORTS := $(shell GOMOD_FILE=$(GOMOD_FILE) PLUGIN_MANIFEST_FILE=$(PLUGIN_MANIFEST_FILE) bash $(EXTEND_DEVGO_SCRIPTS)/load_plugins.sh)
 endif
 
+PACKAGE_PLUGINS = $(filter PLUGINS=%,$(PLUGIN_EXPORTS))
+PACKAGE_PLUGINS := $(subst PLUGINS=,,$(PACKAGE_PLUGINS))
+
+PLUGIN_EXPORTS := $(patsubst PLUGINS=%,,$(PLUGIN_EXPORTS))
+
 #-# Set plugins
 $(foreach _export,$(PLUGIN_EXPORTS), \
 	$(eval export $(_export)) \
 )
 
-PLUGINS := $(subst :, ,$(PLUGINS))
+PACKAGE_PLUGINS := $(subst :, ,$(PACKAGE_PLUGINS))
 
-PLUGINS := $(sort $(EXTEND_PLUGINS) $(filter-out $(EXTEND_PLUGINS),$(PLUGINS)))
+$(foreach plugin_key,$(EXTEND_PLUGINS), \
+	$(eval PACKAGE_PLUGINS += $(plugin_key)) \
+)
+
+PACKAGE_PLUGINS := $(sort $(EXTEND_PLUGINS) $(filter-out $(EXTEND_PLUGINS),$(PACKAGE_PLUGINS)))
+
+#-# Expert plugin if it is not exported
+ifeq ($(PLUGINS),)
+	export PLUGINS := $(PACKAGE_PLUGINS)
+else
+	override PLUGINS := $(PACKAGE_PLUGINS)
+endif
 
 #-# Include plugins main makefile
 MAKEFILE_INCLUDES := $(foreach plugin_key,$(PLUGINS), \
