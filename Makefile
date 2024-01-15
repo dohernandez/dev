@@ -36,7 +36,7 @@ export MODULE_NAME := $(shell test -f go.mod && GO111MODULE=on $(GO) list $(modV
 
 ## Run tests
 test:
-	@echo "Running unit tests"
+	@echo "Running tests"
 	@if [ "$(TEST)" = "" ]; then \
 		bash _Makefile_test.sh; \
 	else \
