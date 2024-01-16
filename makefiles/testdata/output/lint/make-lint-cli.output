@@ -1,4 +1,1 @@
 >> Installing golangci-lint v1.55.2...
-golangci/golangci-lint info checking GitHub for tag 'v1.55.2'
-golangci/golangci-lint info found version: 1.55.2 for v1.55.2/darwin/arm64
-golangci/golangci-lint info installed /tmp/golangci-lint-v1.55.2/golangci-lint

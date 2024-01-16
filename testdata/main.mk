@@ -1,3 +1,3 @@
-PRIO_ENVS := $(shell env | sort | uniq)
+ENV_KEYS := $(shell printenv | awk -F= '{print $$1}' | tr '\n' ' ')
 
-export PRIO_ENVS := $(PRIO_ENVS)
+export ENV_KEYS := $(ENV_KEYS)

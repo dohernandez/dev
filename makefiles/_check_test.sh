@@ -8,7 +8,7 @@ Test_make_check_local_plugin() {
   # Create a files for test
   create_files_test
   # Running command to test
-  (echo "local"; echo "makefiles"; echo "") | $tmake install-plugin >/dev/null
+  (echo "local"; echo "makefiles"; echo "") | $tmake install-plugin >/dev/null 2>&1
   if [ $? -ne 0 ]; then
       echo "make failed"
       exit 1
@@ -18,7 +18,7 @@ Test_make_check_local_plugin() {
   # Run make to capture the output make after to enable the recipe
   $tmake > "$TEST_OUTPUT"
   # Run make check
-  $tmake -e UNIT_TEST_PATH=./gotest check >> "$TEST_OUTPUT"
+  $tmake -e UNIT_TEST_PATH=./gotest check >> "$TEST_OUTPUT" 2>&1
   if [ $? -ne 0 ]; then
       echo "make failed"
       exit 1

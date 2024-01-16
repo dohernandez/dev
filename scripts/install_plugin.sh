@@ -24,6 +24,8 @@ else
     name=$package
 fi
 
+echo "Installing plugin $package"
+
 # Check if the plugin manifest file exists, otherwise create it
 if [ ! -f "$PLUGIN_MANIFEST_FILE" ]; then
   touch "$PLUGIN_MANIFEST_FILE"

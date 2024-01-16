@@ -356,24 +356,22 @@ Test_make_install_plugin_package_and_local_plugins() {
   # Create a files for test
   create_files_test
   # Installing package plugin
-  (echo "github.com/dohernandez/storage"; echo ""; echo "main.mk") | $tmake install-plugin > "$TEST_OUTPUT" 2>&1
+  (echo "github.com/dohernandez/storage"; echo ""; echo "main.mk") | $tmake install-plugin > /dev/null 2>&1
   if [ $? -ne 0 ]; then
       echo "make failed"
       exit 1
   fi
   # Installing local plugin
-  (echo "local"; echo "makefiles"; echo "") | $tmake install-plugin >> "$TEST_OUTPUT" 2>&1
+  (echo "local"; echo "makefiles"; echo "") | $tmake install-plugin > /dev/null 2>&1
   if [ $? -ne 0 ]; then
       echo "make failed"
       exit 1
   fi
   # Run make to capture after two plugin installed output
-  $tmake search-recipes >> "$TEST_OUTPUT" 2>&1
+  $tmake search-recipes > "$TEST_OUTPUT" 2>&1
   # Removing the lines that are not part of the output but are appended by github actions
   strip_output
   # Checking the output
-#  cat "$TEST_OUTPUT" | grep -v "go: -modfile=go.mod.test: file does not have .mod extension" \
-#    > "$TEST_OUTPUT.tmp" && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
   check_output "$TEST_OUTPUT" "$OUTPUT_PATH/make-install-package-local-plugins.output"
 
   # Checking the noprune.go file

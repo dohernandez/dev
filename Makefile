@@ -40,7 +40,7 @@ export MODULE_NAME := $(shell test -f go.mod && GO111MODULE=on $(GO) list $(modV
 test:
 	@echo "Running tests"
 	@if [ "$(TEST)" = "" ]; then \
-		env -i ENV_VARS="$(PRIO_ENVS)" ROOT_PATH=$(EXTEND_DEVGO_PATH) bash _test.sh; \
+		ROOT_PATH=$(EXTEND_DEVGO_PATH) bash _test.sh; \
 	else \
-		env -i ENV_VARS=$(PRIO_ENVS) ROOT_PATH=$(EXTEND_DEVGO_PATH) bash _test.sh $(TEST); \
+		ROOT_PATH=$(EXTEND_DEVGO_PATH) bash _test.sh $(TEST); \
 	fi

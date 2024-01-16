@@ -1,16 +1,3 @@
-Installing plugin:
-Using package: github.com/dohernandez/storage
-Using makefiles folder: makefiles
-Using main file: main.mk
-Plugin github.com/dohernandez/storage added to makefile.yml
-Plugin github.com/dohernandez/storage added to noprune.go
-Run `go mod vendor` to add the package to the vendor folder.
-go: module github.com/dohernandez/storage: not a known dependency
-go: added github.com/dohernandez/storage v0.3.14
-Installing plugin:
-Using package: local
-Using makefiles folder: makefiles
-Plugin local added to makefile.yml
 Search for available recipe to enable
 dev:
   [33mcheck               [0m   Utilities for checking code (requires: dev/lint, dev/test)

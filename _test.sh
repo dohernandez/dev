@@ -1,10 +1,25 @@
 #!/bin/bash
 
-# Export the environment variables
-# Read key-value pairs from the ENV_VARS variable and export them as environment variables
-while IFS= read -r line || [ -n "$line" ]; do
-  export "$line"
-done <<< "$ENV_VARS"
+all_keys=$(printenv | awk -F= '{print $1}' | tr '\n' ' ')
+
+# Exclude key from unsetting
+exclude_key="ROOT_PATH"
+
+# Array to store keys from parent make
+diff_keys=()
+
+# Iterate over keys in second_keys
+for key in $all_keys; do
+    # Check if the key is not in parent make and not the excluded key
+    if [[ ! " $ENV_KEYS " =~ " $key " && "$key" != "$exclude_key" ]]; then
+        diff_keys+=("$key")
+    fi
+done
+
+# Unset the environment variables for keys in diff_keys
+for key in "${diff_keys[@]}"; do
+    unset "$key"
+done
 
 [ -z "$TEST_PATH" ] && TEST_PATH="."
 
@@ -33,6 +48,7 @@ create_files_test() {
     cat "$PLUGIN_MANIFEST_FILE" > "$TESTDATA_ENV_PATH/makefile.yml"
     cat "$NOPRUNE_FILE" > "$TESTDATA_ENV_PATH/noprune.go"
     cat "$GOMOD_FILE" > "$TESTDATA_ENV_PATH/go.mod"
+    rm -f "$TESTDATA_ENV_PATH/go.sum"
 }
 
 strip_output() {
@@ -42,6 +58,7 @@ strip_output() {
     cat "$TEST_OUTPUT" | \
         grep -v 'Entering directory' | \
         grep -v 'Leaving directory' | \
+        grep -v 'awk: warning: command line argument .* is a directory: skipped' | \
         awk -v pattern="$error_pattern" '{ while (match($0, pattern)) { $0 = substr($0, 1, RSTART-1) "Error 1" substr($0, RSTART+RLENGTH); } } 1' \
         > "$TEST_OUTPUT.tmp" && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
 }
@@ -121,7 +138,7 @@ for test_file in $test_files; do
 
   # Execute each function
   for func in $test_functions; do
-    output=$(cd "$TESTDATA_ENV_PATH" && eval "$func")
+    output=$(cd "$TESTDATA_ENV_PATH" && PWD="$TESTDATA_ENV_PATH" eval "$func")
     if [ $? -ne 0 ]; then
       if [ "$print_output" = false ]; then
         echo ""

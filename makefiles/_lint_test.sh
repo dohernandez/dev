@@ -35,7 +35,7 @@ Test_make_lint_cli() {
     restore=$(backup_lint_cli_with_prefix "$GOLANGCI_LINT_VERSION")
   fi
   # Run make test
-  $tmake lint-cli > "$TEST_OUTPUT" 2>&1
+  $tmake -e DRY_RUN=true lint-cli > "$TEST_OUTPUT" 2>&1
   # Removing the lines that are not part of the output but are appended by github actions
   strip_output
   # Checking the output

@@ -49,6 +49,7 @@ bool64/dev:
 Installing plugin:
 Using package: local
 Using makefiles folder: makefiles
+Installing plugin local
 Plugin local added to makefile.yml
 Search for available recipe to enable
 dev:

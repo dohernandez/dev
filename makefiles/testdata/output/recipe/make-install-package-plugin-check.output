@@ -1,6 +1,7 @@
 Installing plugin:
 Using package: github.com/dohernandez/storage
 Using makefiles folder: makefiles
+Installing plugin github.com/dohernandez/storage
 Plugin github.com/dohernandez/storage added to makefile.yml
 Plugin github.com/dohernandez/storage added to noprune.go
 Run `go mod vendor` to add the package to the vendor folder.
