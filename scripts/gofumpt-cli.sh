@@ -30,12 +30,17 @@ fi
 if ! command -v gofumpt-"$GOFUMPT_VERSION" > /dev/null; then \
   echo ">> Installing gofumpt $GOFUMPT_VERSION..."; \
 
+    if [ "$DRY_RUN" = "true" ]; then
+      exit 0
+    fi
+
   # Check if gofumpt binary exists and save tmp
   if [ -f "$GOPATH"/bin/gofumpt ]; then
       mv "$GOPATH"/bin/gofumpt "$GOPATH"/bin/gofumpt-tmp;
   fi
 
   $GO install mvdan.cc/gofumpt@"$GOFUMPT_VERSION";
+  mv "$GOPATH/bin"/gofumpt "$GOPATH"/bin/gofumpt-"$GOFUMPT_VERSION";
 
   # Restore gofumpt binary
   if [ -f "$GOPATH"/bin/gofumpt-tmp ]; then
