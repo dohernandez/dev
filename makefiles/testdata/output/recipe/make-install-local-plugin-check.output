@@ -14,6 +14,8 @@ dev:
     [32mgci-cli             [0m Check/install gci tool
     [32mgofumpt-cli         [0m Check/install gofumpt tool
     [32mfix-lint            [0m Apply goimports and gofmt
+  [33mmockery             [0m   
+    [32mmockery-cli         [0m Check/install mockery tool
   [33mtest                [0m   Utilities for testing code
     [32mtest-unit           [0m Run unit tests
     [32mtest-unit-multi     [0m Run unit tests multiple times, use `UNIT_TEST_COUNT=10 make test-unit-multi` to control count
@@ -67,6 +69,8 @@ dev:
     [32mgci-cli             [0m Check/install gci tool
     [32mgofumpt-cli         [0m Check/install gofumpt tool
     [32mfix-lint            [0m Apply goimports and gofmt
+  [33mmockery             [0m   
+    [32mmockery-cli         [0m Check/install mockery tool
   [33mtest                [0m   Utilities for testing code
     [32mtest-unit           [0m Run unit tests
     [32mtest-unit-multi     [0m Run unit tests multiple times, use `UNIT_TEST_COUNT=10 make test-unit-multi` to control count
