@@ -1,7 +1,7 @@
 #!/bin/bash
 
 [ -z "$tmake" ] && tmake="make"
-OUTPUT_PATH="makefiles/testdata/output/recipe"
+OUTPUT_PATH="$ROOT_PATH/makefiles/testdata/output/recipe"
 
 
 Test_make_search_recipes() {
@@ -253,7 +253,7 @@ Test_make_install_plugin_local_plugin() {
  # Run make to capture the output search recipes before install the plugin
  $tmake search-recipes > "$TEST_OUTPUT"
  # Running command to test
- (echo "local"; echo "testdata/makefiles"; echo "") | $tmake install-plugin >> "$TEST_OUTPUT"
+ (echo "local"; echo "makefiles"; echo "") | $tmake install-plugin >> "$TEST_OUTPUT"
  if [ $? -ne 0 ]; then
      echo "make failed"
      exit 1
@@ -273,11 +273,11 @@ Test_make_install_plugin_local_without_yml_plugin() {
  # Create a files for test
  create_files_test
  # Remove the plugin manifest file
- rm makefile.yaml.test
+ rm makefile.yml
  # Run make to capture the output search recipes before install the plugin
  $tmake search-recipes > "$TEST_OUTPUT"
  # Running command to test
- (echo "local"; echo "testdata/makefiles"; echo "") | $tmake install-plugin >> "$TEST_OUTPUT"
+ (echo "local"; echo "makefiles"; echo "") | $tmake install-plugin >> "$TEST_OUTPUT"
  if [ $? -ne 0 ]; then
      echo "make failed"
      exit 1
@@ -308,7 +308,7 @@ Test_make_install_plugin_package_plugin() {
   check_output "$TEST_OUTPUT" "$OUTPUT_PATH/make-install-package-plugin-check.output"
 
   # Checking the noprune.go file
-  cat <<EOL | diff - noprune.go.test
+  cat <<EOL | diff - noprune.go
 //go:build never
 // +build never
 
@@ -332,7 +332,7 @@ Test_make_enable_recipe_local_plugin_with_self_require() {
   # Create a files for test
   create_files_test
   # Running command to test
-  (echo "local"; echo "testdata/makefiles"; echo "") | $tmake install-plugin > /dev/null 2>&1
+  (echo "local"; echo "makefiles"; echo "") | $tmake install-plugin > /dev/null 2>&1
   if [ $? -ne 0 ]; then
       echo "make failed"
       exit 1
@@ -355,32 +355,27 @@ Test_make_install_plugin_package_and_local_plugins() {
   printf "Test make install-plugin package and local plugins -> "
   # Create a files for test
   create_files_test
-  GOMOD_FILE="go.mod.test"
-  cp "$TESTDATA_PATH/go.mod" "$GOMOD_FILE"
   # Installing package plugin
-  (echo "github.com/dohernandez/storage"; echo "") | $tmake -e GOMOD_FILE="$GOMOD_FILE" install-plugin > "$TEST_OUTPUT" 2>&1
+  (echo "github.com/dohernandez/storage"; echo ""; echo "main.mk") | $tmake install-plugin > /dev/null 2>&1
   if [ $? -ne 0 ]; then
       echo "make failed"
       exit 1
   fi
   # Installing local plugin
-  (echo "local"; echo "testdata/makefiles"; echo "") | $tmake -e GOMOD_FILE="$GOMOD_FILE" install-plugin >> "$TEST_OUTPUT" 2>&1
+  (echo "local"; echo "makefiles"; echo "") | $tmake install-plugin > /dev/null 2>&1
   if [ $? -ne 0 ]; then
       echo "make failed"
       exit 1
   fi
   # Run make to capture after two plugin installed output
-  $tmake -e GOMOD_FILE="$GOMOD_FILE" search-recipes >> "$TEST_OUTPUT" 2>&1
+  $tmake search-recipes > "$TEST_OUTPUT" 2>&1
   # Removing the lines that are not part of the output but are appended by github actions
   strip_output
   # Checking the output
-  cat "$TEST_OUTPUT" | grep -v "go: -modfile=go.mod.test: file does not have .mod extension" \
-    > "$TEST_OUTPUT.tmp" && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
-  cat "$TEST_OUTPUT" > "$OUTPUT_PATH/make-install-package-local-plugins.output"
   check_output "$TEST_OUTPUT" "$OUTPUT_PATH/make-install-package-local-plugins.output"
 
   # Checking the noprune.go file
-  cat <<EOL | diff - noprune.go.test
+  cat <<EOL | diff - noprune.go
 //go:build never
 // +build never
 

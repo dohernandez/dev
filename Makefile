@@ -6,6 +6,8 @@ GO ?= go
 GOPATH := $(realpath $(shell $(GO) env GOPATH))
 export GO111MODULE = on
 
+-include ./testdata/main.mk
+
 ifneq "$(wildcard ./vendor )" ""
   modVendor =  -mod=vendor
   ifeq (,$(findstring -mod,$(GOFLAGS)))
@@ -38,7 +40,7 @@ export MODULE_NAME := $(shell test -f go.mod && GO111MODULE=on $(GO) list $(modV
 test:
 	@echo "Running tests"
 	@if [ "$(TEST)" = "" ]; then \
-		bash _Makefile_test.sh; \
+		ROOT_PATH=$(EXTEND_DEVGO_PATH) bash _test.sh; \
 	else \
-		bash _Makefile_test.sh $(TEST); \
+		ROOT_PATH=$(EXTEND_DEVGO_PATH) bash _test.sh $(TEST); \
 	fi

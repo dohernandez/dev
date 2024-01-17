@@ -1,11 +1,31 @@
 #!/bin/bash
 
+all_keys=$(printenv | awk -F= '{print $1}' | tr '\n' ' ')
+
+# Exclude key from unsetting
+exclude_key="ROOT_PATH"
+
+# Array to store keys from parent make
+diff_keys=()
+
+# Iterate over keys in second_keys
+for key in $all_keys; do
+    # Check if the key is not in parent make and not the excluded key
+    if [[ ! " $ENV_KEYS " =~ " $key " && "$key" != "$exclude_key" ]]; then
+        diff_keys+=("$key")
+    fi
+done
+
+# Unset the environment variables for keys in diff_keys
+for key in "${diff_keys[@]}"; do
+    unset "$key"
+done
+
 [ -z "$TEST_PATH" ] && TEST_PATH="."
 
 PWD=$(pwd)
 
 TESTDATA_PATH="$PWD/testdata"
-TEST_OUTPUT="$PWD/test.out"
 MAKEFILE_FILE="$PWD/testdata/Makefile"
 PLUGIN_MANIFEST_FILE="$PWD/testdata/makefile.yml"
 NOPRUNE_FILE="$PWD/testdata/noprune.go"
@@ -13,22 +33,22 @@ GOMOD_FILE="$PWD/testdata/go.mod"
 
 cat "$PWD/makefiles/base.mk" > "$MAKEFILE_FILE"
 
+TESTDATA_ENV_PATH="$TESTDATA_PATH/testenv"
+TEST_OUTPUT="$TESTDATA_ENV_PATH/test.out"
+
 # tmake is the base command to run make
 # Every timme the command runs, it runs in a new shell with the local env
 # avoiding to use the env from the upstream runner
-tmake="make -f Makefile.test \
-      -e MAKEFILE_FILE=Makefile.test \
-      -e PLUGIN_MANIFEST_FILE=makefile.yaml.test \
-      -e NOPRUNE_FILE=noprune.go.test \
-      -e GOMOD_FILE=$GOMOD_FILE \
-      "
+tmake="make"
 
 # create_files_test create a files for test
 create_files_test() {
     # Creating files for test
-    cat "$MAKEFILE_FILE"> Makefile.test
-    cat "$PLUGIN_MANIFEST_FILE" > makefile.yaml.test
-    cat "$NOPRUNE_FILE" > noprune.go.test
+    cat "$MAKEFILE_FILE"> "$TESTDATA_ENV_PATH/Makefile"
+    cat "$PLUGIN_MANIFEST_FILE" > "$TESTDATA_ENV_PATH/makefile.yml"
+    cat "$NOPRUNE_FILE" > "$TESTDATA_ENV_PATH/noprune.go"
+    cat "$GOMOD_FILE" > "$TESTDATA_ENV_PATH/go.mod"
+    rm -f "$TESTDATA_ENV_PATH/go.sum"
 }
 
 strip_output() {
@@ -38,6 +58,7 @@ strip_output() {
     cat "$TEST_OUTPUT" | \
         grep -v 'Entering directory' | \
         grep -v 'Leaving directory' | \
+        grep -v 'awk: warning: command line argument .* is a directory: skipped' | \
         awk -v pattern="$error_pattern" '{ while (match($0, pattern)) { $0 = substr($0, 1, RSTART-1) "Error 1" substr($0, RSTART+RLENGTH); } } 1' \
         > "$TEST_OUTPUT.tmp" && mv "$TEST_OUTPUT.tmp" "$TEST_OUTPUT"
 }
@@ -52,6 +73,15 @@ check_output() {
       if [ -n "$TEST_FILE" ]; then
         echo "Error in $TEST_FILE:${BASH_LINENO[0]}: make output is not the same"
       fi
+      exit 1
+    fi
+}
+
+check_empty_output() {
+    # Checking the output
+    content=$(cat "$1")
+    if [ -n "$content" ]; then
+      echo "Error in $TEST_FILE:${BASH_LINENO[0]}: make output is not empty"
       exit 1
     fi
 }
@@ -108,8 +138,7 @@ for test_file in $test_files; do
 
   # Execute each function
   for func in $test_functions; do
-
-    output=$(eval "$func")
+    output=$(cd "$TESTDATA_ENV_PATH" && PWD="$TESTDATA_ENV_PATH" eval "$func")
     if [ $? -ne 0 ]; then
       if [ "$print_output" = false ]; then
         echo ""
