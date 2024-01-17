@@ -30,6 +30,10 @@ fi
 if ! command -v gci-$GCI_VERSION > /dev/null; then \
     echo ">> Installing gci $GCI_VERSION..."; \
 
+    if [ "$DRY_RUN" = "true" ]; then
+      exit 0
+    fi
+
     # Check if gci binary exists and save tmp
     if [ -f "$GOPATH"/bin/gci ]; then
         mv "$GOPATH"/bin/gci "$GOPATH"/bin/gci-tmp;
