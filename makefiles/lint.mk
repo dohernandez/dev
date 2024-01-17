@@ -19,7 +19,7 @@ lint-cli:
 
 ## Check with golangci-lint
 lint: lint-cli
-	@GOLANGCI_LINT_VERSION=$(GOLANGCI_LINT_VERSION) LINT_PATH=$(LINT_PATH) CMD_LINT_PATH=$(CMD_LINT_PATH) bash $(EXTEND_DEVGO_SCRIPTS)/lint.sh
+	@GOLANGCI_LINT_VERSION=$(GOLANGCI_LINT_VERSION) LINT_PATH=$(LINT_PATH) bash $(EXTEND_DEVGO_SCRIPTS)/lint.sh
 
 ## Check/install gci tool
 gci-cli:

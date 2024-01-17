@@ -349,3 +349,35 @@ Test_make_gofumpt_cli_installed() {
 
   echo "OK"
 }
+
+Test_make_lint() {
+  printf "Test make lint -> "
+  # Create a files for test
+  create_files_test
+  # Run enable recipe gofumpt
+  $tmake enable-recipe PACKAGE=dev NAME=lint > /dev/null
+  # Prepare the test
+  restore=
+  if [ "$(gofumpt_cli_version_exists_without_prefix "$GOFUMPT_VERSION")" = "true" ]; then
+    restore=$(backup_gofumpt_cli_without_prefix "$GOFUMPT_VERSION")
+  elif [ "$(gofumpt_cli_version_exists_with_prefix "$GOFUMPT_VERSION")" = "true" ]; then
+    restore=$(backup_gofumpt_cli_with_prefix "$GOFUMPT_VERSION")
+  fi
+  $tmake gci-cli > /dev/null 2>&1
+  # Running command to test
+  $tmake -e LINT_PATH=./gotest lint > "$TEST_OUTPUT" 2>&1
+  if [ $? -eq 0 ]; then
+      echo "make should fail"
+      exit 1
+  fi
+  # Removing the lines that are not part of the output but are appended by github actions
+  strip_output
+  # Checking the output
+  check_output "$TEST_OUTPUT" "$OUTPUT_PATH/make-lint.output"
+
+  if [ -n "$restore"  ]; then
+    restore_binary "$restore"
+  fi
+
+  echo "OK"
+}

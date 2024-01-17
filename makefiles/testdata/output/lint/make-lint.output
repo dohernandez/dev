@@ -1,0 +1,5 @@
+Checking packages...
+go.mod:5:1: local replacement are not allowed: github.com/dohernandez/dev (gomoddirectives)
+replace github.com/dohernandez/dev v0.14.6 => ./../../
+^
+Error 1
