@@ -6,10 +6,13 @@
 - []: Add `make upgrade target` command - upgrade dev package and check Makefile -.
 - []: `make list-recipe` group recipes by package. 
 - []: Check when require that .mk file exists and do not require again.
-- []: Add constraining to cli install only works for Darwin.
+- []: Add constraining to cli install only works for Darwin, otherwise _Unsupported OS, exiting_
 - []: Add support to cli install for Linux.
 - []: Refactor cli install to install without a version, otherwise warn user.
+- []: Any install cli option to overwrite existing version without suffix.
 - []: Rename function `strip_output` to `github_strip_output`.
+- []: Fix function names `_prefix` for `_suffix`.
+- [] Double check recipe description
 
 
 # Note:

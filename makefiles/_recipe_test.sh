@@ -372,7 +372,6 @@ Test_make_install_plugin_package_and_local_plugins() {
   # Removing the lines that are not part of the output but are appended by github actions
   strip_output
   # Checking the output
-  cat "$TEST_OUTPUT" > "$OUTPUT_PATH/make-install-package-local-plugins.output"
   check_output "$TEST_OUTPUT" "$OUTPUT_PATH/make-install-package-local-plugins.output"
 
   # Checking the noprune.go file
