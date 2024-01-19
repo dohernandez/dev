@@ -82,6 +82,7 @@ check_empty_output() {
     content=$(cat "$1")
     if [ -n "$content" ]; then
       echo "Error in $TEST_FILE:${BASH_LINENO[0]}: make output is not empty"
+      echo ">>> $content"
       exit 1
     fi
 }

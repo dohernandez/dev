@@ -30,9 +30,9 @@ fi
 if ! command -v gofumpt-"$GOFUMPT_VERSION" > /dev/null; then \
   echo ">> Installing gofumpt $GOFUMPT_VERSION..."; \
 
-    if [ "$DRY_RUN" = "true" ]; then
-      exit 0
-    fi
+  if [ "$DRY_RUN" = "true" ]; then
+    exit 0
+  fi
 
   # Check if gofumpt binary exists and save tmp
   if [ -f "$GOPATH"/bin/gofumpt ]; then
