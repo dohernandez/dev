@@ -1,6 +1,6 @@
 GO ?= go
 
-# Override in app main.mk to control mockery version.
+# Override in app Makefile to control mockery version.
 MOCKERY_VERSION ?= "v2.40.1"
 
 ## Check/install mockery tool

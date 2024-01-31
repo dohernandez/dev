@@ -3,7 +3,7 @@
 GO ?= go
 UNIT_TEST_COUNT ?= 2
 
-# Override in app main.mk to control unit test path.
+# Override in app Makefile to control unit test path.
 UNIT_TEST_PATH ?= .
 
 ## Run unit tests
