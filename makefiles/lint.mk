@@ -1,16 +1,16 @@
 GO ?= go
 
-# Override in app main.mk to control lint version.
+# Override in app Makefile to control lint version.
 GOLANGCI_LINT_VERSION ?= "v1.55.2"
-# Override in app main.mk to control gci version.
+# Override in app Makefile to control gci version.
 GCI_VERSION ?= "v0.12.1"
-# Override in app main.mk to control gofumpt version.
+# Override in app Makefile to control gofumpt version.
 GOFUMPT_VERSION ?= "v0.5.0"
 
-# Override in app main.mk to control lint path.
+# Override in app Makefile to control lint path.
 LINT_PATH ?= .
 
-# Override in app main.mk to control cmd lint path.
+# Override in app Makefile to control cmd lint path.
 CMD_LINT_PATH ?= ./*/cmd
 
 ## Check/install golangci-lint version tool; GOLANGCI_LINT_VERSION

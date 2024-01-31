@@ -25,6 +25,11 @@ endif
 
 export MODULE_NAME := $(shell test -f go.mod && GO111MODULE=on $(GO) list $(modVendor) -m)
 
+# Use awk to extract the relevant part of the MODULE_NAME
+PACKAGE_NAME := $(shell echo $(MODULE_NAME) | awk -F'/' '{print $$2 "/" $$3}')
+
+export PACKAGE_NAME := $(PACKAGE_NAME)
+
 -include $(EXTEND_DEVGO_PATH)/makefiles/main.mk
 
 # Start extra recipes here.
